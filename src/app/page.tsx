@@ -1,12 +1,8 @@
 import { CinematicHero } from "@/components/ui/cinematic-landing-hero";
-import { ServicesSection } from "@/components/sections/ServicesSection";
-import { StatsSection } from "@/components/sections/StatsSection";
-import { AboutSection } from "@/components/sections/AboutSection";
-import { ContactSection } from "@/components/sections/ContactSection";
 
 export default function Home() {
   return (
-    <div className="bg-black">
+    <main className="min-h-screen bg-black">
       <CinematicHero 
         brandName="ASENRA"
         brandLogo="/logo.png"
@@ -20,13 +16,6 @@ export default function Home() {
         ctaHeading="Get Your Free Audit"
         ctaDescription="Book a call. Launch in 7 days."
       />
-
-      <div className="relative z-50">
-        <StatsSection />
-        <ServicesSection />
-        <AboutSection />
-        <ContactSection />
-      </div>
-    </div>
+    </main>
   );
 }
