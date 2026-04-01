@@ -10,12 +10,12 @@ export default function Home() {
         brandTextLogo="/asenra-full-logo.png"
         tagline1="Tech That Doubles"
         tagline2="Your Business Revenue"
-        cardHeading="One-Stop SMB Tech"
-        cardDescription="Websites • Bots • AI Agents • Apps for tiffins, shops, salons."
+        cardHeading="High-Performance Systems"
+        cardDescription="Intelligent Automations • Scalable Infrastructure • Elite Web Architectures."
         metricValue={50}
         metricLabel="Clients"
         ctaHeading="Get Your Free Audit"
-        ctaDescription="Book a call. Launch in 7 days."
+        ctaDescription="Schedule your strategy call. Launching in 7 days."
       />
       
       <PricingSection />

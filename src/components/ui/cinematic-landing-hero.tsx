@@ -184,8 +184,20 @@ export function CinematicHero({
       <div className="film-grain" aria-hidden="true" />
       <div className="bg-grid-theme absolute inset-0 z-0 pointer-events-none opacity-50" aria-hidden="true" />
 
-      {/* BACKGROUND LAYER: Hero Texts */}
-      <div className="hero-text-wrapper absolute z-10 flex flex-col items-center justify-center text-center w-screen px-4 will-change-transform transform-style-3d">
+
+      <div className="hero-text-wrapper absolute z-10 flex flex-col items-center justify-center text-center w-screen px-4 pb-20 md:pb-32 lg:pb-40 will-change-transform transform-style-3d">
+        {brandTextLogo && (
+          <div className="text-track gsap-reveal mb-4 md:mb-6 lg:mb-8">
+            <Image 
+              src={brandTextLogo} 
+              alt="Asenra" 
+              width={600} 
+              height={150} 
+              className="h-16 md:h-24 lg:h-32 w-auto object-contain select-none pointer-events-none opacity-90"
+              priority 
+            />
+          </div>
+        )}
         <h1 className="text-track gsap-reveal text-3d-matte text-5xl md:text-7xl lg:text-[6rem] font-bold tracking-tight mb-2">
           {tagline1}
         </h1>

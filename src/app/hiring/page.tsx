@@ -1,27 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { ArrowLeft, Zap, Code, Layout, Cpu, Send, MessageSquare } from "lucide-react";
 import Link from "next/link";
-import { gsap } from "gsap";
 
 export default function HiringPage() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(".reveal", {
-        y: 40,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 1,
-        ease: "power4.out",
-        delay: 0.2
-      });
-    }, containerRef);
-    return () => ctx.revert();
-  }, []);
-
   const roles = [
     {
       title: "Frontend Engineer",
@@ -47,7 +30,7 @@ export default function HiringPage() {
   ];
 
   return (
-    <main ref={containerRef} className="min-h-screen bg-black text-white selection:bg-white selection:text-black pb-24">
+    <main className="min-h-screen bg-black text-white selection:bg-white selection:text-black pb-24">
       {/* Liquid Glass Background */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-white/5 rounded-full blur-[120px]" />
@@ -61,7 +44,7 @@ export default function HiringPage() {
         </Link>
 
         <section className="max-w-4xl">
-          <div className="reveal space-y-4 mb-20">
+          <div className="space-y-4 mb-20">
             <h1 className="text-sm font-bold tracking-[0.4em] text-neutral-400 uppercase">
               Now Hiring Elite Talent
             </h1>
@@ -77,7 +60,7 @@ export default function HiringPage() {
             {roles.map((role, i) => (
               <div 
                 key={i}
-                className="reveal premium-depth-card group p-8 rounded-3xl border border-white/5 hover:border-white/20 transition-all"
+                className="premium-depth-card group p-8 rounded-3xl border border-white/5 hover:border-white/20"
               >
                 <div className="card-sheen" />
                 <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-6 group-hover:bg-white/10 transition-colors">
@@ -99,7 +82,7 @@ export default function HiringPage() {
             ))}
           </div>
 
-          <div className="reveal premium-depth-card p-10 rounded-[40px] relative overflow-hidden bg-white/2">
+          <div className="premium-depth-card p-10 rounded-[40px] relative overflow-hidden bg-white/2">
             <div className="card-sheen" />
             <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
               <div>
