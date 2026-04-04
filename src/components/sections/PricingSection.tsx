@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { 
@@ -11,7 +11,11 @@ import {
   Check, 
   ArrowRight,
   ShieldCheck,
-  TrendingUp
+  CreditCard,
+  XCircle,
+  LayoutGrid,
+  Bot,
+  Layers
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,71 +23,196 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const PACKAGES = [
+const CATEGORIES = [
   {
-    id: "starter",
-    name: "Starter Website",
-    price: "4,999",
-    description: "For local cafés, tiffins, and shops launching their first digital home.",
-    features: [
-      "3-4 Page Responsive React Site",
-      "WhatsApp 'Order/Enquiry' Button",
-      "Basic On-Page SEO (Local)",
-      "1 Round of Revisions"
-    ],
+    id: "websites",
+    name: "Websites",
     icon: Globe,
-    color: "from-white/10 to-transparent"
+    description: "Cinematic digital real estate engineered for performance.",
+    packages: [
+      {
+        id: "web-basic",
+        name: "Basic",
+        price: "4,999",
+        amc: "2,000",
+        description: "1 Page Cinema",
+        features: [
+          "React Architecture",
+          "Domain (1 yr) Free",
+          "Hosting Free Forever",
+          "1 Revision Round",
+          "WhatsApp Direct Button",
+          "Basic Global SEO"
+        ],
+        icon: LayoutGrid,
+        color: "from-white/10 to-transparent"
+      },
+      {
+        id: "web-advanced",
+        name: "Advanced",
+        price: "8,999",
+        amc: "2,500",
+        description: "Cinematic Animations + 3D",
+        features: [
+          "3-5 Optimized Pages",
+          "React + GSAP Animations",
+          "Subtle 3D Integration",
+          "Domain & Hosting Free",
+          "2 Revision Rounds",
+          "Advanced SEO Engine"
+        ],
+        icon: Zap,
+        color: "from-[#F43F5E]/20 to-transparent",
+        popular: true
+      },
+      {
+        id: "web-dynamic",
+        name: "Dynamic",
+        price: "22,999",
+        amc: "6,000",
+        description: "Full-Scale Web Infrastructure",
+        features: [
+          "Unlimited Pages",
+          "MERN Stack (Fullstack)",
+          "Auth & Custom Dashboard",
+          "Domain & 6 Mo Hosting",
+          "3 Revision Rounds",
+          "Scalable Architecture"
+        ],
+        icon: Layers,
+        color: "from-[#9F1239]/20 to-transparent"
+      }
+    ]
   },
   {
-    id: "business",
-    name: "Business Plus",
-    price: "9,999",
-    description: "For brands that need to capture every lead automatically.",
-    features: [
-      "Everything in Starter",
-      "WhatsApp Auto-Reply (via n8n)",
-      "Leads stored in Google Sheets",
-      "Google Business Profile Setup"
-    ],
-    icon: Zap,
-    color: "from-[#F43F5E]/20 to-transparent",
-    popular: true
+    id: "ai-agents",
+    name: "AI Agents",
+    icon: Bot,
+    description: "Autonomous digital employees working 24/7.",
+    packages: [
+      {
+        id: "ai-chat",
+        name: "Chat Agent",
+        price: "12,999",
+        amc: "4,000",
+        description: "WhatsApp & Web Intelligence",
+        features: [
+          "WhatsApp/Web Platform",
+          "Instant Lead Capture",
+          "Google Sheets Sync",
+          "Quarterly Prompt Tuning",
+          "Semantic Understanding",
+          "24/7 Active Support"
+        ],
+        icon: Cpu,
+        color: "from-blue-500/10 to-transparent"
+      },
+      {
+        id: "ai-calling",
+        name: "Calling Agent",
+        price: "15,999",
+        amc: "5,500",
+        description: "Voice Automation AI",
+        features: [
+          "Retell AI Integration",
+          "Real-time Phone Sales",
+          "Lead Qualification",
+          "Google Sheets Sync",
+          "Quarterly Tuning",
+          "Human-like Latency"
+        ],
+        icon: Smartphone,
+        color: "from-emerald-500/10 to-transparent"
+      },
+      {
+        id: "ai-combo",
+        name: "Omni Combo",
+        price: "24,999",
+        amc: "8,000",
+        description: "Full Sales Automation Suite",
+        features: [
+          "Chat + Calling Agents",
+          "Unified Customer View",
+          "Lead Management System",
+          "Quarterly Prompt Tuning",
+          "Priority API Support",
+          "Maximum Conversion ROI"
+        ],
+        icon: Zap,
+        color: "from-[#F43F5E]/20 to-transparent",
+        popular: true
+      }
+    ]
   },
   {
-    id: "ai-agent",
-    name: "AI Agent Studio",
-    price: "14,999",
-    description: "Custom AI that handles support and qualifies leads 24/7.",
-    features: [
-      "OpenAI-Powered AI Agent",
-      "WhatsApp or Web Integration",
-      "Lead Management Dashboard",
-      "Monthly Response Tuning"
-    ],
-    icon: Cpu,
-    color: "from-[#9F1239]/20 to-transparent"
-  },
-  {
-    id: "mobile-lite",
-    name: "Mobile App Lite",
-    price: "19,999",
-    description: "Your business in their pocket. Simple, fast, native.",
-    features: [
-      "React Native Android Build",
-      "Service/Menu Catalog",
-      "Direct Booking Interface",
-      "Basic Play Store Publish"
-    ],
+    id: "mobile-apps",
+    name: "Mobile Apps",
     icon: Smartphone,
-    color: "from-[#BE123C]/20 to-transparent"
+    description: "Premium native experiences in your customers' pockets.",
+    packages: [
+      {
+        id: "app-lite",
+        name: "App Lite",
+        price: "24,999",
+        amc: "6,000",
+        description: "Android Native Presence",
+        features: [
+          "React Native Build",
+          "Android Optimization",
+          "Basic User Auth",
+          "Play Store Publishing",
+          "Brand Integration",
+          "Performance Optimized"
+        ],
+        icon: Smartphone,
+        color: "from-white/10 to-transparent"
+      },
+      {
+        id: "app-standard",
+        name: "App Standard",
+        price: "39,999",
+        amc: "10,000",
+        description: "Dual-Platform Authority",
+        features: [
+          "Android & iOS Apps",
+          "Full User Auth System",
+          "Custom Admin Panel",
+          "Push Notifications",
+          "App & Play Store Launch",
+          "Cross-Platform Sync"
+        ],
+        icon: Zap,
+        color: "from-[#F43F5E]/20 to-transparent",
+        popular: true
+      },
+      {
+        id: "app-pro",
+        name: "App Pro",
+        price: "64,999",
+        amc: "15,000",
+        description: "Real-time Ecosystem",
+        features: [
+          "Android & iOS Apps",
+          "Advanced Auth & Profiles",
+          "Payment Gateway Sync",
+          "Real-time Data Engines",
+          "Scalable App Architecture",
+          "App & Play Store Management"
+        ],
+        icon: Layers,
+        color: "from-[#9F1239]/20 to-transparent"
+      }
+    ]
   }
 ];
 
 export function PricingSection() {
+  const [activeTab, setActiveTab] = useState("websites");
+  
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
-  const maintenanceRef = useRef<HTMLDivElement>(null);
+  const policyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -100,28 +229,22 @@ export function PricingSection() {
         ease: "power4.out"
       });
 
-      // Cards Fanned Reveal
-      const cards = cardsRef.current?.children;
-      if (cards) {
-        gsap.from(cards, {
-          scrollTrigger: {
-            trigger: cardsRef.current,
-            start: "top 80%",
-          },
-          y: 60,
-          opacity: 0,
-          scale: 0.95,
-          stagger: 0.15,
-          duration: 1.4,
-          ease: "power3.out",
-          clearProps: "all"
-        });
-      }
-
-      // Maintenance Banner Reveal
-      gsap.from(maintenanceRef.current, {
+      // Cards Grid Reveal
+      gsap.from(cardsRef.current, {
         scrollTrigger: {
-          trigger: maintenanceRef.current,
+          trigger: cardsRef.current,
+          start: "top 80%",
+        },
+        y: 40,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power3.out"
+      });
+
+      // Policy Reveal
+      gsap.from(policyRef.current, {
+        scrollTrigger: {
+          trigger: policyRef.current,
           start: "top 90%",
         },
         y: 30,
@@ -134,6 +257,17 @@ export function PricingSection() {
     return () => ctx.revert();
   }, []);
 
+  // Animate tab content change
+  useEffect(() => {
+    if (cardsRef.current) {
+        const cards = cardsRef.current.children;
+        gsap.fromTo(cards, 
+            { y: 20, opacity: 0, scale: 0.98 },
+            { y: 0, opacity: 1, scale: 1, duration: 0.6, stagger: 0.1, ease: "power3.out" }
+        );
+    }
+  }, [activeTab]);
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, card: HTMLDivElement) => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -141,6 +275,8 @@ export function PricingSection() {
     card.style.setProperty("--mouse-x", `${x}px`);
     card.style.setProperty("--mouse-y", `${y}px`);
   };
+
+  const activeCategoryData = CATEGORIES.find(c => c.id === activeTab);
 
   return (
     <section 
@@ -154,75 +290,101 @@ export function PricingSection() {
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
-        <div ref={titleRef} className="max-w-3xl mb-16 sm:mb-24">
+        <div ref={titleRef} className="max-w-3xl mb-16 sm:mb-20">
           <h2 className="text-sm font-bold tracking-[0.3em] text-neutral-500 uppercase mb-4">
-            Pricing & Packages
+            Pricing Models
           </h2>
           <h3 className="text-4xl sm:text-6xl font-black tracking-tighter text-silver-matte leading-[0.9]">
             Transparent Scale for <br />
-            <span className="text-white/20">Growing Businesses.</span>
+            <span className="text-white/20">Elite Businesses.</span>
           </h3>
           <p className="mt-8 text-lg text-neutral-400 max-w-xl leading-relaxed">
-            Professional Indian businesses deserve premium tech. 
-            No hidden fees. One-time build, monthly growth.
+            Choose your engine. From kinematic websites to autonomous AI agents, we architect for high-impact growth.
           </p>
+        </div>
+
+        {/* Tab Switcher */}
+        <div className="flex flex-wrap gap-2 mb-12 p-1.5 bg-white/5 rounded-2xl w-fit border border-white/5 backdrop-blur-3xl">
+          {CATEGORIES.map((cat) => {
+            const Icon = cat.icon;
+            const active = activeTab === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setActiveTab(cat.id)}
+                className={cn(
+                  "flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all",
+                  active 
+                    ? "bg-white text-black shadow-xl" 
+                    : "text-neutral-500 hover:text-white hover:bg-white/5"
+                )}
+              >
+                <Icon className={cn("w-4 h-4", active ? "text-black" : "text-neutral-500")} />
+                {cat.name}
+              </button>
+            );
+          })}
         </div>
 
         {/* Pricing Grid */}
         <div 
           ref={cardsRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24"
         >
-          {PACKAGES.map((pkg) => {
+          {activeCategoryData?.packages.map((pkg) => {
             const Icon = pkg.icon;
             return (
               <div
                 key={pkg.id}
                 onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
                 className={cn(
-                  "premium-depth-card group p-8 flex flex-col min-h-[480px] rounded-2xl transition-transform duration-500 hover:-translate-y-2",
-                  pkg.popular && "ring-1 ring-white/20 shadow-[0_0_40px_rgba(255,255,255,0.05)]"
+                  "premium-depth-card group p-8 flex flex-col min-h-[540px] rounded-3xl transition-all duration-500 hover:-translate-y-2",
+                  pkg.popular && "ring-1 ring-white/20 shadow-[0_0_40px_rgba(255,255,255,0.05)] border-white/10"
                 )}
               >
                 <div className="card-sheen" />
-                
-                {/* Package Glow Overlay */}
                 <div className={cn("absolute inset-0 opacity-10 blur-3xl rounded-full translate-y-[-20%] translate-x-[-20%] pointer-events-none bg-linear-to-br", pkg.color)} />
 
                 <div className="relative z-10 h-full flex flex-col">
                   <div className="flex items-center justify-between mb-8">
-                    <div className="p-3 bg-white/5 rounded-xl border border-white/5 group-hover:border-white/20 transition-colors">
+                    <div className="p-3 bg-white/5 rounded-2xl border border-white/5 group-hover:border-white/20 transition-colors">
                       {Icon && <Icon className="w-6 h-6 text-white" />}
                     </div>
                     {pkg.popular && (
-                      <span className="text-[10px] font-black italic tracking-widest uppercase as-glossy-red text-white px-3 py-1 rounded-full shadow-[0_0_15px_rgba(238,0,0,0.5)]">
-                        Popular
+                      <span className="text-[10px] font-black italic tracking-widest uppercase as-glossy-red text-white px-4 py-1.5 rounded-full shadow-[0_0_20px_rgba(238,0,0,0.4)]">
+                        Most Active
                       </span>
                     )}
                   </div>
 
-                  <h4 className="text-xl font-bold text-white mb-2 leading-tight">
-                    {pkg.name}
-                  </h4>
-                  <p className="text-sm text-neutral-500 mb-8 leading-snug">
-                    {pkg.description}
-                  </p>
+                  <div className="mb-6">
+                    <h4 className="text-2xl font-black text-white mb-1 uppercase tracking-tight">
+                        {pkg.name}
+                    </h4>
+                    <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">
+                        {pkg.description}
+                    </p>
+                  </div>
 
                   <div className="mb-8">
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-neutral-400 text-sm">₹</span>
-                      <span className="text-4xl font-black text-white tracking-tight">
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-neutral-500 text-lg font-bold">₹</span>
+                      <span className="text-5xl font-black text-white tracking-tighter">
                         {pkg.price}
                       </span>
                     </div>
-                    <span className="text-xs text-neutral-500">One-time payment</span>
+                    <div className="mt-2 flex items-center gap-2">
+                        <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-black">AMC: ₹{pkg.amc}/year</span>
+                        <div className="w-1 h-1 rounded-full bg-white/20" />
+                        <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-black">Startup 50%</span>
+                    </div>
                   </div>
 
-                  <ul className="space-y-4 mb-12 grow">
+                  <ul className="space-y-4 mb-12 grow border-t border-white/5 pt-8">
                     {pkg.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-3">
-                        <Check className="w-4 h-4 text-neutral-600 mt-0.5 shrink-0" />
-                        <span className="text-xs text-neutral-400 leading-tight">
+                        <Check className="w-4 h-4 text-white mt-0.5 shrink-0" />
+                        <span className="text-xs text-neutral-400 font-medium tracking-tight">
                           {feature}
                         </span>
                       </li>
@@ -230,13 +392,13 @@ export function PricingSection() {
                   </ul>
 
                   <a 
-                    href={`https://wa.me/918956634577?text=${encodeURIComponent(`I want the ${pkg.name} plan.`)}`}
+                    href={`https://wa.me/918956634577?text=${encodeURIComponent(`I am interested in the ${pkg.name} ${activeCategoryData.name} package.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full btn-modern-dark py-3.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 group/btn cursor-pointer no-underline"
+                    className="w-full btn-modern-light py-4 rounded-xl text-sm font-black uppercase tracking-widest flex items-center justify-center gap-3 group/btn cursor-pointer no-underline"
                   >
-                    Select Plan
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                    Launch Now
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-2" />
                   </a>
                 </div>
               </div>
@@ -244,55 +406,91 @@ export function PricingSection() {
           })}
         </div>
 
-        {/* Maintenance Retainer Banner */}
-        <div 
-          ref={maintenanceRef}
-          className="relative overflow-hidden premium-depth-card rounded-3xl p-8 sm:p-12 flex flex-col lg:flex-row items-center gap-8 border-[#E11D48]/10"
-          onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
-        >
-          <div className="card-sheen" />
+        {/* Policy & Coverage Sections */}
+        <div ref={policyRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
           
-          <div className="absolute top-0 right-0 w-[400px] h-full bg-linear-to-l from-[#E11D48]/5 to-transparent pointer-events-none" />
+          {/* AMC Coverage */}
+          <div className="premium-depth-card p-10 rounded-[40px] border-white/5 relative overflow-hidden group">
+            <div className="card-sheen" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[80px] -mr-32 -mt-32" />
+            
+            <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/5">
+                        <ShieldCheck className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                        <h4 className="text-xl font-black text-white uppercase tracking-tight">AMC Coverage</h4>
+                        <p className="text-[10px] text-neutral-500 font-bold uppercase tracking-widest">Included in annual maintenance</p>
+                    </div>
+                </div>
 
-          <div className="grow z-10">
-            <div className="flex items-center gap-3 mb-4">
-              <ShieldCheck className="w-6 h-6 text-[#FB7185]" />
-              <span className="text-[10px] font-bold tracking-[0.2em] text-[#FB7185] uppercase">
-                Success & Support Foundation
-              </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6">
+                    <div className="space-y-4">
+                        <h5 className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em] mb-4">Included</h5>
+                        {[
+                            "Domain Renewal", "Hosting Continuation", "Bug Fixes", "Minor Content Updates", "Uptime Monitoring", "Performance Checks"
+                        ].map(item => (
+                            <div key={item} className="flex items-center gap-3">
+                                <Check className="w-3.5 h-3.5 text-emerald-500" />
+                                <span className="text-xs text-neutral-400">{item}</span>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="space-y-4">
+                        <h5 className="text-[10px] font-black text-red-400 uppercase tracking-[0.2em] mb-4">Not Included</h5>
+                        {[
+                            "New Features/Modules", "Full Redesign", "New Integrations", "Third Party API Charges"
+                        ].map(item => (
+                            <div key={item} className="flex items-center gap-3">
+                                <XCircle className="w-3.5 h-3.5 text-red-500 opacity-60" />
+                                <span className="text-xs text-neutral-400">{item}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
-            <h4 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-none mb-4">
-              Maintenance & <br className="sm:hidden" /> Growth Retainer
-            </h4>
-            <p className="text-neutral-400 max-w-xl text-sm leading-relaxed">
-              We don&apos;t just build and leave. After launch, we stay on your team to manage content updates, technical health, SEO tweaks, and performance audits every single month.
-            </p>
           </div>
 
-          <div className="w-full lg:w-auto z-10 flex flex-col sm:flex-row items-center gap-6 lg:gap-12 p-6 sm:p-8 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-sm">
-            <div className="text-center sm:text-right">
-              <div className="flex items-baseline justify-center sm:justify-end gap-1">
-                <span className="text-neutral-500 text-sm">₹</span>
-                <span className="text-5xl font-black text-white tracking-tight">
-                  1,999
-                </span>
-                <span className="text-neutral-400 text-sm">/mo</span>
-              </div>
-              <p className="text-xs text-neutral-500 mt-1 uppercase tracking-widest font-bold">
-                Predictable Growth
-              </p>
+          {/* Payment Terms */}
+          <div className="premium-depth-card p-10 rounded-[40px] border-white/5 relative overflow-hidden group">
+            <div className="card-sheen" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/5 blur-[80px] -ml-32 -mb-32" />
+            
+            <div className="relative z-10 flex flex-col h-full">
+                <div className="flex items-center gap-4 mb-8">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/5">
+                        <CreditCard className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                        <h4 className="text-xl font-black text-white uppercase tracking-tight">Payment Structure</h4>
+                        <p className="text-[10px] text-neutral-500 font-bold uppercase tracking-widest">Fair Milestone-Based Billables</p>
+                    </div>
+                </div>
+
+                <div className="space-y-8 grow flex flex-col justify-center">
+                    <div className="flex items-center justify-between p-6 rounded-2xl bg-white/2 border border-white/5">
+                        <div>
+                            <span className="text-[10px] font-black text-neutral-500 uppercase tracking-widest block mb-1">Phase 01</span>
+                            <h5 className="text-lg font-black text-white italic">Advance (Before Start)</h5>
+                        </div>
+                        <div className="text-3xl font-black text-white italic">50%</div>
+                    </div>
+                    <div className="flex items-center justify-between p-6 rounded-2xl bg-white/5 border border-white/10 shadow-2xl">
+                        <div>
+                            <span className="text-[10px] font-black text-neutral-500 uppercase tracking-widest block mb-1">Phase 02</span>
+                            <h5 className="text-lg font-black text-white italic">Final Handover</h5>
+                        </div>
+                        <div className="text-3xl font-black text-white italic">50%</div>
+                    </div>
+                </div>
+
+                <p className="mt-8 text-[10px] text-neutral-600 font-black uppercase tracking-[0.3em] text-center italic">
+                    Transparent. Professional. High-Integrity.
+                </p>
             </div>
-            <div className="h-10 w-px bg-white/10 hidden sm:block" />
-            <a 
-              href={`https://wa.me/918956634577?text=${encodeURIComponent("I want to add the Maintenance & Growth Retainer to my workflow.")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-8 py-4 btn-modern-light rounded-xl font-black text-sm tracking-tight flex items-center gap-2 group/btn cursor-pointer no-underline"
-            >
-              Add to Workflow
-              <TrendingUp className="w-4 h-4 transition-transform group-hover/btn:translate-y-[-2px] group-hover/btn:translate-x-[2px]" />
-            </a>
           </div>
+
         </div>
       </div>
     </section>

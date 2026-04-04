@@ -24,7 +24,7 @@ export function YouFormModal({ isOpen, onClose, formId }: YouFormModalProps) {
 
   return (
     <div className={cn(
-      "fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 lg:p-8 transition-all duration-300",
+      "fixed inset-0 z-200 flex items-center justify-center p-4 sm:p-6 lg:p-8 transition-all duration-300",
       isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
     )}>
       {/* Backdrop */}
