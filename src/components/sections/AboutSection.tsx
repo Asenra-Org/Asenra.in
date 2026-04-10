@@ -42,9 +42,9 @@ export function AboutSection() {
             <div className="mb-6 p-4 inline-flex rounded-xl bg-neutral-950/50 text-amber-400">
                <MapPin className="w-8 h-8" />
             </div>
-            <h3 className="text-2xl font-semibold mb-3">Kolhapur-First</h3>
+            <h3 className="text-2xl font-semibold mb-3">Global Standard</h3>
             <p className="text-zinc-400 leading-relaxed">
-              Proudly based in Kolhapur, we understand the pulse of Indian small businesses. Our roots keep us grounded, while our technology propels your growth globally.
+              Operating across India, we understand the pulse of modern businesses. Our tech is built for the global stage, ensuring your growth has no boundaries.
             </p>
           </div>
 
