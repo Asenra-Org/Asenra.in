@@ -110,7 +110,7 @@ export default function PremiumFooter() {
              </Link>
              <div className="w-1 h-1 rounded-full bg-white/10" />
              <span className="text-neutral-600 text-[10px] font-black uppercase tracking-widest">
-               Kolhapur, MH
+               Operations Pan-India
              </span>
           </div>
         </div>
