@@ -77,7 +77,7 @@ export default function VisionPage() {
         {/* Closing Statement */}
         <section className="text-center py-20 border-t border-white/5">
            <p className="text-neutral-600 font-black italic tracking-[0.3em] uppercase text-xs mb-8">
-             Based in Kolhapur · Shipping Globally
+             Operations Pan-India · Shipping Globally
            </p>
            <h3 className="text-3xl sm:text-5xl font-black tracking-tighter text-white mb-12 max-w-2xl mx-auto">
              Ready to build the future <br /> with us?
