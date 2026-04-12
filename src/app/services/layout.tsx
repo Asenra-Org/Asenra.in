@@ -8,6 +8,9 @@ export const metadata: Metadata = {
     description: "High-performance systems for elite businesses. Explore our architecture focus.",
     images: ["/logo.png"],
   },
+  alternates: {
+    canonical: "/services",
+  },
 };
 
 export default function ServicesLayout({
