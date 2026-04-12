@@ -6,6 +6,7 @@ import PremiumFooter from "@/components/ui/premium-footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://asenra.in"),
   title: "Asenra | High-Performance Digital Architecture & AI Agents",
   description: "Bespoke websites, autonomous AI agents, and custom software engineered for high-growth Indian businesses. Engineering excellence for the global market.",
   icons: {
@@ -20,7 +21,10 @@ export const metadata: Metadata = {
     description: "Cinematic digital real estate and autonomous AI employees. Engineered for performance.",
     images: ["/logo.png"],
     type: "website",
-  }
+  },
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({

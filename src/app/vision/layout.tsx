@@ -8,6 +8,9 @@ export const metadata: Metadata = {
     description: "Architecting the operating systems for the next generation of India's economy.",
     images: ["/logo.png"],
   },
+  alternates: {
+    canonical: "/vision",
+  },
 };
 
 export default function VisionLayout({

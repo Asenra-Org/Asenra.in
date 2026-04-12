@@ -26,6 +26,7 @@ export default function PremiumFooter() {
         { label: "Our Vision", href: "/vision" },
         { label: "Join the Elite", href: "/hiring" },
         { label: "Architecture", href: "/architecture" },
+        { label: "Services", href: "/services" },
       ]
     },
     {

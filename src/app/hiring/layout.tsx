@@ -8,6 +8,9 @@ export const metadata: Metadata = {
     description: "Architect systems for scale. Ship production-grade solutions.",
     images: ["/logo.png"],
   },
+  alternates: {
+    canonical: "/hiring",
+  },
 };
 
 export default function HiringLayout({
