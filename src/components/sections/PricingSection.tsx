@@ -34,7 +34,7 @@ const CATEGORIES = [
         id: "web-basic",
         name: "Basic",
         price: "4,999",
-        amc: "2,000",
+        amc: "2,920",
         description: "1 Page Cinema",
         features: [
           "React Architecture",
@@ -51,7 +51,7 @@ const CATEGORIES = [
         id: "web-advanced",
         name: "Advanced",
         price: "8,999",
-        amc: "2,500",
+        amc: "3,844",
         description: "Cinematic Animations + 3D",
         features: [
           "3-5 Optimized Pages",
@@ -69,7 +69,7 @@ const CATEGORIES = [
         id: "web-dynamic",
         name: "Dynamic",
         price: "22,999",
-        amc: "6,000",
+        amc: "7,420",
         description: "Full-Scale Web Infrastructure",
         features: [
           "Unlimited Pages",
@@ -94,7 +94,7 @@ const CATEGORIES = [
         id: "ai-chat",
         name: "Chat Agent",
         price: "12,999",
-        amc: "4,000",
+        amc: "5,844",
         description: "WhatsApp & Web Intelligence",
         features: [
           "WhatsApp/Web Platform",
@@ -111,7 +111,7 @@ const CATEGORIES = [
         id: "ai-calling",
         name: "Calling Agent",
         price: "15,999",
-        amc: "5,500",
+        amc: "6,920",
         description: "Voice Automation AI",
         features: [
           "Retell AI Integration",
@@ -128,7 +128,7 @@ const CATEGORIES = [
         id: "ai-combo",
         name: "Omni Combo",
         price: "24,999",
-        amc: "8,000",
+        amc: "9,844",
         description: "Full Sales Automation Suite",
         features: [
           "Chat + Calling Agents",
@@ -154,7 +154,7 @@ const CATEGORIES = [
         id: "app-lite",
         name: "App Lite",
         price: "24,999",
-        amc: "6,000",
+        amc: "7,920",
         description: "Android Native Presence",
         features: [
           "React Native Build",
@@ -171,7 +171,7 @@ const CATEGORIES = [
         id: "app-standard",
         name: "App Standard",
         price: "39,999",
-        amc: "10,000",
+        amc: "12,844",
         description: "Dual-Platform Authority",
         features: [
           "Android & iOS Apps",
@@ -189,7 +189,7 @@ const CATEGORIES = [
         id: "app-pro",
         name: "App Pro",
         price: "64,999",
-        amc: "15,000",
+        amc: "18,420",
         description: "Real-time Ecosystem",
         features: [
           "Android & iOS Apps",
@@ -376,7 +376,7 @@ export function PricingSection() {
                     <div className="mt-2 flex items-center gap-2">
                         <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-black">AMC: ₹{pkg.amc}/year</span>
                         <div className="w-1 h-1 rounded-full bg-white/20" />
-                        <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-black">Startup 50%</span>
+                        <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-black italic">50% Advance | 50% Delivery</span>
                     </div>
                   </div>
 
