@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import PremiumFooter from "@/components/ui/premium-footer";
+import CookieConsent from "@/components/ui/CookieConsent";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -75,6 +76,7 @@ export default function RootLayout({
         />
         {children}
         <PremiumFooter />
+        <CookieConsent />
       </body>
     </html>
   );
