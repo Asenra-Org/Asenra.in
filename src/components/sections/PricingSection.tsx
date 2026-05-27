@@ -216,6 +216,7 @@ export function PricingSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth < 768;
       // Title Reveal
       gsap.from(titleRef.current, {
         scrollTrigger: {
@@ -224,7 +225,7 @@ export function PricingSection() {
         },
         y: 40,
         opacity: 0,
-        filter: "blur(10px)",
+        filter: isMobile ? "none" : "blur(10px)",
         duration: 1.2,
         ease: "power4.out"
       });
@@ -304,7 +305,7 @@ export function PricingSection() {
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex flex-wrap gap-2 mb-12 p-1.5 bg-white/5 rounded-2xl w-fit border border-white/5 backdrop-blur-3xl">
+        <div className="flex flex-wrap gap-2 mb-12 p-1.5 bg-white/5 rounded-2xl w-fit border border-white/5 backdrop-blur-md md:backdrop-blur-3xl">
           {CATEGORIES.map((cat) => {
             const Icon = cat.icon;
             const active = activeTab === cat.id;

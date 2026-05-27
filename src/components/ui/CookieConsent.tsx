@@ -89,7 +89,7 @@ export default function CookieConsent() {
         "pointer-events-auto"
       )}
     >
-      <div className="relative border-t border-white/10 bg-black/90 backdrop-blur-4xl shadow-[0_-20px_50px_rgba(0,0,0,0.8)]">
+      <div className="relative border-t border-white/10 bg-black/90 backdrop-blur-md md:backdrop-blur-4xl shadow-[0_-20px_50px_rgba(0,0,0,0.8)]">
         <div className="card-sheen" aria-hidden="true" />
         
         <div className="max-w-7xl mx-auto px-6 py-4 sm:py-6 flex flex-col lg:flex-row items-center justify-between gap-6 relative z-10">

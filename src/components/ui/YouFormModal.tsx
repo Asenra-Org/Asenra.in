@@ -29,7 +29,7 @@ export function YouFormModal({ isOpen, onClose, formId }: YouFormModalProps) {
     )}>
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/80 backdrop-blur-xl transition-opacity duration-300"
+        className="absolute inset-0 bg-black/80 backdrop-blur-md md:backdrop-blur-xl transition-opacity duration-300"
         onClick={onClose}
       />
       
