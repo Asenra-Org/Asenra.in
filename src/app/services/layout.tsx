@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Asenra | Digital Services & AI Engineering",
     description: "High-performance systems for elite businesses. Explore our architecture focus.",
-    images: ["/logo.png"],
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/services",

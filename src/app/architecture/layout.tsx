@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Asenra Architecture | The Engineering Engine",
     description: "Deep dive into our elite technology stack and software lifecycle architecture.",
-    images: ["/logo.png"],
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/architecture",

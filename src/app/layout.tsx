@@ -11,17 +11,30 @@ export const metadata: Metadata = {
   title: "Asenra | High-Performance Digital Architecture & AI Agents",
   description: "Bespoke websites, autonomous AI agents, and custom software engineered for high-growth Indian businesses. Engineering excellence for the global market.",
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: "/favicon.png",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   keywords: ["AI Agents", "React.js Development", "Web Design India", "Autonomous Bots", "Custom Software", "Asenra"],
   authors: [{ name: "Asenra Team" }],
   openGraph: {
     title: "Asenra | Digital Engineering for Small Businesses",
     description: "Cinematic digital real estate and autonomous AI employees. Engineered for performance.",
-    images: ["/logo.png"],
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Asenra | High-Performance Digital Architecture & AI Agents",
+      }
+    ],
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Asenra | High-Performance Digital Architecture & AI Agents",
+    description: "Bespoke websites, autonomous AI agents, and custom software engineered for high-growth Indian businesses.",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/",

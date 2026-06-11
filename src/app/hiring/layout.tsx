@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "The Asenra Forge | Recruitment Protocol",
     description: "Architect systems for scale. Ship production-grade solutions.",
-    images: ["/logo.png"],
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/hiring",

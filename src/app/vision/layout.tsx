@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Asenra Vision | The 10-Year View",
     description: "Architecting the operating systems for the next generation of India's economy.",
-    images: ["/logo.png"],
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/vision",

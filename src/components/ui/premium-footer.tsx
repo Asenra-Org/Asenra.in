@@ -30,6 +30,12 @@ export default function PremiumFooter() {
       ]
     },
     {
+      title: "Products",
+      links: [
+        { label: "Astroneo (Stellar Exploration) ↗", href: "https://astroneo.space" },
+      ]
+    },
+    {
       title: "Connect",
       links: [
         { label: "LinkedIn", href: "https://www.linkedin.com/company/asenra/", icon: Globe },
