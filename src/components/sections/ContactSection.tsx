@@ -171,7 +171,6 @@ export function ContactSection() {
                     <option value="website">Pro Website Build</option>
                     <option value="bot">WhatsApp AI Bot</option>
                     <option value="agent">Custom OpenAI Agent</option>
-                    <option value="app">Mobile Application</option>
                   </select>
                 </div>
 

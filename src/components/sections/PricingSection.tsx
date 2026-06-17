@@ -143,66 +143,6 @@ const CATEGORIES = [
         popular: true
       }
     ]
-  },
-  {
-    id: "mobile-apps",
-    name: "Mobile Apps",
-    icon: Smartphone,
-    description: "Premium native experiences in your customers' pockets.",
-    packages: [
-      {
-        id: "app-lite",
-        name: "App Lite",
-        price: "24,999",
-        amc: "7,920",
-        description: "Android Native Presence",
-        features: [
-          "React Native Build",
-          "Android Optimization",
-          "Basic User Auth",
-          "Play Store Publishing",
-          "Brand Integration",
-          "Performance Optimized"
-        ],
-        icon: Smartphone,
-        color: "from-white/10 to-transparent"
-      },
-      {
-        id: "app-standard",
-        name: "App Standard",
-        price: "39,999",
-        amc: "12,844",
-        description: "Dual-Platform Authority",
-        features: [
-          "Android & iOS Apps",
-          "Full User Auth System",
-          "Custom Admin Panel",
-          "Push Notifications",
-          "App & Play Store Launch",
-          "Cross-Platform Sync"
-        ],
-        icon: Zap,
-        color: "from-[#F43F5E]/20 to-transparent",
-        popular: true
-      },
-      {
-        id: "app-pro",
-        name: "App Pro",
-        price: "64,999",
-        amc: "18,420",
-        description: "Real-time Ecosystem",
-        features: [
-          "Android & iOS Apps",
-          "Advanced Auth & Profiles",
-          "Payment Gateway Sync",
-          "Real-time Data Engines",
-          "Scalable App Architecture",
-          "App & Play Store Management"
-        ],
-        icon: Layers,
-        color: "from-[#9F1239]/20 to-transparent"
-      }
-    ]
   }
 ];
 

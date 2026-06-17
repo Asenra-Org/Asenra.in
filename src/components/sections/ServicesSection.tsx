@@ -1,12 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Globe, MessageCircle, Bot, Smartphone, Settings } from "lucide-react";
+import { Globe, MessageCircle, Bot, Settings } from "lucide-react";
 
 export function ServicesSection() {
   const services = [
     { name: "Pro Websites", desc: "React/Tailwind + WhatsApp. 7 days.", icon: <Globe className="w-8 h-8 text-indigo-400" /> },
     { name: "WhatsApp Bots", desc: "n8n auto-replies. 5 days.", icon: <MessageCircle className="w-8 h-8 text-emerald-400" /> },
     { name: "AI Agents", desc: "OpenAI sales bots. 10 days.", icon: <Bot className="w-8 h-8 text-cyan-400" /> },
-    { name: "Mobile Apps", desc: "React Native. 21 days.", icon: <Smartphone className="w-8 h-8 text-violet-400" /> },
     { name: "Maintenance", desc: "Updates + SEO monthly.", icon: <Settings className="w-8 h-8 text-amber-400" /> }
   ];
 
