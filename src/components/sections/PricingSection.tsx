@@ -235,8 +235,8 @@ export function PricingSection() {
           <h2 className="text-sm font-bold tracking-[0.3em] text-neutral-500 uppercase mb-4">
             Pricing Models
           </h2>
-          <h3 className="text-4xl sm:text-6xl font-black tracking-tighter text-silver-matte leading-[0.9]">
-            Transparent Scale for <br />
+          <h3 className="text-4xl sm:text-6xl font-black tracking-tighter leading-[0.9] text-white">
+            <span className="text-silver-matte">Transparent Scale for</span> <br />
             <span className="text-white/20">Elite Businesses.</span>
           </h3>
           <p className="mt-8 text-lg text-neutral-400 max-w-xl leading-relaxed">

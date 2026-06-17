@@ -72,8 +72,8 @@ export function ProductsSection() {
           <h2 className="text-sm font-bold tracking-[0.3em] text-neutral-500 uppercase mb-4">
             Our Ventures
           </h2>
-          <h3 className="text-4xl sm:text-6xl font-black tracking-tighter text-silver-matte leading-[0.9]">
-            We Build Proprietary <br />
+          <h3 className="text-4xl sm:text-6xl font-black tracking-tighter leading-[0.9] text-white">
+            <span className="text-silver-matte">We Build Proprietary</span> <br />
             <span className="text-white/20">Market Engines.</span>
           </h3>
           <p className="mt-8 text-lg text-neutral-400 max-w-xl leading-relaxed">
