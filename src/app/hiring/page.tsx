@@ -102,6 +102,32 @@ export default function HiringPage() {
               </div>
             </div>
 
+            <div className="premium-depth-card p-10 rounded-[40px] relative overflow-hidden bg-white/2 my-12">
+              <div className="card-sheen" />
+              <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                  <h3 className="text-3xl font-black mb-6 italic tracking-tighter uppercase">Submit Credentials</h3>
+                  <p className="text-neutral-400 mb-8 max-w-md">
+                    Candidates are evaluated based on technical precision, architectural depth, and 
+                    independent problem-solving capability. Initiate the protocol below.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col gap-4">
+                  <button 
+                    onClick={() => setIsFormOpen(true)}
+                    className="w-full py-5 btn-modern-light rounded-2xl font-black italic tracking-widest uppercase text-center flex items-center justify-center gap-4 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                  >
+                    Start Your Journey
+                    <ArrowLeft className="w-5 h-5 rotate-180" />
+                  </button>
+                  <p className="text-center text-[10px] text-neutral-600 uppercase tracking-widest">
+                    Batch Enrollment: Open Now
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <div className="pt-12 border-t border-white/5">
               <h3 className="text-sm font-bold tracking-[0.4em] text-neutral-500 uppercase mb-8">
                 Fundamental Requirements
@@ -140,32 +166,6 @@ export default function HiringPage() {
                     </p>
                   </div>
                 ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="premium-depth-card p-10 rounded-[40px] relative overflow-hidden bg-white/2">
-            <div className="card-sheen" />
-            <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h3 className="text-3xl font-black mb-6 italic tracking-tighter uppercase">Submit Credentials</h3>
-                <p className="text-neutral-400 mb-8 max-w-md">
-                  Candidates are evaluated based on technical precision, architectural depth, and 
-                  independent problem-solving capability. Initiate the protocol below.
-                </p>
-              </div>
-              
-              <div className="flex flex-col gap-4">
-                <button 
-                  onClick={() => setIsFormOpen(true)}
-                  className="w-full py-5 btn-modern-light rounded-2xl font-black italic tracking-widest uppercase text-center flex items-center justify-center gap-4 hover:scale-105 active:scale-95 transition-all cursor-pointer"
-                >
-                  Start Your Journey
-                  <ArrowLeft className="w-5 h-5 rotate-180" />
-                </button>
-                <p className="text-center text-[10px] text-neutral-600 uppercase tracking-widest">
-                  Batch Enrollment: Open Now
-                </p>
               </div>
             </div>
           </div>
