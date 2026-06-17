@@ -85,7 +85,7 @@ export function ProductsSection() {
         <div 
           ref={contentRef}
           onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
-          className="premium-depth-card group relative p-8 md:p-12 rounded-[2.5rem] overflow-hidden border border-white/5 bg-linear-to-br from-neutral-900/40 to-black hover:border-red-500/20 transition-colors duration-500 shadow-2xl"
+          className="premium-depth-card group relative p-5 min-[375px]:p-6 sm:p-8 md:p-12 rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden border border-white/5 bg-linear-to-br from-neutral-900/40 to-black hover:border-red-500/20 transition-colors duration-500 shadow-2xl"
         >
           <div className="card-sheen" />
           {/* Internal ambient glowing blur */}
@@ -94,7 +94,7 @@ export function ProductsSection() {
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Content Column */}
             <div className="lg:col-span-7 flex flex-col justify-center">
-              <h4 className="text-4xl sm:text-5xl font-black text-white tracking-tight uppercase mb-4 leading-none">
+              <h4 className="text-2xl min-[360px]:text-3xl sm:text-5xl font-black text-white tracking-tighter uppercase mb-4 leading-none">
                 Astroneo.space
               </h4>
               <p className="text-[10px] font-bold text-red-400/80 uppercase tracking-widest mb-6 italic">
