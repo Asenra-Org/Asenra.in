@@ -163,7 +163,7 @@ export function PricingSection() {
           trigger: titleRef.current,
           start: "top 85%",
         },
-        y: 40,
+        y: isMobile ? 0 : 40,
         opacity: 0,
         filter: isMobile ? "none" : "blur(10px)",
         duration: 1.2,
@@ -176,7 +176,7 @@ export function PricingSection() {
           trigger: cardsRef.current,
           start: "top 80%",
         },
-        y: 40,
+        y: isMobile ? 0 : 40,
         opacity: 0,
         duration: 1.2,
         ease: "power3.out"
@@ -188,7 +188,7 @@ export function PricingSection() {
           trigger: policyRef.current,
           start: "top 90%",
         },
-        y: 30,
+        y: isMobile ? 0 : 30,
         opacity: 0,
         duration: 1,
         ease: "power2.out"

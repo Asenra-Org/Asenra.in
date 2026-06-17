@@ -18,12 +18,13 @@ export function ContactSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth < 768;
       gsap.from(leftRef.current, {
         scrollTrigger: {
           trigger: leftRef.current,
           start: "top 85%",
         },
-        x: -50,
+        x: isMobile ? 0 : -50,
         opacity: 0,
         duration: 1.2,
         ease: "power4.out"
@@ -34,7 +35,7 @@ export function ContactSection() {
           trigger: rightRef.current,
           start: "top 85%",
         },
-        x: 50,
+        x: isMobile ? 0 : 50,
         opacity: 0,
         duration: 1.2,
         ease: "power4.out"
