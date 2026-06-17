@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { Sparkles, Orbit, Cpu, ArrowUpRight } from "lucide-react";
+import { Orbit, Cpu, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -93,15 +94,6 @@ export function ProductsSection() {
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Content Column */}
             <div className="lg:col-span-7 flex flex-col justify-center">
-              <div className="flex flex-wrap items-center gap-3 mb-6">
-                <span className="text-[10px] font-black tracking-widest uppercase bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-1.5 rounded-full shadow-[0_0_20px_rgba(238,0,0,0.15)]">
-                  Flagship Product
-                </span>
-                <span className="text-[10px] font-black tracking-widest uppercase bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-4 py-1.5 rounded-full">
-                  Live Now
-                </span>
-              </div>
-
               <h4 className="text-4xl sm:text-5xl font-black text-white tracking-tight uppercase mb-4 leading-none">
                 Astroneo.space
               </h4>
@@ -148,36 +140,20 @@ export function ProductsSection() {
               </div>
             </div>
 
-            {/* Right Interactive Mockup/Art Column */}
-            <div className="lg:col-span-5 flex justify-center lg:justify-end">
-              <div className="relative w-full max-w-[340px] aspect-square rounded-[2rem] border border-white/5 bg-neutral-950/40 p-8 overflow-hidden flex flex-col items-center justify-center group/panel">
-                <div className="absolute inset-0 bg-radial-gradient from-red-500/5 to-transparent opacity-50 pointer-events-none" />
+            {/* Right Showcase Column (Real Product Interface) */}
+            <div className="lg:col-span-5 flex justify-center lg:justify-end w-full">
+              <div className="relative w-full max-w-[450px] aspect-4/3 rounded-2xl md:rounded-[2rem] border border-white/10 bg-neutral-950/80 overflow-hidden group/panel shadow-2xl shadow-black/90 transition-all duration-500 hover:border-red-500/20">
+                {/* Subtle Red Ambient Backlight on Hover */}
+                <div className="absolute inset-0 bg-radial-gradient from-red-500/5 to-transparent opacity-0 group-hover/panel:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 
-                {/* Simulated Product UI HUD */}
-                <div className="relative z-10 w-full h-full flex flex-col justify-between items-center text-center">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-b from-red-400/20 to-neutral-900/10 flex items-center justify-center border border-red-400/30 shadow-2xl shadow-red-500/20 animate-pulse">
-                    <Sparkles className="w-8 h-8 text-red-400" />
-                  </div>
-
-                  <div className="my-6">
-                    <span className="text-[10px] text-red-400 font-bold uppercase tracking-[0.3em] block mb-2">STELLAR WebGL ENGINE</span>
-                    <h5 className="text-2xl font-black tracking-widest text-white uppercase italic">Active</h5>
-                    <div className="flex gap-1.5 justify-center mt-3 items-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                      <span className="text-[9px] font-black uppercase tracking-widest text-neutral-500">Rendering stellar geometry</span>
-                    </div>
-                  </div>
-
-                  <div className="w-full bg-white/2 border border-white/5 rounded-2xl p-4 backdrop-blur-md">
-                    <p className="text-[10px] text-neutral-400 italic leading-relaxed">
-                      &quot;Vega (Alpha Lyrae) · Distance: 25.0 ly · Luminosity: 40.1 L☉ · Class: A0V · Radial Velocity: -13.9 km/s&quot;
-                    </p>
-                  </div>
-                </div>
-
-                {/* Ambient Decorative Rings */}
-                <div className="absolute inset-6 rounded-full border border-dashed border-red-500/20 animate-spin [animation-duration:40s] pointer-events-none" />
-                <div className="absolute inset-16 rounded-full border border-dotted border-zinc-500/20 animate-spin [animation-duration:20s] reverse pointer-events-none" />
+                <Image 
+                  src="/astroneo.png" 
+                  alt="Astroneo.space Interactive 3D Stellar Engine Interface"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 450px"
+                  className="object-cover opacity-85 group-hover/panel:opacity-100 group-hover/panel:scale-102 transition-all duration-700 ease-out"
+                  priority
+                />
               </div>
             </div>
           </div>
