@@ -734,3 +734,152 @@ export function GeneralTemplate({ lead }: { lead: Lead }) {
     </div>
   );
 }
+
+// -------------------------------------------------------------------
+// 6. ARCHITECTURE & INTERIOR TEMPLATE (Ultra-Premium Minimalist, High-Contrast Grid)
+// -------------------------------------------------------------------
+export function ArchitectureTemplate({ lead }: { lead: Lead }) {
+  const services = parseServices(lead.services, [
+    "High-End Residential Architecture",
+    "Bespoke Interior & Spatial Styling",
+    "Commercial Workplace Planning",
+    "Turnkey Design & Commissioning"
+  ]);
+
+  const projectImages = [
+    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=400", // Living
+    "https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=400", // Exterior
+    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=400", // Kitchen/Bath
+    "https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=400"  // Detail
+  ];
+
+  return (
+    <div 
+      className="min-h-screen bg-[#0a0a0a] text-neutral-200 selection:bg-white selection:text-black leading-relaxed font-light"
+      style={{ fontFamily: "'Outfit', sans-serif" }}
+    >
+      {/* Header */}
+      <header className="sticky top-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5 py-6 px-6 sm:px-12 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 border border-white flex items-center justify-center font-bold text-sm tracking-tighter text-white">
+            A
+          </div>
+          <span className="text-sm font-bold tracking-[0.25em] text-white uppercase">{lead.name}</span>
+        </div>
+        <a 
+          href={`tel:${lead.phone}`}
+          className="border border-white/20 hover:border-white hover:bg-white hover:text-black text-white py-2.5 px-6 rounded-none text-xs font-bold tracking-widest uppercase transition-all duration-300"
+        >
+          Inquire
+        </a>
+      </header>
+
+      {/* Hero */}
+      <section className="relative py-20 px-6 sm:px-12 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="lg:col-span-6 space-y-8 text-left">
+          <span className="text-white/40 text-xs font-bold tracking-[0.4em] uppercase block">Architectural Studio</span>
+          <h1 className="text-4xl sm:text-7xl font-extralight text-white leading-tight tracking-tight uppercase">
+            {lead.tagline || "Bespoke Structural Narratives"}
+          </h1>
+          <div className="w-16 h-[1px] bg-white/30" />
+          <p className="text-neutral-400 text-sm sm:text-base leading-relaxed max-w-md font-light">
+            {lead.description || "We craft high-end spatial realities. From structural engineering to custom interior furnishing, we deliver award-winning designs that stand the test of time."}
+          </p>
+          {lead.rating && (
+            <div className="flex items-center gap-1.5 text-xs text-white/60">
+              <Star className="w-3.5 h-3.5 fill-white text-white" />
+              <span className="font-bold text-white">{lead.rating}</span>
+              <span className="text-neutral-600">({lead.review_count} Google reviews)</span>
+            </div>
+          )}
+          <div className="flex gap-4 pt-4">
+            <a 
+              href="#projects" 
+              className="bg-white hover:bg-neutral-200 text-black font-semibold px-8 py-4 rounded-none text-xs tracking-widest uppercase transition-all duration-300"
+            >
+              View Projects
+            </a>
+          </div>
+        </div>
+
+        {/* Structural Image Frame */}
+        <div className="lg:col-span-6 relative w-full aspect-[4/5] rounded-none overflow-hidden border border-white/10 shadow-2xl bg-neutral-900">
+          <img 
+            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800"
+            alt="Modern Structural Architecture"
+            className="w-full h-full object-cover scale-102 hover:scale-105 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
+        </div>
+      </section>
+
+      {/* Projects Grid Section */}
+      <section id="projects" className="py-24 px-6 sm:px-12 max-w-6xl mx-auto border-t border-white/5">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-16 gap-4">
+          <div>
+            <span className="text-white/40 text-xs font-bold uppercase tracking-[0.3em] block mb-2">Portfolio</span>
+            <h2 className="text-3xl sm:text-4xl font-extralight text-white uppercase tracking-wider">Bespoke Spaces</h2>
+          </div>
+          <span className="text-xs text-neutral-500 font-mono">SELECTED WORK / COUTURE DESIGN</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {services.map((service, index) => (
+            <div key={index} className="group cursor-pointer space-y-4">
+              <div className="relative aspect-[3/2] overflow-hidden border border-white/5 bg-neutral-900">
+                <img 
+                  src={projectImages[index % projectImages.length]}
+                  alt={service}
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                />
+              </div>
+              <div className="flex justify-between items-start pt-2">
+                <div>
+                  <h4 className="text-base font-bold text-white uppercase tracking-wide">{service}</h4>
+                  <p className="text-xs text-neutral-500 font-light mt-1">High-end architecture and spatial composition tailored for premium scale.</p>
+                </div>
+                <ArrowUpRight className="w-5 h-5 text-neutral-500 group-hover:text-white transition-colors" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Inquiry Form */}
+      <section id="contact" className="py-24 px-6 sm:px-12 max-w-6xl mx-auto border-t border-white/5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-7 space-y-6">
+            <h3 className="text-3xl sm:text-5xl font-extralight text-white uppercase tracking-tight leading-none">Commission a Project</h3>
+            <p className="text-neutral-400 text-sm leading-relaxed font-light max-w-md">
+              Ready to construct your vision? Submit your contact details below, and our senior architectural consultants will contact you to discuss your project requirements.
+            </p>
+            <div className="space-y-4 pt-4 text-sm font-light">
+              <div className="flex items-center gap-3">
+                <MapPin className="w-5 h-5 text-white/50 shrink-0" />
+                <span>{lead.address}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Phone className="w-5 h-5 text-white/50 shrink-0" />
+                <span>{lead.phone}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Clock className="w-5 h-5 text-white/50 shrink-0" />
+                <span>Studio Hours: Mon - Fri, 9 AM - 6 PM</span>
+              </div>
+            </div>
+          </div>
+          <div className="lg:col-span-5 bg-neutral-950 border border-white/10 p-8 rounded-none">
+            <ContactForm businessName={lead.name} themeColor="white" />
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-16 border-t border-white/5 text-center text-xs text-neutral-600">
+        <p className="mb-2 uppercase tracking-widest font-black text-neutral-500">&copy; {new Date().getFullYear()} {lead.name}</p>
+        <p>Proudly presented by Asenra Venture Studio Demo Network</p>
+      </footer>
+    </div>
+  );
+}
+

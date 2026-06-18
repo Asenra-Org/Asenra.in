@@ -5,7 +5,8 @@ import {
   GymTemplate, 
   SalonTemplate, 
   ServicesTemplate, 
-  GeneralTemplate 
+  GeneralTemplate,
+  ArchitectureTemplate
 } from "@/components/demo/Templates";
 
 interface PageProps {
@@ -29,7 +30,22 @@ export default async function Page({ params }: PageProps) {
   }
 
   // Render template based on category
-  switch (lead.category) {
+  const category = lead.category;
+  const industry = (lead.industry || "").toLowerCase();
+
+  // Route design and architecture businesses to the premium ArchitectureTemplate
+  if (
+    category === "architecture" || 
+    industry.includes("architect") || 
+    industry.includes("interior") || 
+    industry.includes("design") ||
+    industry.includes("construction") ||
+    industry.includes("builder")
+  ) {
+    return <ArchitectureTemplate lead={lead} />;
+  }
+
+  switch (category) {
     case "cafe":
       return <CafeTemplate lead={lead} />;
     case "gym":
@@ -42,3 +58,4 @@ export default async function Page({ params }: PageProps) {
       return <GeneralTemplate lead={lead} />;
   }
 }
+

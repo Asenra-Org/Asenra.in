@@ -122,11 +122,11 @@ const fallbackLeads = [
     rating: 4.7,
     review_count: 85,
     social_links: "instagram.com/vanguard_interiors",
-    category: "general",
+    category: "architecture",
     tagline: "Cinematic Residential & Commercial Architecture",
     description: "Crafting bespoke physical spaces that blend high-performance functionality with premium minimalist design aesthetics.",
     services: "Luxury Residential Interiors, Office Architecture, Minimal Space Planning",
-    theme: "blue"
+    theme: "white"
   }
 ];
 
@@ -297,6 +297,9 @@ async function scrapeRealLeads() {
       } else if (category.includes("cleaning") || category.includes("plumbing") || category.includes("dentist") || category.includes("clinic")) {
         mappedCategory = "services";
         industry = item.categoryName || "Clinics & Local Services";
+      } else if (category.includes("architect") || category.includes("interior") || category.includes("design") || category.includes("construction") || category.includes("builder")) {
+        mappedCategory = "architecture";
+        industry = item.categoryName || "Architecture & Interior Design";
       }
 
       return {
