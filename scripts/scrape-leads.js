@@ -139,6 +139,21 @@ function slugify(name) {
     .replace(/[\s_]+/g, "-");
 }
 
+// Helper to filter out entries that have a real custom website
+function hasNoRealWebsite(item) {
+  if (!item.website) return true;
+  const domain = item.website.toLowerCase();
+  
+  // If the website is actually a social media page, a directory, or has no domain extension, count it as "no custom website"
+  const socialDomains = [
+    "facebook.com", "instagram.com", "justdial.com", "indiamart.com", 
+    "youtube.com", "twitter.com", "linkedin.com", "pinterest.com", 
+    "yelp.com", "tripadvisor.com", "sulekha.com", "dialindia.com",
+    "maps.google.com"
+  ];
+  return socialDomains.some(social => domain.includes(social));
+}
+
 async function scrapeRealLeads() {
   if (!apifyToken) {
     console.log("Apify Token not found in .env.local. Running with fallback high-performance India listings matching priority categories...");
@@ -148,7 +163,19 @@ async function scrapeRealLeads() {
   try {
     // Get location and industry from environment variables, or select randomly for daily cron
     const locations = ["Mumbai", "Bangalore", "Pune", "Delhi NCR", "Hyderabad", "Jaipur", "Gurgaon", "Ahmedabad"];
-    const industries = ["dentists", "gyms", "cafes", "hotels", "resorts", "interior designers", "architects", "real estate agencies"];
+    const industries = [
+      "dentists",
+      "gyms",
+      "cafes",
+      "beauty salons",
+      "hair salons",
+      "spas",
+      "clinics",
+      "bakeries",
+      "car repair shops",
+      "physiotherapists",
+      "boutiques"
+    ];
 
     const selectedLocation = process.env.TARGET_LOCATION || locations[Math.floor(Math.random() * locations.length)];
     const selectedIndustry = process.env.TARGET_INDUSTRY || industries[Math.floor(Math.random() * industries.length)];
@@ -200,11 +227,56 @@ async function scrapeRealLeads() {
 
     const statusRes = await fetch(`https://api.apify.com/v2/datasets/${datasetId}/items?token=${apifyToken}`);
     results = await statusRes.json();
-    const filteredResults = results.filter(item => !item.website);
+    let filteredResults = results.filter(hasNoRealWebsite);
     console.log(`Scraped ${results.length} total elements. Filtered down to ${filteredResults.length} leads without websites.`);
 
     if (filteredResults.length === 0) {
-      console.log("No leads without websites found. Using fallback leads...");
+      console.log(`No leads without websites found for "${query}". Attempting backup reliable query (gyms)...`);
+      const backupQuery = `gyms in ${selectedLocation}`;
+      try {
+        const backupResponse = await fetch(
+          `https://api.apify.com/v2/acts/compass~crawler-google-places/runs?token=${apifyToken}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              searchStringsArray: [backupQuery],
+              maxCrawledPlacesPerSearch: 40,
+            })
+          }
+        );
+        const backupRunData = await backupResponse.json();
+        if (backupRunData && backupRunData.data) {
+          const backupRunId = backupRunData.data.id;
+          const backupDatasetId = backupRunData.data.defaultDatasetId;
+          console.log(`Backup scraper started. Run ID: ${backupRunId}, Dataset ID: ${backupDatasetId}. Waiting...`);
+          
+          for (let i = 0; i < 24; i++) { // wait up to 4 minutes
+            await new Promise(r => setTimeout(r, 10000));
+            try {
+              const runRes = await fetch(`https://api.apify.com/v2/actor-runs/${backupRunId}?token=${apifyToken}`);
+              const runInfo = await runRes.json();
+              const status = runInfo.data?.status;
+              console.log(`Polling backup status: ${status} (Iteration ${i+1}/24)`);
+              if (status && status !== "RUNNING" && status !== "READY") {
+                break;
+              }
+            } catch (e) {
+              console.error("Backup polling error:", e.message);
+            }
+          }
+          const backupStatusRes = await fetch(`https://api.apify.com/v2/datasets/${backupDatasetId}/items?token=${apifyToken}`);
+          const backupResults = await backupStatusRes.json();
+          filteredResults = backupResults.filter(hasNoRealWebsite);
+          console.log(`Backup search finished. Found ${filteredResults.length} leads without websites.`);
+        }
+      } catch (err) {
+        console.error("Backup query failed:", err.message);
+      }
+    }
+
+    if (filteredResults.length === 0) {
+      console.log("Still no leads without websites found. Using fallback leads...");
       return fallbackLeads;
     }
 
