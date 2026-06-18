@@ -25,9 +25,9 @@ if (fs.existsSync(envPath)) {
   }
 }
 
-supabaseUrl = supabaseUrl || process.env.NEXT_PUBLIC_SUPABASE_URL;
-supabaseKey = supabaseKey || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-apifyToken = apifyToken || process.env.APIFY_TOKEN;
+supabaseUrl = (supabaseUrl || process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim();
+supabaseKey = (supabaseKey || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "").trim();
+apifyToken = (apifyToken || process.env.APIFY_TOKEN || "").trim();
 
 if (!supabaseUrl || !supabaseKey) {
   console.error("Error: Supabase credentials not found!");
@@ -157,39 +157,54 @@ async function scrapeRealLeads() {
     console.log(`Calling Apify Google Maps Scraper API with Query: "${query}"...`);
 
     const response = await fetch(
-      `https://api.apify.com/v2/acts/apify~google-maps-scraper/runs?token=${apifyToken}`,
+      `https://api.apify.com/v2/acts/compass~crawler-google-places/runs?token=${apifyToken}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           searchStringsArray: [query],
-          maxResults: 30,
+          maxCrawledPlacesPerSearch: 50,
         })
       }
     );
 
     const runData = await response.json();
+    if (!runData || !runData.data) {
+      throw new Error(`Apify run initialization failed: ${JSON.stringify(runData)}`);
+    }
+    const runId = runData.data.id;
     const datasetId = runData.data.defaultDatasetId;
 
-    console.log(`Scraper started. Dataset ID: ${datasetId}. Waiting for results...`);
+    console.log(`Scraper started. Run ID: ${runId}, Dataset ID: ${datasetId}. Waiting for completion...`);
     let completed = false;
     let results = [];
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 36; i++) { // Poll for up to 6 minutes (36 * 10s)
       await new Promise(r => setTimeout(r, 10000));
-      const statusRes = await fetch(`https://api.apify.com/v2/datasets/${datasetId}/items?token=${apifyToken}`);
-      results = await statusRes.json();
-      if (results.length > 0) {
-        completed = true;
-        break;
+      
+      try {
+        const runRes = await fetch(`https://api.apify.com/v2/actor-runs/${runId}?token=${apifyToken}`);
+        const runInfo = await runRes.json();
+        const status = runInfo.data?.status;
+        console.log(`Polling status: ${status} (Iteration ${i+1}/36)`);
+        
+        if (status && status !== "RUNNING" && status !== "READY") {
+          console.log(`Run finished with status: ${status}`);
+          completed = true;
+          break;
+        }
+      } catch (e) {
+        console.error("Error fetching run status:", e.message);
       }
     }
 
+    const statusRes = await fetch(`https://api.apify.com/v2/datasets/${datasetId}/items?token=${apifyToken}`);
+    results = await statusRes.json();
     const filteredResults = results.filter(item => !item.website);
     console.log(`Scraped ${results.length} total elements. Filtered down to ${filteredResults.length} leads without websites.`);
 
-    if (!completed || filteredResults.length === 0) {
-      console.log("Scraping timed out or empty dataset. Using fallback leads...");
+    if (filteredResults.length === 0) {
+      console.log("No leads without websites found. Using fallback leads...");
       return fallbackLeads;
     }
 
