@@ -299,10 +299,10 @@ export default function AcquisitionPage() {
 
   return (
     <div className="min-h-screen bg-black text-white relative font-sans overflow-x-hidden selection:bg-white/20">
-      {/* Background Grids & Ambient Beams (Asenra Crimson & Gold Theme) */}
+      {/* Background Grids & Ambient Beams (Asenra Classic Black & White Theme) */}
       <div className="fixed inset-0 bg-grid-theme opacity-35 z-0 pointer-events-none" />
-      <div className="fixed top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#EE0000]/[0.06] blur-[140px] pointer-events-none z-0" />
-      <div className="fixed bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#bf953f]/[0.04] blur-[140px] pointer-events-none z-0" />
+      <div className="fixed top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-white/[0.015] blur-[140px] pointer-events-none z-0" />
+      <div className="fixed bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-zinc-800/10 blur-[140px] pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto px-6 py-12 relative z-10">
         
@@ -318,8 +318,8 @@ export default function AcquisitionPage() {
           </Link>
           
           <div className="flex items-center gap-3">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#EE0000] animate-pulse shadow-[0_0_12px_#EE0000]" />
-            <span className="text-xs font-black uppercase tracking-[0.25em] text-[#eae5db]">ASENRA DEMO PIPELINE V2.0</span>
+            <div className="w-2 h-2 rounded-full bg-white animate-pulse shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+            <span className="text-xs font-black uppercase tracking-[0.25em] text-zinc-400">ASENRA DEMO PIPELINE V2.0</span>
           </div>
         </div>
 
@@ -327,17 +327,17 @@ export default function AcquisitionPage() {
         {step === "input" && (
           <div className="max-w-3xl mx-auto py-6">
             <div className="text-center mb-12">
-              <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-none uppercase">
+              <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-none uppercase text-white">
                 Interactive <br />
-                <span className="text-shine-gold">Demo & Tech Audit.</span>
+                <span className="text-silver-matte">Demo & Tech Audit.</span>
               </h1>
               <p className="text-zinc-400 text-lg md:text-xl font-medium max-w-xl mx-auto leading-relaxed">
                 Generate a custom, high-end landing page layout and run a conversion audit tailored specifically to your business niche instantly.
               </p>
             </div>
 
-            <form onSubmit={handleStart} className="space-y-6 bg-[#0d0c0a]/60 backdrop-blur-md border border-[#bf953f]/15 p-8 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-[#bf953f]/[0.015] to-transparent pointer-events-none" />
+            <form onSubmit={handleStart} className="space-y-6 bg-zinc-950/60 backdrop-blur-xl border border-white/10 p-8 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
               
               <div className="space-y-2">
                 <label className="block text-xs font-black uppercase tracking-widest text-zinc-400">Company / Product Name</label>
@@ -347,7 +347,7 @@ export default function AcquisitionPage() {
                   placeholder="e.g. Acme Corporation" 
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
-                  className="w-full bg-black/60 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-zinc-600 focus:outline-none focus:border-[#bf953f]/30 transition-all font-semibold"
+                  className="w-full bg-black/60 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-zinc-600 focus:outline-none focus:border-white/30 transition-all font-semibold"
                 />
               </div>
 
@@ -358,7 +358,7 @@ export default function AcquisitionPage() {
                   placeholder="https://example.com" 
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}
-                  className="w-full bg-black/60 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-zinc-600 focus:outline-none focus:border-[#bf953f]/30 transition-all font-semibold"
+                  className="w-full bg-black/60 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-zinc-600 focus:outline-none focus:border-white/30 transition-all font-semibold"
                 />
               </div>
 
@@ -422,7 +422,7 @@ export default function AcquisitionPage() {
                     placeholder="e.g. Organic Bakery, Dental Clinic, Legal Advisor" 
                     value={customNiche}
                     onChange={(e) => setCustomNiche(e.target.value)}
-                    className="w-full bg-black/60 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-zinc-600 focus:outline-none focus:border-[#bf953f]/30 transition-all font-semibold"
+                    className="w-full bg-black/60 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-zinc-600 focus:outline-none focus:border-white/30 transition-all font-semibold"
                   />
                 </div>
               )}
@@ -468,7 +468,7 @@ export default function AcquisitionPage() {
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] text-black font-black uppercase tracking-tighter py-5 rounded-2xl hover:scale-[1.01] hover:shadow-[0_0_40px_rgba(191,149,63,0.3)] transition-all active:scale-[0.99] flex items-center justify-center gap-3 cursor-pointer mt-8 btn-shine-effect"
+                className="w-full bg-white text-black font-black uppercase tracking-tighter py-5 rounded-2xl hover:scale-[1.01] hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] transition-all active:scale-[0.99] flex items-center justify-center gap-3 cursor-pointer mt-8 btn-shine-effect"
               >
                 <span>Generate Dynamic Audit & Demo Website</span>
                 <ArrowRight className="w-5 h-5" />
@@ -489,7 +489,7 @@ export default function AcquisitionPage() {
               {/* Progress Bar */}
               <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mb-6">
                 <div 
-                  className="h-full bg-gradient-to-r from-[#bf953f] to-[#b38728] transition-all duration-300"
+                  className="h-full bg-white transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -498,7 +498,7 @@ export default function AcquisitionPage() {
               <div className="bg-black/80 rounded-2xl border border-white/5 p-6 h-80 overflow-y-auto font-mono text-xs text-zinc-400 flex flex-col gap-2 shadow-inner">
                 {logs.filter(Boolean).map((log, index) => {
                   let colorClass = "text-zinc-400";
-                  if (log && log.startsWith("[SYS]")) colorClass = "text-[#bf953f]";
+                  if (log && log.startsWith("[SYS]")) colorClass = "text-zinc-100 font-bold";
                   else if (log && log.startsWith("[WARN]")) colorClass = "text-amber-400";
                   else if (log && log.startsWith("[SUCCESS]")) colorClass = "text-emerald-400 font-bold";
                   else if (log && log.startsWith("[AUDIT]")) colorClass = "text-purple-400";
@@ -529,7 +529,7 @@ export default function AcquisitionPage() {
               </div>
               <button 
                 onClick={() => setStep("input")}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#bf953f]/20 hover:border-[#bf953f]/40 text-sm font-semibold bg-white/5 hover:bg-white/10 transition-all cursor-pointer text-[#bf953f]"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/10 hover:border-white/30 text-sm font-semibold bg-white/5 hover:bg-white/10 transition-all cursor-pointer text-white"
               >
                 <RefreshCw className="w-4 h-4" />
                 <span>Re-Configure Website</span>
@@ -541,11 +541,11 @@ export default function AcquisitionPage() {
               
               {/* Left Column: Tech Audit report card */}
               <div className="lg:col-span-4 space-y-6">
-                <div className="bg-[#0e0d0b]/80 backdrop-blur-md border border-[#bf953f]/15 rounded-[2rem] p-6 shadow-2xl space-y-6 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-b from-[#bf953f]/[0.01] to-transparent pointer-events-none" />
+                <div className="bg-zinc-950/60 backdrop-blur-md border border-white/10 rounded-[2rem] p-6 shadow-2xl space-y-6 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/[0.01] to-transparent pointer-events-none" />
                   
                   <div className="flex items-center gap-2.5">
-                    <Terminal className="w-5 h-5 text-[#bf953f]" />
+                    <Terminal className="w-5 h-5 text-white" />
                     <h3 className="text-xs font-black uppercase tracking-widest text-zinc-400">Technical Gap Analysis</h3>
                   </div>
 
@@ -614,15 +614,15 @@ export default function AcquisitionPage() {
                 </div>
 
                 {/* Call-to-action bottom card */}
-                <div className="bg-gradient-to-b from-[#0e0d0b] to-[#050505] border border-[#bf953f]/20 p-6 rounded-[2rem] shadow-2xl relative overflow-hidden space-y-4">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-[#bf953f]/10 via-transparent to-transparent pointer-events-none" />
+                <div className="bg-gradient-to-b from-zinc-900/60 to-black/60 border border-white/10 p-6 rounded-[2rem] shadow-2xl relative overflow-hidden space-y-4">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-white/[0.02] to-transparent pointer-events-none" />
                   <h4 className="text-xl font-bold tracking-tight text-white leading-tight">Claim This Audited Code & Launch</h4>
                   <p className="text-zinc-400 text-xs leading-relaxed">
                     Deploy this optimized template immediately. Integrate custom backends, custom database structures, and premium animations under our Venture Studio.
                   </p>
                   <button 
                     onClick={() => setIsFormOpen(true)}
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] text-black text-xs font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer btn-shine-effect"
+                    className="w-full py-4 rounded-xl bg-white text-black text-xs font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer btn-shine-effect"
                   >
                     <span>Secure Live Project Portal</span>
                     <Lock className="w-4 h-4" />
@@ -665,7 +665,7 @@ export default function AcquisitionPage() {
 
                   <div className="flex items-center gap-2 text-zinc-500 pr-2">
                     <span className="text-[10px] font-black uppercase tracking-widest hidden sm:inline">Live Sandbox</span>
-                    <div className="w-2 h-2 rounded-full bg-[#bf953f] animate-pulse shadow-[0_0_8px_rgba(191,149,63,0.6)]" />
+                    <div className="w-2 h-2 rounded-full bg-white animate-pulse shadow-[0_0_8px_rgba(255,255,255,0.6)]" />
                   </div>
                 </div>
 
