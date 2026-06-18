@@ -396,6 +396,17 @@
   display: inline-block;
 }
 
+.text-shine-crimson {
+  background: linear-gradient(90deg, #EE0000 0%, #ff5555 25%, #990000 50%, #ff5555 75%, #EE0000 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shine-anim 5s linear infinite;
+  display: inline-block;
+}
+
+
 /* Button sheen reflection sweep on hover */
 .btn-shine-effect {
   position: relative;

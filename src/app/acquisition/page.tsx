@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { YouFormModal } from "@/components/ui/YouFormModal";
 import {
@@ -35,6 +36,45 @@ import {
   GeneralTemplate,
   ArchitectureTemplate 
 } from "@/components/demo/Templates";
+
+// Iframe wrapper to allow responsive previews by forcing viewport media queries 
+// to execute against the simulator's container width rather than the browser window.
+function Frame({ children, className, title, ...props }: React.IframeHTMLAttributes<HTMLIFrameElement> & { children: React.ReactNode }) {
+  const [contentRef, setContentRef] = useState<HTMLIFrameElement | null>(null);
+  const mountNode = contentRef?.contentWindow?.document?.body;
+  const headNode = contentRef?.contentWindow?.document?.head;
+
+  useEffect(() => {
+    if (headNode && contentRef) {
+      // Clear out any old stylesheets
+      headNode.innerHTML = "";
+      
+      // Inject viewport meta for responsive execution inside the iframe
+      const meta = document.createElement("meta");
+      meta.name = "viewport";
+      meta.content = "width=device-width, initial-scale=1";
+      headNode.appendChild(meta);
+
+      // Copy parent document styles and links into the iframe head
+      const styles = document.querySelectorAll('style, link[rel="stylesheet"]');
+      styles.forEach((style) => {
+        headNode.appendChild(style.cloneNode(true));
+      });
+
+      // Style the iframe body
+      if (contentRef.contentWindow?.document?.body) {
+        contentRef.contentWindow.document.body.style.margin = "0";
+        contentRef.contentWindow.document.body.style.backgroundColor = "#000000";
+      }
+    }
+  }, [headNode, contentRef]);
+
+  return (
+    <iframe {...props} ref={setContentRef} className={className} title={title}>
+      {mountNode && createPortal(children, mountNode)}
+    </iframe>
+  );
+}
 
 type Industry = "ecommerce" | "real-estate" | "saas" | "services" | "gym" | "cafe" | "salon" | "architecture" | "custom";
 
@@ -241,7 +281,7 @@ export default function AcquisitionPage() {
     category: templateInfo.category,
     tagline: copy.tagline,
     description: copy.description,
-    color_theme: themeColor === "crimson" ? "gold" : themeColor, // Map color theme
+    color_theme: themeColor,
     services: copy.services.join(", "),
     rating: 4.9,
     review_count: 184
@@ -479,38 +519,52 @@ export default function AcquisitionPage() {
 
         {/* 2. LOADING STEP */}
         {step === "loading" && (
-          <div className="max-w-3xl mx-auto py-12">
-            <div className="mb-8 text-center">
-              <h2 className="text-3xl font-black uppercase tracking-tight mb-2">Analyzing digital footprint...</h2>
-              <p className="text-zinc-500 font-medium text-sm">Please wait while the AI agent structures the digital architecture.</p>
-            </div>
-
-            <div className="bg-zinc-900/40 backdrop-blur-md border border-white/10 rounded-[2.5rem] p-6 md:p-8 shadow-2xl relative overflow-hidden">
-              {/* Progress Bar */}
-              <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mb-6">
-                <div 
-                  className="h-full bg-white transition-all duration-300"
-                  style={{ width: `${progress}%` }}
-                />
+          <div className="max-w-2xl mx-auto py-16 text-center animate-fadeIn">
+            <div className="bg-zinc-950/60 backdrop-blur-2xl border border-white/10 p-10 md:p-16 rounded-[3rem] shadow-2xl relative overflow-hidden space-y-10">
+              <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
+              
+              {/* Cinematic Double Spinner */}
+              <div className="relative w-32 h-32 mx-auto flex items-center justify-center">
+                {/* Outer spin ring */}
+                <div className="absolute inset-0 rounded-full border-2 border-white/5 border-t-white animate-spin [animation-duration:1.2s]" />
+                {/* Inner counter-spin ring */}
+                <div className="absolute -inset-2 rounded-full border border-white/5 border-b-white/40 animate-spin [animation-duration:1.8s]" style={{ animationDirection: 'reverse' }} />
+                {/* Center pulse glow */}
+                <div className="absolute inset-6 rounded-full bg-white/[0.03] animate-pulse" />
+                {/* Center percentage */}
+                <span className="text-3xl font-black tracking-tighter text-white font-mono">{progress}%</span>
               </div>
 
-              {/* Terminal Screen */}
-              <div className="bg-black/80 rounded-2xl border border-white/5 p-6 h-80 overflow-y-auto font-mono text-xs text-zinc-400 flex flex-col gap-2 shadow-inner">
-                {logs.filter(Boolean).map((log, index) => {
-                  let colorClass = "text-zinc-400";
-                  if (log && log.startsWith("[SYS]")) colorClass = "text-zinc-100 font-bold";
-                  else if (log && log.startsWith("[WARN]")) colorClass = "text-amber-400";
-                  else if (log && log.startsWith("[SUCCESS]")) colorClass = "text-emerald-400 font-bold";
-                  else if (log && log.startsWith("[AUDIT]")) colorClass = "text-purple-400";
-                  
-                  return (
-                    <div key={index} className={`${colorClass} flex gap-2 items-start`}>
-                      <span className="text-zinc-700 select-none">&gt;</span>
-                      <span>{log}</span>
-                    </div>
-                  );
-                })}
-                <div ref={terminalEndRef} />
+              {/* Phase Indicators */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500">ASENRA PIPELINE ACTIVE</span>
+                </div>
+                
+                <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white h-8 overflow-hidden transition-all duration-300">
+                  {logs[logs.length - 1] 
+                    ? logs[logs.length - 1]
+                        .replace(/^\[SYS\]\s*/, "")
+                        .replace(/^\[WARN\]\s*/, "")
+                        .replace(/^\[AUDIT\]\s*/, "")
+                        .replace(/^\[SUCCESS\]\s*/, "")
+                    : "Initializing AI Agent..."}
+                </h3>
+              </div>
+
+              {/* Progress Slider (Minimalist) */}
+              <div className="space-y-2 max-w-md mx-auto">
+                <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-white transition-all duration-300 shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+                <div className="flex justify-between text-[10px] font-mono text-zinc-500 uppercase tracking-widest px-1">
+                  <span>Footprint scan</span>
+                  <span>Rendering preview</span>
+                </div>
               </div>
             </div>
           </div>
@@ -634,8 +688,8 @@ export default function AcquisitionPage() {
               <div className="lg:col-span-8 space-y-6">
                 
                 {/* Device Bar Controls */}
-                <div className="bg-zinc-900/60 border border-white/10 rounded-2xl p-2.5 flex items-center justify-between">
-                  <div className="flex gap-2">
+                <div className="bg-zinc-900/60 border border-white/10 rounded-2xl p-2.5 flex flex-wrap gap-4 items-center justify-between">
+                  <div className="flex items-center gap-2">
                     <button 
                       onClick={() => setDevice("desktop")}
                       className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
@@ -654,6 +708,30 @@ export default function AcquisitionPage() {
                       <Smartphone className="w-4 h-4" />
                       <span className="hidden sm:inline">Mobile View</span>
                     </button>
+
+                    {/* Dynamic Accent swatches inside toolbar for instant color customization */}
+                    <div className="flex items-center gap-1.5 border-l border-white/10 pl-3 ml-1">
+                      {(["gold", "white", "rose", "emerald", "blue", "crimson"] as const).map((color) => {
+                        const colorBg = {
+                          gold: "bg-[#bf953f]",
+                          white: "bg-white",
+                          rose: "bg-rose-400",
+                          emerald: "bg-emerald-400",
+                          blue: "bg-blue-400",
+                          crimson: "bg-[#EE0000]"
+                        }[color];
+                        return (
+                          <button
+                            key={color}
+                            onClick={() => setThemeColor(color)}
+                            title={`Switch brand accent to ${color}`}
+                            className={`w-3.5 h-3.5 rounded-full ${colorBg} transition-all cursor-pointer hover:scale-125 ${
+                              themeColor === color ? "ring-2 ring-white ring-offset-2 ring-offset-black scale-110" : "opacity-50"
+                            }`}
+                          />
+                        );
+                      })}
+                    </div>
                   </div>
 
                   {/* Browser URL Input Sim */}
@@ -670,11 +748,11 @@ export default function AcquisitionPage() {
                 </div>
 
                 {/* Device Shell Screen wrapper */}
-                <div className="w-full flex justify-center items-start">
+                <div className="w-full flex justify-center items-start overflow-hidden">
                   <div 
                     className={`bg-zinc-950 border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl relative transition-all duration-500 flex flex-col ${
                       device === "mobile" 
-                        ? "w-[390px] h-[700px] border-8 border-zinc-800" 
+                        ? "w-full max-w-[390px] h-[700px] border-8 border-zinc-800" 
                         : "w-full h-[700px]"
                     }`}
                   >
@@ -689,17 +767,15 @@ export default function AcquisitionPage() {
                       </div>
                     )}
 
-                    {/* MOCK GENERATED WEBSITE INTERFACE */}
-                    <div className="flex-1 bg-black text-white relative font-sans overflow-y-auto">
-                      
+                    {/* MOCK GENERATED WEBSITE INTERFACE RENDERING INSIDE AN IFRAME FOR MOBILE RESPONSIVENESS */}
+                    <Frame className="flex-1 bg-black text-white relative font-sans w-full h-full border-none">
                       {templateInfo.category === "cafe" && <CafeTemplate lead={mockLead} />}
                       {templateInfo.category === "gym" && <GymTemplate lead={mockLead} />}
                       {templateInfo.category === "salon" && <SalonTemplate lead={mockLead} />}
                       {templateInfo.category === "services" && <ServicesTemplate lead={mockLead} />}
                       {templateInfo.category === "architecture" && <ArchitectureTemplate lead={mockLead} />}
                       {templateInfo.category === "general" && <GeneralTemplate lead={mockLead} />}
-
-                    </div>
+                    </Frame>
                   </div>
                 </div>
 
