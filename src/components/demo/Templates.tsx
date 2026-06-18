@@ -283,113 +283,182 @@ export function CafeTemplate({ lead }: { lead: Lead }) {
 }
 
 // -------------------------------------------------------------------
-// 2. GYM / FITNESS TEMPLATE (Industrial Brutalist, Thick Borders)
+// 2. GYM / FITNESS TEMPLATE (Elite Dark Mode, Kinetic Neon Red Accents)
 // -------------------------------------------------------------------
 export function GymTemplate({ lead }: { lead: Lead }) {
   const services = parseServices(lead.services, [
-    "Powerlifting & Strength Racks",
+    "High-Performance Free Weights",
     "Olympic Lifting Platforms",
-    "HIIT & Functional Fitness",
-    "Elite Personal Coaching"
+    "Metabolic Conditioning (HIIT)",
+    "Elite Performance Coaching"
   ]);
+
+  const gymImages = [
+    "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=400", // Cardio/Sprinting
+    "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=400", // Barbell lift
+    "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?q=80&w=400", // Boxing/Focus
+    "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=400"  // Athletic stretching
+  ];
 
   return (
     <div 
-      className="min-h-screen bg-[#111] text-neutral-100 selection:bg-red-600 selection:text-white leading-tight"
-      style={{ fontFamily: "'Syne', sans-serif" }}
+      className="min-h-screen bg-[#050505] text-[#eaeaea] selection:bg-[#ff2d55] selection:text-white leading-tight"
+      style={{ fontFamily: "'Outfit', sans-serif" }}
     >
+      {/* Background Neon Glow */}
+      <div className="absolute top-0 left-10 w-[500px] h-[500px] bg-[#ff2d55]/[0.015] rounded-full blur-[120px] pointer-events-none" />
+
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#111] border-b-4 border-black py-4 px-6 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-[#050505]/90 backdrop-blur-md border-b border-white/5 py-6 px-6 sm:px-12 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Dumbbell className="w-5 h-5 text-red-600" />
-          <span className="font-extrabold text-xl tracking-tighter text-white uppercase italic">{lead.name}</span>
+          <Dumbbell className="w-5 h-5 text-[#ff2d55]" />
+          <span 
+            className="text-lg font-black tracking-tighter text-white uppercase italic"
+            style={{ fontFamily: "'Syne', sans-serif" }}
+          >
+            {lead.name}
+          </span>
         </div>
         <a 
-          href={`tel:${lead.phone}`}
-          className="bg-red-600 hover:bg-red-700 text-white py-2 px-5 border-2 border-black shadow-[3px_3px_0px_#000] text-xs font-black uppercase transition-all duration-300"
+          href="#pass"
+          className="bg-[#ff2d55] hover:bg-[#e02047] text-white py-2.5 px-6 rounded-none text-xs font-black tracking-widest uppercase transition-all duration-300 shadow-[0_4px_20px_rgba(255,45,85,0.25)]"
         >
-          Join Now
+          Get Free Pass
         </a>
       </header>
 
       {/* Hero */}
-      <section className="relative py-20 px-6 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-        <div className="lg:col-span-7 space-y-6 text-left">
-          <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 uppercase inline-block border-2 border-black shadow-[3px_3px_0px_#000]">No Limits</span>
-          <h1 className="text-5xl sm:text-7xl font-extrabold text-white leading-none uppercase italic tracking-tighter">
-            {lead.tagline || "No Excuses. Just Pure Power."}
+      <section className="relative py-20 px-6 sm:px-12 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="lg:col-span-7 space-y-8 text-left">
+          <span className="text-[#ff2d55] text-xs font-mono font-bold tracking-[0.3em] uppercase block">
+            // ELITE STRENGTH ZONE
+          </span>
+          <h1 
+            className="text-5xl sm:text-8xl font-black text-white leading-none uppercase italic tracking-tighter"
+            style={{ fontFamily: "'Syne', sans-serif" }}
+          >
+            {lead.tagline || "Break Your Limits."}
           </h1>
-          <p className="text-neutral-400 text-base leading-relaxed font-sans max-w-xl">
-            {lead.description || "Transform your physique inside our premium heavy-iron zone. State-of-the-art platforms, power racks, and coaches built for ultimate strength growth."}
+          <div className="w-16 h-[2px] bg-[#ff2d55]" />
+          <p className="text-neutral-400 text-sm sm:text-base leading-relaxed max-w-xl font-light">
+            {lead.description || "Transform your athletic output. We supply high-end strength platforms, hand-selected biomechanically correct weight stacks, and elite coaching designed to build raw power."}
           </p>
           {lead.rating && (
-            <div className="flex items-center gap-1.5 font-sans text-xs text-red-500">
-              <Star className="w-4 h-4 fill-red-600 text-red-600" />
-              <span className="font-bold text-white">{lead.rating}</span>
-              <span className="text-neutral-500">({lead.review_count} Google reviews)</span>
+            <div className="flex items-center gap-2 text-xs font-mono text-[#ff2d55]">
+              <div className="flex items-center gap-1">
+                <Star className="w-3.5 h-3.5 fill-[#ff2d55] text-[#ff2d55]" />
+                <span className="font-bold text-white">{lead.rating}</span>
+              </div>
+              <span className="text-neutral-600">/</span>
+              <span className="text-neutral-400">{lead.review_count} Google Reviews</span>
             </div>
           )}
           <div className="flex gap-4 pt-4">
             <a 
-              href="#contact" 
-              className="bg-red-600 hover:bg-red-700 text-white font-extrabold px-8 py-4 border-4 border-black shadow-[5px_5px_0px_#000] text-sm uppercase tracking-wide transition-all"
+              href="#pass" 
+              className="bg-white hover:bg-neutral-200 text-black font-extrabold px-8 py-4 rounded-none text-xs tracking-widest uppercase transition-all duration-300"
             >
-              Get Free Pass
+              Start Training
             </a>
           </div>
         </div>
 
-        {/* Industrial Image Frame */}
-        <div className="lg:col-span-5 relative w-full aspect-square border-4 border-black shadow-[8px_8px_0px_#000] rounded-none overflow-hidden bg-black">
+        {/* Hero Athletic Image */}
+        <div className="lg:col-span-5 relative w-full aspect-[4/5] rounded-none overflow-hidden border border-white/10 shadow-2xl bg-neutral-900">
           <img 
-            src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800"
-            alt="Gym training"
-            className="w-full h-full object-cover grayscale contrast-125"
+            src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800"
+            alt="Elite Athlete Training"
+            className="w-full h-full object-cover scale-102 hover:scale-105 transition-transform duration-700 grayscale contrast-110"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
         </div>
       </section>
 
-      {/* Brutalist Bento Grid */}
-      <section className="py-20 px-6 max-w-5xl mx-auto border-t-4 border-black">
+      {/* Services Section */}
+      <section className="py-24 px-6 sm:px-12 max-w-6xl mx-auto border-t border-white/5">
+        <div className="text-center mb-20">
+          <span className="text-[#ff2d55] text-xs font-mono font-bold tracking-[0.3em] block mb-2">// CAPABILITIES</span>
+          <h2 
+            className="text-3xl sm:text-5xl font-black text-white uppercase italic tracking-tighter"
+            style={{ fontFamily: "'Syne', sans-serif" }}
+          >
+            The Training Pillars
+          </h2>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
-            <div key={index} className="bg-neutral-800 border-4 border-black p-6 shadow-[5px_5px_0px_#000] space-y-4">
-              <Trophy className="w-10 h-10 text-red-600" />
-              <h4 className="text-lg font-bold uppercase italic">{service}</h4>
-              <p className="text-xs text-neutral-400 font-sans leading-relaxed">High performance training programs tailored to your fitness needs.</p>
+            <div key={index} className="group relative bg-[#0b0b0b] border border-white/5 p-8 hover:border-[#ff2d55]/30 transition-all duration-500">
+              {/* Backlight glow on hover */}
+              <div className="absolute inset-0 bg-[#ff2d55]/[0.01] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+              
+              <div className="text-[#ff2d55] font-mono text-xs mb-6 font-bold">0{index + 1} /</div>
+              <h4 
+                className="text-lg font-bold text-white uppercase italic tracking-tight mb-4"
+                style={{ fontFamily: "'Syne', sans-serif" }}
+              >
+                {service}
+              </h4>
+              <p className="text-xs text-neutral-400 font-light leading-relaxed">
+                Engineered to push your physical envelope under professional athletic guidelines.
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Kinetic Photo Grid */}
+      <section className="py-12 border-t border-white/5 bg-[#030303]">
+        <div className="max-w-6xl mx-auto px-6 sm:px-12 grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {gymImages.map((img, idx) => (
+            <div key={idx} className="aspect-[4/5] overflow-hidden border border-white/5">
+              <img 
+                src={img} 
+                alt="Gym Training Facility" 
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 hover:scale-105"
+              />
             </div>
           ))}
         </div>
       </section>
 
       {/* Booking Form */}
-      <section id="contact" className="py-20 px-6 max-w-5xl mx-auto border-t-4 border-black">
+      <section id="pass" className="py-24 px-6 sm:px-12 max-w-6xl mx-auto border-t border-white/5">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 space-y-6">
-            <h3 className="text-4xl font-extrabold text-white uppercase italic">Ready to Train?</h3>
-            <p className="text-neutral-400 text-sm font-sans leading-relaxed">
-              Fill out the form to secure your free day pass. Take the first step towards your fitness goals today. Our team is ready to guide you.
+            <h3 
+              className="text-3xl sm:text-5xl font-black text-white uppercase italic tracking-tighter leading-none"
+              style={{ fontFamily: "'Syne', sans-serif" }}
+            >
+              Get Free Day Access
+            </h3>
+            <p className="text-neutral-400 text-sm leading-relaxed font-light max-w-md">
+              Secure your training slot. Submit your name and number below, and our performance coordinators will call you to activate your guest pass.
             </p>
-            <div className="space-y-4 pt-4 font-mono text-sm">
+            <div className="space-y-4 pt-4 text-sm font-light">
               <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-red-600 shrink-0" />
+                <MapPin className="w-5 h-5 text-[#ff2d55]/50 shrink-0" />
                 <span>{lead.address}</span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-red-600 shrink-0" />
+                <Phone className="w-5 h-5 text-[#ff2d55]/50 shrink-0" />
                 <span>{lead.phone}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Clock className="w-5 h-5 text-[#ff2d55]/50 shrink-0" />
+                <span>Open 24/7 for Members</span>
               </div>
             </div>
           </div>
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 bg-[#0b0b0b] border border-white/10 p-8 rounded-none">
             <ContactForm businessName={lead.name} themeColor="red" />
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t-4 border-black text-center text-xs text-neutral-500 font-sans">
-        <p className="mb-2 uppercase tracking-widest font-black text-neutral-400">&copy; {new Date().getFullYear()} {lead.name}</p>
+      <footer className="py-16 border-t border-white/5 text-center text-xs text-neutral-600">
+        <p className="mb-2 uppercase tracking-widest font-black text-neutral-500">&copy; {new Date().getFullYear()} {lead.name}</p>
         <p>Proudly presented by Asenra Venture Studio Demo Network</p>
       </footer>
     </div>
