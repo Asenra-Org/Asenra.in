@@ -22,107 +22,202 @@ import {
   TrendingUp,
   Cpu,
   Zap,
+  Dumbbell,
+  Coffee,
+  Scissors,
+  Sparkles
 } from "lucide-react";
+import { 
+  CafeTemplate, 
+  GymTemplate, 
+  SalonTemplate, 
+  ServicesTemplate, 
+  GeneralTemplate,
+  ArchitectureTemplate 
+} from "@/components/demo/Templates";
 
-// Types and mock data
-type Industry = "real-estate" | "ecommerce" | "saas" | "services";
+type Industry = "ecommerce" | "real-estate" | "saas" | "services" | "gym" | "cafe" | "salon" | "architecture" | "custom";
 
-interface IndustryConfig {
-  accentColor: string;
-  gradient: string;
-  headline: string;
-  subheadline: string;
+// Helper to detect template category & base theme color based on industry selection
+function detectTemplate(industry: Industry, customNiche: string): { category: string; themeColor: string } {
+  if (industry !== "custom") {
+    const mapping: Record<Exclude<Industry, "custom">, { category: string; themeColor: string }> = {
+      ecommerce: { category: "general", themeColor: "blue" },
+      "real-estate": { category: "architecture", themeColor: "white" },
+      saas: { category: "general", themeColor: "blue" },
+      services: { category: "services", themeColor: "emerald" },
+      gym: { category: "gym", themeColor: "gold" },
+      cafe: { category: "cafe", themeColor: "gold" },
+      salon: { category: "salon", themeColor: "rose" },
+      architecture: { category: "architecture", themeColor: "white" }
+    };
+    return mapping[industry];
+  }
+
+  // Detect based on custom niche keywords
+  const niche = customNiche.toLowerCase();
+  if (niche.includes("gym") || niche.includes("fitness") || niche.includes("workout") || niche.includes("crossfit") || niche.includes("yoga") || niche.includes("trainer") || niche.includes("sport")) {
+    return { category: "gym", themeColor: "gold" };
+  }
+  if (niche.includes("cafe") || niche.includes("bakery") || niche.includes("restaurant") || niche.includes("coffee") || niche.includes("food") || niche.includes("dining") || niche.includes("bar")) {
+    return { category: "cafe", themeColor: "gold" };
+  }
+  if (niche.includes("salon") || niche.includes("spa") || niche.includes("hair") || niche.includes("beauty") || niche.includes("makeup") || niche.includes("nail") || niche.includes("parlor")) {
+    return { category: "salon", themeColor: "rose" };
+  }
+  if (niche.includes("architect") || niche.includes("interior") || niche.includes("decor") || niche.includes("design") || niche.includes("builder") || niche.includes("construction") || niche.includes("home")) {
+    return { category: "architecture", themeColor: "white" };
+  }
+  if (niche.includes("clean") || niche.includes("dentist") || niche.includes("dental") || niche.includes("clinic") || niche.includes("doctor") || niche.includes("legal") || niche.includes("law") || niche.includes("plumber") || niche.includes("repair")) {
+    return { category: "services", themeColor: "emerald" };
+  }
+  return { category: "general", themeColor: "blue" };
+}
+
+// Helper to generate dynamic, professional copy matching business category
+function generateCopy(name: string, category: string, customNiche: string): { tagline: string; description: string; services: string[] } {
+  const label = customNiche || category;
+  const copyMap: Record<string, { tagline: string; description: string; services: string[] }> = {
+    gym: {
+      tagline: "Break Your Limits. Build Raw Power.",
+      description: `Transform your athletic output at ${name}. We supply high-end strength platforms, biomechanically correct weight stacks, and elite coaching designed to build strength.`,
+      services: ["High-Performance Free Weights", "Olympic Lifting Platforms", "Metabolic Conditioning (HIIT)", "Elite Performance Coaching"]
+    },
+    cafe: {
+      tagline: "Artisanal Brews & Slow Living",
+      description: `Every cup is a ritual at ${name}. We source organic, high-altitude coffee beans directly from fair-trade estates and bake signature French pastries daily.`,
+      services: ["Single-Origin Pour Over", "Flaky French Croissants", "Signature Cold Brews", "Artisanal Desserts"]
+    },
+    salon: {
+      tagline: "Refined Beauty & Glamour",
+      description: `A luxury salon experience at ${name} built around custom treatments, premium hair care, and relaxing spa sessions designed to pamper you.`,
+      services: ["Signature Haircuts & Styling", "Luxury Bridal Makeup", "Organic Skin Cleansing", "Aroma Scalp Therapy"]
+    },
+    architecture: {
+      tagline: "Bespoke Structural Narratives",
+      description: `We craft high-end spatial realities at ${name}. From structural engineering to custom interior furnishing, we deliver award-winning designs.`,
+      services: ["High-End Residential Architecture", "Bespoke Interior & Spatial Styling", "Commercial Workplace Planning", "Turnkey Design & Commissioning"]
+    },
+    services: {
+      tagline: "Professional Service You Can Trust",
+      description: `High-quality, reliable, and premium local services at ${name} tailored exactly to your home or office needs. Certified professionals ready to help.`,
+      services: ["Invisible Dental Aligners", "Cosmetic Dentistry Sessions", "Painless Root Canal Treatments", "Specialized Pediatric Dentistry"]
+    },
+    general: {
+      tagline: "Modern Solutions for Your Growth",
+      description: `Premium services, expert consultations, and dedicated support at ${name} built around your unique business goals.`,
+      services: ["Luxury Residential Interior Architecture", "Modern Office Workplace Planning", "Bespoke Furniture Concept Design"]
+    }
+  };
+
+  return copyMap[category] || copyMap.general;
+}
+
+interface AuditReport {
   originalSpeed: number;
   originalCro: string;
   gaps: string[];
   features: string[];
-  ctaText: string;
 }
 
-const industryConfigs: Record<Industry, IndustryConfig> = {
-  "real-estate": {
-    accentColor: "from-amber-500 to-yellow-600",
-    gradient: "from-amber-500/20 via-transparent to-transparent",
-    headline: "Architecting Elite Digital Properties.",
-    subheadline: "Cinematic property galleries, instant WhatsApp bookings, and automated lead routing designed to close ultra-luxury listings.",
-    originalSpeed: 42,
-    originalCro: "0.8%",
-    gaps: [
-      "Extremely slow image and video rendering on mobile devices",
-      "Missing local schema markup and semantic SEO structure",
-      "Unoptimized lead qualification forms leading to cold inquiries"
-    ],
-    features: [
-      "Sub-second HDR property asset loading",
-      "One-click WhatsApp tour scheduling API",
-      "Geotargeted landing pages for luxury zip codes"
-    ],
-    ctaText: "Schedule Private Showing"
-  },
-  ecommerce: {
-    accentColor: "from-purple-500 to-indigo-600",
-    gradient: "from-purple-500/20 via-transparent to-transparent",
-    headline: "Engineered for Hyper-Conversion.",
-    subheadline: "Zero-latency checkout, dynamic cart animations, and autonomous personalization pipelines that turn traffic into recurring revenue.",
-    originalSpeed: 38,
-    originalCro: "1.2%",
-    gaps: [
-      "High checkout abandonment due to multi-step friction",
-      "Overhead from bloated legacy tracking scripts",
-      "Weak mobile product page layout and tap-target collisions"
-    ],
-    features: [
-      "Sub-100ms global Edge checkout speed",
-      "Subtle micro-animations for cart action triggers",
-      "Direct Google & Apple Pay native integration API"
-    ],
-    ctaText: "Unlock Premium Pricing"
-  },
-  saas: {
-    accentColor: "from-blue-500 to-cyan-600",
-    gradient: "from-blue-500/20 via-transparent to-transparent",
-    headline: "The Code Behind Market Domination.",
-    subheadline: "Ultra-scalable React web apps, custom API pipelines, and interactive onboarding flows built to scale with your user base.",
-    originalSpeed: 49,
-    originalCro: "1.5%",
-    gaps: [
-      "Slow initial time-to-interactive for demo pages",
-      "Poor accessibility compliance (WCAG 2.2) blocking enterprise contracts",
-      "Absence of structured schema data for technical search keywords"
-    ],
-    features: [
-      "Server-side pre-rendered interactive sandbox dashboards",
-      "Automated keyboard-navigable responsive layouts",
-      "Preloaded API docs with dynamic sandbox playground"
-    ],
-    ctaText: "Start Enterprise Trial"
-  },
-  services: {
-    accentColor: "from-emerald-500 to-teal-600",
-    gradient: "from-emerald-500/20 via-transparent to-transparent",
-    headline: "Precision Systems for High-Value Clients.",
-    subheadline: "Bespoke digital portals, secure client intake pipelines, and automated calendar integrations built for high-trust consultation.",
-    originalSpeed: 45,
-    originalCro: "0.9%",
-    gaps: [
-      "Static and uninspiring 'Contact Us' forms",
-      "No credibility/social proof validation at scroll checkpoints",
-      "Poor mobile performance leading to high bounce rates"
-    ],
-    features: [
-      "Sleek dynamic booking scheduler integration",
-      "Interactive case-study carousels",
-      "Encrypted secure document upload vault portal"
-    ],
-    ctaText: "Book Elite Consultation"
-  }
-};
+function generateAuditReport(category: string, name: string): AuditReport {
+  const reports: Record<string, AuditReport> = {
+    gym: {
+      originalSpeed: 41,
+      originalCro: "0.7%",
+      gaps: [
+        "No local schema markup for local SEO rankings",
+        "Slow image loading on mobile devices (slower than 3.5s)",
+        "Static booking forms without direct WhatsApp integration"
+      ],
+      features: [
+        "Automated SEO schema markup for local fitness search",
+        "Sub-100ms loading speeds utilizing dynamic asset caching",
+        "Encrypted lead intake form with custom gold glow borders"
+      ]
+    },
+    cafe: {
+      originalSpeed: 44,
+      originalCro: "0.9%",
+      gaps: [
+        "Unresponsive menus causing layout shifts on mobile",
+        "Lack of direct booking schema for reservation engines",
+        "Missing high-contrast text accessibility highlights"
+      ],
+      features: [
+        "Elegant responsive editorial grid menus",
+        "One-click table booking and WhatsApp routing",
+        "High-contrast premium typography layout system"
+      ]
+    },
+    salon: {
+      originalSpeed: 39,
+      originalCro: "0.6%",
+      gaps: [
+        "Heavy assets causing long first-contentful-paint (FCP)",
+        "Missing local schema validation tags for beauty services",
+        "Frictional multi-step booking causing user drops"
+      ],
+      features: [
+        "Optimized light assets with smooth luxury scroll",
+        "Local business schema integration for beauty search",
+        "Subtle floating scheduling CTA buttons"
+      ]
+    },
+    architecture: {
+      originalSpeed: 35,
+      originalCro: "0.5%",
+      gaps: [
+        "Heavy high-resolution portfolio images collapsing mobile viewports",
+        "No structured metadata search classification for architectural terms",
+        "Ineffective inquiry forms hidden below the fold"
+      ],
+      features: [
+        "GPU-accelerated layout positioning and image load scaling",
+        "Semantic SEO structure for technical design searches",
+        "High-contrast minimalist inquiry callouts"
+      ]
+    },
+    services: {
+      originalSpeed: 48,
+      originalCro: "1.1%",
+      gaps: [
+        "Unoptimized landing pages jumbling local search queries",
+        "No trust markers or social proof badges at scroll milestones",
+        "High mobile bounce rates due to poor touch-target sizing"
+      ],
+      features: [
+        "Geotargeted landing page assets with sub-second speeds",
+        "Interactive case studies and review modules",
+        "Responsive touch-safe layouts with premium padding"
+      ]
+    },
+    general: {
+      originalSpeed: 46,
+      originalCro: "1.2%",
+      gaps: [
+        "Overhead from bloated legacy tracking scripts and frameworks",
+        "Weak accessibility scores (WCAG 2.2) blocking enterprise clients",
+        "Absence of structured schema data for target keywords"
+      ],
+      features: [
+        "Clean, optimized Next.js server-side rendered layouts",
+        "Keyboard-navigable responsive layouts for accessibility compliance",
+        "Dynamic structured schema generation for search engine indexation"
+      ]
+    }
+  };
+
+  return reports[category] || reports.general;
+}
 
 export default function AcquisitionPage() {
   const [step, setStep] = useState<"input" | "loading" | "result">("input");
   const [companyName, setCompanyName] = useState("");
   const [website, setWebsite] = useState("");
   const [industry, setIndustry] = useState<Industry>("ecommerce");
+  const [customNiche, setCustomNiche] = useState("");
+  const [themeColor, setThemeColor] = useState<"gold" | "white" | "rose" | "emerald" | "blue" | "crimson">("gold");
   
   // Terminal animation states
   const [logs, setLogs] = useState<string[]>([]);
@@ -132,14 +227,35 @@ export default function AcquisitionPage() {
   
   const terminalEndRef = useRef<HTMLDivElement>(null);
 
+  // Detect dynamic templates & reports
+  const templateInfo = detectTemplate(industry, customNiche);
+  const copy = generateCopy(companyName, templateInfo.category, customNiche);
+  const audit = generateAuditReport(templateInfo.category, companyName);
+
+  // Dynamic Lead configuration for Sandbox preview
+  const mockLead = {
+    id: "demo-lead",
+    name: companyName,
+    phone: "+91 99999 88888",
+    address: "Flagship Studio, Metro Plaza, Mumbai",
+    category: templateInfo.category,
+    tagline: copy.tagline,
+    description: copy.description,
+    color_theme: themeColor === "crimson" ? "gold" : themeColor, // Map color theme
+    services: copy.services.join(", "),
+    rating: 4.9,
+    review_count: 184
+  };
+
   const simulateLogs = [
     `[SYS] Initializing Asenra Agent Engine...`,
+    `[SYS] Connecting to URL repository: ${website || "ad-hoc sandbox"}`,
     `[SYS] Scanning DOM hierarchy and assets...`,
     `[AUDIT] Analyzing Core Web Vitals on server...`,
-    `[WARN] Found low Performance Index: ${industryConfigs[industry].originalSpeed}%`,
+    `[WARN] Found low Performance Index: ${audit.originalSpeed}%`,
     `[WARN] Detected layout shifts (CLS) on primary viewports`,
     `[AUDIT] Running CRO & Heuristic friction audits...`,
-    `[WARN] Found unoptimized lead-capture funnel (CRO: ${industryConfigs[industry].originalCro})`,
+    `[WARN] Found unoptimized lead-capture funnel (CRO: ${audit.originalCro})`,
     `[SYS] Injecting Asenra High-End Styling System...`,
     `[SYS] Building custom industry components...`,
     `[SYS] Generating live sandbox environment...`,
@@ -163,11 +279,11 @@ export default function AcquisitionPage() {
             setStep("result");
           }, 800);
         }
-      }, 500);
+      }, 400); // Made slightly faster for smoother DX
 
       return () => clearInterval(logInterval);
     }
-  }, [step, industry]);
+  }, [step, industry, customNiche, website]);
 
   useEffect(() => {
     if (terminalEndRef.current) {
@@ -181,20 +297,12 @@ export default function AcquisitionPage() {
     setStep("loading");
   };
 
-  const currentConfig = industryConfigs[industry];
-
   return (
     <div className="min-h-screen bg-black text-white relative font-sans overflow-x-hidden selection:bg-white/20">
-      {/* Background Grids & Ambient Beams */}
-      <div 
-        className="fixed inset-0 z-0 opacity-20 pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
-        }}
-      />
-      <div className="fixed top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none z-0" />
-      <div className="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-500/10 blur-[120px] pointer-events-none z-0" />
+      {/* Background Grids & Ambient Beams (Asenra Crimson & Gold Theme) */}
+      <div className="fixed inset-0 bg-grid-theme opacity-35 z-0 pointer-events-none" />
+      <div className="fixed top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[#EE0000]/[0.06] blur-[140px] pointer-events-none z-0" />
+      <div className="fixed bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[#bf953f]/[0.04] blur-[140px] pointer-events-none z-0" />
 
       <div className="max-w-7xl mx-auto px-6 py-12 relative z-10">
         
@@ -206,30 +314,30 @@ export default function AcquisitionPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
               </svg>
             </span>
-            <span className="text-sm font-bold uppercase tracking-widest">Back to Hub</span>
+            <span className="text-sm font-bold uppercase tracking-widest text-silver-matte">Back to Hub</span>
           </Link>
           
           <div className="flex items-center gap-3">
-            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-black uppercase tracking-[0.2em] text-zinc-400">Live Demo Engine v1.2</span>
+            <div className="w-2.5 h-2.5 rounded-full bg-[#EE0000] animate-pulse shadow-[0_0_12px_#EE0000]" />
+            <span className="text-xs font-black uppercase tracking-[0.25em] text-[#eae5db]">ASENRA DEMO PIPELINE V2.0</span>
           </div>
         </div>
 
         {/* 1. INPUT STEP */}
         {step === "input" && (
-          <div className="max-w-3xl mx-auto py-12">
+          <div className="max-w-3xl mx-auto py-6">
             <div className="text-center mb-12">
-              <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-none">
+              <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 leading-none uppercase">
                 Interactive <br />
-                <span className="bg-gradient-to-r from-zinc-200 via-white to-zinc-500 bg-clip-text text-transparent">Demo & Tech Audit.</span>
+                <span className="text-shine-gold">Demo & Tech Audit.</span>
               </h1>
               <p className="text-zinc-400 text-lg md:text-xl font-medium max-w-xl mx-auto leading-relaxed">
                 Generate a custom, high-end landing page layout and run a conversion audit tailored specifically to your business niche instantly.
               </p>
             </div>
 
-            <form onSubmit={handleStart} className="space-y-6 bg-zinc-900/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none" />
+            <form onSubmit={handleStart} className="space-y-6 bg-[#0d0c0a]/60 backdrop-blur-md border border-[#bf953f]/15 p-8 md:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-[#bf953f]/[0.015] to-transparent pointer-events-none" />
               
               <div className="space-y-2">
                 <label className="block text-xs font-black uppercase tracking-widest text-zinc-400">Company / Product Name</label>
@@ -239,7 +347,7 @@ export default function AcquisitionPage() {
                   placeholder="e.g. Acme Corporation" 
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
-                  className="w-full bg-black/60 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-zinc-600 focus:outline-none focus:border-white/30 transition-all font-semibold"
+                  className="w-full bg-black/60 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-zinc-600 focus:outline-none focus:border-[#bf953f]/30 transition-all font-semibold"
                 />
               </div>
 
@@ -250,39 +358,119 @@ export default function AcquisitionPage() {
                   placeholder="https://example.com" 
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}
-                  className="w-full bg-black/60 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-zinc-600 focus:outline-none focus:border-white/30 transition-all font-semibold"
+                  className="w-full bg-black/60 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-zinc-600 focus:outline-none focus:border-[#bf953f]/30 transition-all font-semibold"
                 />
               </div>
 
               <div className="space-y-4">
                 <label className="block text-xs font-black uppercase tracking-widest text-zinc-400">Industry / Domain</label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {(["ecommerce", "real-estate", "saas", "services"] as Industry[]).map((ind) => (
-                    <button
-                      key={ind}
-                      type="button"
-                      onClick={() => setIndustry(ind)}
-                      className={`p-4 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center gap-2 justify-center capitalize font-semibold ${
-                        industry === ind 
-                          ? "bg-white text-black border-white" 
-                          : "bg-black/40 border-white/10 text-zinc-400 hover:border-white/30 hover:text-white"
-                      }`}
-                    >
-                      {ind === "ecommerce" && <Zap className="w-5 h-5" />}
-                      {ind === "real-estate" && <Globe className="w-5 h-5" />}
-                      {ind === "saas" && <Cpu className="w-5 h-5" />}
-                      {ind === "services" && <TrendingUp className="w-5 h-5" />}
-                      <span className="text-xs tracking-wide">{ind === "real-estate" ? "Real Estate" : ind === "ecommerce" ? "E-commerce" : ind === "saas" ? "SaaS" : "Services"}</span>
-                    </button>
-                  ))}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {(["ecommerce", "real-estate", "saas", "services", "gym", "cafe", "salon", "architecture", "custom"] as const).map((ind) => {
+                    const label = {
+                      ecommerce: "E-Commerce",
+                      "real-estate": "Real Estate",
+                      saas: "SaaS / Tech",
+                      services: "Clinics/Services",
+                      gym: "Gym & Fitness",
+                      cafe: "Cafe/Restaurant",
+                      salon: "Salon & Spa",
+                      architecture: "Architecture",
+                      custom: "Custom Niche..."
+                    }[ind];
+
+                    const icon = {
+                      ecommerce: <Zap className="w-4 h-4" />,
+                      "real-estate": <Globe className="w-4 h-4" />,
+                      saas: <Cpu className="w-4 h-4" />,
+                      services: <TrendingUp className="w-4 h-4" />,
+                      gym: <Dumbbell className="w-4 h-4" />,
+                      cafe: <Coffee className="w-4 h-4" />,
+                      salon: <Scissors className="w-4 h-4" />,
+                      architecture: <Laptop className="w-4 h-4" />,
+                      custom: <Sliders className="w-4 h-4" />
+                    }[ind];
+
+                    return (
+                      <button
+                        key={ind}
+                        type="button"
+                        onClick={() => {
+                          setIndustry(ind);
+                          if (ind !== "custom") setCustomNiche("");
+                        }}
+                        className={`p-4 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center gap-2 justify-center capitalize font-semibold ${
+                          industry === ind 
+                            ? "bg-white text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.15)]" 
+                            : "bg-black/40 border-white/10 text-zinc-400 hover:border-white/30 hover:text-white"
+                        }`}
+                      >
+                        {icon}
+                        <span className="text-[10px] tracking-wide whitespace-nowrap">{label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Conditional Custom Niche Input */}
+              {industry === "custom" && (
+                <div className="space-y-2 mt-4 animate-fadeIn">
+                  <label className="block text-xs font-black uppercase tracking-widest text-zinc-400">Describe Your Business / Niche</label>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="e.g. Organic Bakery, Dental Clinic, Legal Advisor" 
+                    value={customNiche}
+                    onChange={(e) => setCustomNiche(e.target.value)}
+                    className="w-full bg-black/60 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-zinc-600 focus:outline-none focus:border-[#bf953f]/30 transition-all font-semibold"
+                  />
+                </div>
+              )}
+
+              {/* Brand Accent Color */}
+              <div className="space-y-2">
+                <label className="block text-xs font-black uppercase tracking-widest text-zinc-400">Brand Color Accent</label>
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+                  {(["gold", "white", "rose", "emerald", "blue", "crimson"] as const).map((color) => {
+                    const colorLabel = {
+                      gold: "Obsidian Gold",
+                      white: "Chrome Silver",
+                      rose: "Blush Rose",
+                      emerald: "Emerald",
+                      blue: "Sapphire",
+                      crimson: "Crimson Red"
+                    }[color];
+
+                    const borderBg = {
+                      gold: "border-[#bf953f] text-[#bf953f] bg-[#bf953f]/10",
+                      white: "border-white text-white bg-white/10",
+                      rose: "border-rose-400 text-rose-400 bg-rose-400/10",
+                      emerald: "border-emerald-400 text-emerald-400 bg-emerald-400/10",
+                      blue: "border-blue-400 text-blue-400 bg-blue-400/10",
+                      crimson: "border-[#EE0000] text-[#EE0000] bg-[#EE0000]/10"
+                    }[color];
+
+                    const activeStyle = themeColor === color ? `${borderBg} border-2 shadow-md` : "border-white/10 text-zinc-400 hover:border-white/30";
+
+                    return (
+                      <button
+                        key={color}
+                        type="button"
+                        onClick={() => setThemeColor(color)}
+                        className={`py-3.5 rounded-xl border text-center transition-all cursor-pointer text-[10px] font-bold capitalize ${activeStyle}`}
+                      >
+                        {colorLabel}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-white text-black font-black uppercase tracking-tighter py-5 rounded-2xl hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] transition-all active:scale-[0.98] flex items-center justify-center gap-3 cursor-pointer mt-8"
+                className="w-full bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] text-black font-black uppercase tracking-tighter py-5 rounded-2xl hover:scale-[1.01] hover:shadow-[0_0_40px_rgba(191,149,63,0.3)] transition-all active:scale-[0.99] flex items-center justify-center gap-3 cursor-pointer mt-8 btn-shine-effect"
               >
-                <span>Generate Audit & Demo Layout</span>
+                <span>Generate Dynamic Audit & Demo Website</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
             </form>
@@ -299,21 +487,21 @@ export default function AcquisitionPage() {
 
             <div className="bg-zinc-900/40 backdrop-blur-md border border-white/10 rounded-[2.5rem] p-6 md:p-8 shadow-2xl relative overflow-hidden">
               {/* Progress Bar */}
-              <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden mb-6">
+              <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden mb-6">
                 <div 
-                  className="h-full bg-white transition-all duration-300"
+                  className="h-full bg-gradient-to-r from-[#bf953f] to-[#b38728] transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>
 
               {/* Terminal Screen */}
               <div className="bg-black/80 rounded-2xl border border-white/5 p-6 h-80 overflow-y-auto font-mono text-xs text-zinc-400 flex flex-col gap-2 shadow-inner">
-                {logs.map((log, index) => {
+                {logs.filter(Boolean).map((log, index) => {
                   let colorClass = "text-zinc-400";
-                  if (log.startsWith("[SYS]")) colorClass = "text-blue-400";
-                  else if (log.startsWith("[WARN]")) colorClass = "text-amber-400";
-                  else if (log.startsWith("[SUCCESS]")) colorClass = "text-emerald-400 font-bold";
-                  else if (log.startsWith("[AUDIT]")) colorClass = "text-purple-400";
+                  if (log && log.startsWith("[SYS]")) colorClass = "text-[#bf953f]";
+                  else if (log && log.startsWith("[WARN]")) colorClass = "text-amber-400";
+                  else if (log && log.startsWith("[SUCCESS]")) colorClass = "text-emerald-400 font-bold";
+                  else if (log && log.startsWith("[AUDIT]")) colorClass = "text-purple-400";
                   
                   return (
                     <div key={index} className={`${colorClass} flex gap-2 items-start`}>
@@ -334,15 +522,17 @@ export default function AcquisitionPage() {
             {/* Intro banner */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 border-b border-white/10">
               <div>
-                <h1 className="text-4xl font-black tracking-tight">{companyName}</h1>
-                <p className="text-zinc-500 font-medium text-sm mt-1 capitalize">Live Audit & Generated Layout for {industry === "real-estate" ? "Real Estate" : industry === "ecommerce" ? "E-commerce" : industry === "saas" ? "SaaS" : "Services"}</p>
+                <h1 className="text-4xl font-black tracking-tight text-white uppercase italic">{companyName}</h1>
+                <p className="text-zinc-500 font-medium text-xs mt-1 uppercase tracking-widest">
+                  Live Audit & Generated Layout for {industry === "custom" ? customNiche : industry} · Theme: {themeColor}
+                </p>
               </div>
               <button 
                 onClick={() => setStep("input")}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/10 hover:border-white/30 text-sm font-semibold bg-white/5 hover:bg-white/10 transition-all cursor-pointer"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#bf953f]/20 hover:border-[#bf953f]/40 text-sm font-semibold bg-white/5 hover:bg-white/10 transition-all cursor-pointer text-[#bf953f]"
               >
                 <RefreshCw className="w-4 h-4" />
-                <span>Reset Audit</span>
+                <span>Re-Configure Website</span>
               </button>
             </div>
 
@@ -351,11 +541,11 @@ export default function AcquisitionPage() {
               
               {/* Left Column: Tech Audit report card */}
               <div className="lg:col-span-4 space-y-6">
-                <div className="bg-zinc-900/40 backdrop-blur-md border border-white/10 rounded-[2rem] p-6 shadow-2xl space-y-6 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-b from-white/[0.01] to-transparent pointer-events-none" />
+                <div className="bg-[#0e0d0b]/80 backdrop-blur-md border border-[#bf953f]/15 rounded-[2rem] p-6 shadow-2xl space-y-6 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#bf953f]/[0.01] to-transparent pointer-events-none" />
                   
                   <div className="flex items-center gap-2.5">
-                    <Terminal className="w-5 h-5 text-indigo-400" />
+                    <Terminal className="w-5 h-5 text-[#bf953f]" />
                     <h3 className="text-xs font-black uppercase tracking-widest text-zinc-400">Technical Gap Analysis</h3>
                   </div>
 
@@ -365,7 +555,7 @@ export default function AcquisitionPage() {
                       <div>
                         <span className="text-[10px] font-black uppercase tracking-wider text-zinc-500 block mb-1">Performance Index</span>
                         <div className="flex items-baseline gap-2">
-                          <span className="text-2xl font-black text-rose-500">{currentConfig.originalSpeed}%</span>
+                          <span className="text-2xl font-black text-rose-500">{audit.originalSpeed}%</span>
                           <span className="text-zinc-600 text-xs font-medium">vs</span>
                           <span className="text-2xl font-black text-emerald-400">99%</span>
                         </div>
@@ -379,7 +569,7 @@ export default function AcquisitionPage() {
                       <div>
                         <span className="text-[10px] font-black uppercase tracking-wider text-zinc-500 block mb-1">Conversion (CRO)</span>
                         <div className="flex items-baseline gap-2">
-                          <span className="text-2xl font-black text-rose-500">{currentConfig.originalCro}</span>
+                          <span className="text-2xl font-black text-rose-500">{audit.originalCro}</span>
                           <span className="text-zinc-600 text-xs font-medium">vs</span>
                           <span className="text-2xl font-black text-emerald-400">3.8%+</span>
                         </div>
@@ -397,7 +587,7 @@ export default function AcquisitionPage() {
                       <span>Critical Gaps Identified</span>
                     </span>
                     <ul className="space-y-3">
-                      {currentConfig.gaps.map((gap, index) => (
+                      {audit.gaps.map((gap, index) => (
                         <li key={index} className="flex gap-3 text-xs text-zinc-300 items-start">
                           <AlertCircle className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
                           <span>{gap}</span>
@@ -413,7 +603,7 @@ export default function AcquisitionPage() {
                       <span>Asenra Architect Recommendations</span>
                     </span>
                     <ul className="space-y-3">
-                      {currentConfig.features.map((feature, index) => (
+                      {audit.features.map((feature, index) => (
                         <li key={index} className="flex gap-3 text-xs text-zinc-300 items-start">
                           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                           <span>{feature}</span>
@@ -424,15 +614,15 @@ export default function AcquisitionPage() {
                 </div>
 
                 {/* Call-to-action bottom card */}
-                <div className="bg-gradient-to-b from-zinc-800/80 to-zinc-950/80 border border-white/20 p-6 rounded-[2rem] shadow-2xl relative overflow-hidden space-y-4">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 via-transparent to-transparent pointer-events-none" />
+                <div className="bg-gradient-to-b from-[#0e0d0b] to-[#050505] border border-[#bf953f]/20 p-6 rounded-[2rem] shadow-2xl relative overflow-hidden space-y-4">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-[#bf953f]/10 via-transparent to-transparent pointer-events-none" />
                   <h4 className="text-xl font-bold tracking-tight text-white leading-tight">Claim This Audited Code & Launch</h4>
                   <p className="text-zinc-400 text-xs leading-relaxed">
                     Deploy this optimized template immediately. Integrate custom backends, custom database structures, and premium animations under our Venture Studio.
                   </p>
                   <button 
                     onClick={() => setIsFormOpen(true)}
-                    className="w-full py-4 rounded-xl bg-white text-black text-xs font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] text-black text-xs font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer btn-shine-effect"
                   >
                     <span>Secure Live Project Portal</span>
                     <Lock className="w-4 h-4" />
@@ -449,7 +639,7 @@ export default function AcquisitionPage() {
                     <button 
                       onClick={() => setDevice("desktop")}
                       className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                        device === "desktop" ? "bg-white text-black" : "text-zinc-400 hover:text-white bg-transparent"
+                        device === "desktop" ? "bg-white text-black shadow-md animate-fadeIn" : "text-zinc-400 hover:text-white bg-transparent"
                       }`}
                     >
                       <Laptop className="w-4 h-4" />
@@ -458,7 +648,7 @@ export default function AcquisitionPage() {
                     <button 
                       onClick={() => setDevice("mobile")}
                       className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                        device === "mobile" ? "bg-white text-black" : "text-zinc-400 hover:text-white bg-transparent"
+                        device === "mobile" ? "bg-white text-black shadow-md animate-fadeIn" : "text-zinc-400 hover:text-white bg-transparent"
                       }`}
                     >
                       <Smartphone className="w-4 h-4" />
@@ -474,8 +664,8 @@ export default function AcquisitionPage() {
                   </div>
 
                   <div className="flex items-center gap-2 text-zinc-500 pr-2">
-                    <span className="text-[10px] font-black uppercase tracking-widest hidden sm:inline">Mock sandbox</span>
-                    <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+                    <span className="text-[10px] font-black uppercase tracking-widest hidden sm:inline">Live Sandbox</span>
+                    <div className="w-2 h-2 rounded-full bg-[#bf953f] animate-pulse shadow-[0_0_8px_rgba(191,149,63,0.6)]" />
                   </div>
                 </div>
 
@@ -485,13 +675,13 @@ export default function AcquisitionPage() {
                     className={`bg-zinc-950 border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl relative transition-all duration-500 flex flex-col ${
                       device === "mobile" 
                         ? "w-[390px] h-[700px] border-8 border-zinc-800" 
-                        : "w-full min-h-[500px]"
+                        : "w-full h-[700px]"
                     }`}
                   >
                     
                     {/* Simulated mobile status bar */}
                     {device === "mobile" && (
-                      <div className="bg-black text-zinc-500 px-6 py-2 flex justify-between items-center text-[10px] font-bold border-b border-white/5 select-none">
+                      <div className="bg-black text-zinc-500 px-6 py-2.5 flex justify-between items-center text-[10px] font-bold border-b border-white/5 select-none shrink-0 z-50">
                         <span>9:41</span>
                         <div className="flex gap-1.5 items-center">
                           <span className="w-3.5 h-2.5 rounded-sm border border-zinc-500 relative flex items-center justify-start p-0.5"><span className="w-1.5 h-1 bg-zinc-500 rounded-[1px]" /></span>
@@ -501,61 +691,13 @@ export default function AcquisitionPage() {
 
                     {/* MOCK GENERATED WEBSITE INTERFACE */}
                     <div className="flex-1 bg-black text-white relative font-sans overflow-y-auto">
-                      {/* Highlighted accent glow background */}
-                      <div className={`absolute top-0 right-0 left-0 h-96 bg-gradient-to-b ${currentConfig.gradient} pointer-events-none`} />
-
-                      {/* Header */}
-                      <header className="relative z-10 px-6 py-4 flex justify-between items-center border-b border-white/5 bg-black/40 backdrop-blur-md">
-                        <span className="font-black text-sm uppercase tracking-wider">{companyName}</span>
-                        <button className="px-3.5 py-1.5 rounded-lg bg-white/10 text-white text-[10px] font-black uppercase tracking-widest hover:bg-white/20 transition-all">
-                          Menu
-                        </button>
-                      </header>
-
-                      {/* Content Section */}
-                      <div className="px-6 py-12 md:py-20 relative z-10 text-left max-w-xl">
-                        
-                        {/* Tag */}
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-wider text-zinc-400 mb-6">
-                          <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${currentConfig.accentColor}`} />
-                          <span>Dynamic Prototype</span>
-                        </div>
-
-                        {/* Title */}
-                        <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4 leading-none text-white">
-                          {currentConfig.headline}
-                        </h2>
-
-                        {/* Sub */}
-                        <p className="text-zinc-400 text-sm md:text-base mb-8 leading-relaxed">
-                          {currentConfig.subheadline}
-                        </p>
-
-                        {/* Direct Form Trigger Button in the Sandbox */}
-                        <button
-                          onClick={() => setIsFormOpen(true)}
-                          className={`inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r ${currentConfig.accentColor} text-white font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-black/55 cursor-pointer`}
-                        >
-                          <span>{currentConfig.ctaText}</span>
-                          <ChevronRight className="w-4 h-4" />
-                        </button>
-                      </div>
-
-                      {/* Feature Grid inside prototype */}
-                      <div className="px-6 pb-12 relative z-10">
-                        <h4 className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-6">Engineered Features</h4>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {currentConfig.features.map((feat, idx) => (
-                            <div key={idx} className="bg-white/[0.02] border border-white/5 rounded-2xl p-5 hover:bg-white/[0.04] transition-all">
-                              <div className={`w-8 h-8 rounded-lg bg-gradient-to-r ${currentConfig.accentColor} opacity-80 flex items-center justify-center text-white mb-4 text-[10px] font-bold`}>
-                                0{idx + 1}
-                              </div>
-                              <h5 className="font-bold text-sm text-white mb-1">{feat.split(" ").slice(0, 3).join(" ")}</h5>
-                              <p className="text-zinc-400 text-xs leading-relaxed">{feat}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
+                      
+                      {templateInfo.category === "cafe" && <CafeTemplate lead={mockLead} />}
+                      {templateInfo.category === "gym" && <GymTemplate lead={mockLead} />}
+                      {templateInfo.category === "salon" && <SalonTemplate lead={mockLead} />}
+                      {templateInfo.category === "services" && <ServicesTemplate lead={mockLead} />}
+                      {templateInfo.category === "architecture" && <ArchitectureTemplate lead={mockLead} />}
+                      {templateInfo.category === "general" && <GeneralTemplate lead={mockLead} />}
 
                     </div>
                   </div>
