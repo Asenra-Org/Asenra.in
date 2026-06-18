@@ -153,7 +153,7 @@ async function scrapeRealLeads() {
     const selectedLocation = process.env.TARGET_LOCATION || locations[Math.floor(Math.random() * locations.length)];
     const selectedIndustry = process.env.TARGET_INDUSTRY || industries[Math.floor(Math.random() * industries.length)];
     
-    const query = `${selectedIndustry} in ${selectedLocation} without website`;
+    const query = `${selectedIndustry} in ${selectedLocation}`;
     console.log(`Calling Apify Google Maps Scraper API with Query: "${query}"...`);
 
     const response = await fetch(
@@ -162,10 +162,8 @@ async function scrapeRealLeads() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          queries: [query],
-          limit: 15,
-          searchMatchingSelect: "ALL",
-          onlyWithoutWebsite: true,
+          searchStringsArray: [query],
+          maxResults: 30,
         })
       }
     );
@@ -187,12 +185,15 @@ async function scrapeRealLeads() {
       }
     }
 
-    if (!completed || results.length === 0) {
+    const filteredResults = results.filter(item => !item.website);
+    console.log(`Scraped ${results.length} total elements. Filtered down to ${filteredResults.length} leads without websites.`);
+
+    if (!completed || filteredResults.length === 0) {
       console.log("Scraping timed out or empty dataset. Using fallback leads...");
       return fallbackLeads;
     }
 
-    return results.map(item => {
+    return filteredResults.slice(0, 15).map(item => {
       const category = item.categoryName ? item.categoryName.toLowerCase() : "general";
       let mappedCategory = "general";
       let industry = item.categoryName || "Local Service Business";
