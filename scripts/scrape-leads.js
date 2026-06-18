@@ -146,10 +146,16 @@ async function scrapeRealLeads() {
   }
 
   try {
-    console.log("Calling Apify Google Maps Scraper API...");
-    // Apify Google Maps Scraper Actor ID: "apify/google-maps-scraper"
-    // Search query designed to find target businesses in Mumbai without websites
-    const query = "dentists in bandra mumbai without website";
+    // Get location and industry from environment variables, or select randomly for daily cron
+    const locations = ["Mumbai", "Bangalore", "Pune", "Delhi NCR", "Hyderabad", "Jaipur", "Gurgaon", "Ahmedabad"];
+    const industries = ["dentists", "gyms", "cafes", "hotels", "resorts", "interior designers", "architects", "real estate agencies"];
+
+    const selectedLocation = process.env.TARGET_LOCATION || locations[Math.floor(Math.random() * locations.length)];
+    const selectedIndustry = process.env.TARGET_INDUSTRY || industries[Math.floor(Math.random() * industries.length)];
+    
+    const query = `${selectedIndustry} in ${selectedLocation} without website`;
+    console.log(`Calling Apify Google Maps Scraper API with Query: "${query}"...`);
+
     const response = await fetch(
       `https://api.apify.com/v2/acts/apify~google-maps-scraper/runs?token=${apifyToken}`,
       {
