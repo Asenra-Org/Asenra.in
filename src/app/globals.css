@@ -336,3 +336,96 @@
   stroke-linecap: round;
   will-change: stroke-dashoffset;
 }
+
+/* -------------------------------------------------------------------
+   ASENRA DEMO ENGINE - PREMIUM GLOW & SHINE EFFECTS
+---------------------------------------------------------------------- */
+
+@keyframes text-shine-anim {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.text-shine-gold {
+  background: linear-gradient(90deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fcf6ba 75%, #bf953f 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shine-anim 6s linear infinite;
+  display: inline-block;
+}
+
+.text-shine-silver {
+  background: linear-gradient(90deg, #888888 0%, #ffffff 25%, #dddddd 50%, #ffffff 75%, #888888 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shine-anim 5s linear infinite;
+  display: inline-block;
+}
+
+.text-shine-rose {
+  background: linear-gradient(90deg, #b76e79 0%, #ffd1dc 25%, #e19ea8 50%, #ffd1dc 75%, #b76e79 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shine-anim 5s linear infinite;
+  display: inline-block;
+}
+
+.text-shine-emerald {
+  background: linear-gradient(90deg, #047857 0%, #a7f3d0 25%, #059669 50%, #a7f3d0 75%, #047857 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shine-anim 5s linear infinite;
+  display: inline-block;
+}
+
+.text-shine-blue {
+  background: linear-gradient(90deg, #1d4ed8 0%, #bfdbfe 25%, #2563eb 50%, #bfdbfe 75%, #1d4ed8 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shine-anim 5s linear infinite;
+  display: inline-block;
+}
+
+/* Button sheen reflection sweep on hover */
+.btn-shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shine-effect::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 30%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.25);
+  transform: rotate(30deg);
+  transition: all 0.5s;
+  pointer-events: none;
+}
+
+.btn-shine-effect:hover::after {
+  left: 140%;
+  transition: all 0.7s ease-in-out;
+}
+
+/* Pulse glow keyframes for sub-glow backlights */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.25; }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 4s ease-in-out infinite;
+}

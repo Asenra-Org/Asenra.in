@@ -42,17 +42,18 @@ function ContactForm({ businessName, themeColor }: { businessName: string; theme
   };
 
   const btnStyle = {
-    gold: "bg-amber-500 hover:bg-amber-600 text-black",
-    red: "bg-red-600 hover:bg-red-700 text-white font-mono border-2 border-black shadow-[4px_4px_0px_#000]",
-    rose: "bg-rose-500 hover:bg-rose-600 text-white tracking-widest font-light",
-    emerald: "bg-emerald-600 hover:bg-emerald-700 text-white",
-    blue: "bg-blue-600 hover:bg-blue-700 text-white"
-  }[themeColor] || "bg-white hover:bg-neutral-200 text-black";
+    gold: "bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] hover:from-[#b38728] hover:to-[#bf953f] text-black font-extrabold btn-shine-effect shadow-[0_4px_15px_rgba(197,168,128,0.3)]",
+    red: "bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] hover:from-[#b38728] hover:to-[#bf953f] text-black font-extrabold btn-shine-effect shadow-[0_4px_15px_rgba(197,168,128,0.3)]", // Gym is gold now
+    rose: "bg-gradient-to-r from-rose-400 to-pink-500 hover:from-pink-500 hover:to-rose-400 text-white font-bold btn-shine-effect shadow-[0_4px_15px_rgba(244,63,94,0.3)]",
+    emerald: "bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-teal-600 hover:to-emerald-500 text-white font-bold btn-shine-effect shadow-[0_4px_15px_rgba(16,185,129,0.3)]",
+    blue: "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-indigo-600 hover:to-blue-500 text-white font-bold btn-shine-effect shadow-[0_4px_15px_rgba(37,99,235,0.3)]",
+    white: "bg-white hover:bg-neutral-100 text-black font-bold btn-shine-effect shadow-[0_4px_15px_rgba(255,255,255,0.2)]"
+  }[themeColor] || "bg-white hover:bg-neutral-200 text-black btn-shine-effect";
 
   if (submitted) {
     return (
       <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-2xl text-center shadow-2xl">
-        <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto mb-4" />
+        <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto mb-4 animate-bounce" />
         <h4 className="text-xl font-bold text-white mb-2">Thank You!</h4>
         <p className="text-neutral-400 text-sm">
           Your request has been sent to {businessName}. We will get back to you shortly.
@@ -71,7 +72,7 @@ function ContactForm({ businessName, themeColor }: { businessName: string; theme
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-hidden focus:border-white transition-all"
+          className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-hidden focus:border-white/40 focus:ring-1 focus:ring-white/20 transition-all"
           placeholder="John Doe"
         />
       </div>
@@ -82,7 +83,7 @@ function ContactForm({ businessName, themeColor }: { businessName: string; theme
           required
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-hidden focus:border-white transition-all"
+          className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-hidden focus:border-white/40 focus:ring-1 focus:ring-white/20 transition-all"
           placeholder="+91 XXXXX XXXXX"
         />
       </div>
@@ -125,9 +126,13 @@ export function CafeTemplate({ lead }: { lead: Lead }) {
 
   return (
     <div 
-      className="min-h-screen bg-[#0b0a09] text-[#eae5db] selection:bg-[#c5a880] selection:text-[#0b0a09] leading-relaxed"
-      style={{ fontFamily: "'Inter', sans-serif" }}
+      className="min-h-screen bg-[#0b0a09] text-[#eae5db] selection:bg-[#c5a880] selection:text-[#0b0a09] leading-relaxed relative overflow-hidden"
+      style={{ fontFamily: "'Outfit', sans-serif" }}
     >
+      {/* Background Decorative Gold Orbs */}
+      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[#c5a880]/[0.03] rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#bf953f]/[0.02] rounded-full blur-[120px] pointer-events-none" />
+
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[#0b0a09]/95 backdrop-blur-md border-b border-[#221f1c] py-6 px-6 sm:px-12 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -143,7 +148,7 @@ export function CafeTemplate({ lead }: { lead: Lead }) {
         </div>
         <a 
           href="#reserve"
-          className="border border-[#c5a880]/30 hover:bg-[#c5a880] hover:text-[#0b0a09] text-[#c5a880] py-2.5 px-6 rounded-none text-xs font-bold tracking-widest uppercase transition-all duration-300"
+          className="border border-[#c5a880]/30 hover:border-[#c5a880] hover:bg-[#c5a880] hover:text-[#0b0a09] text-[#c5a880] py-2.5 px-6 rounded-none text-xs font-bold tracking-widest uppercase transition-all duration-300 btn-shine-effect"
         >
           Reserve Table
         </a>
@@ -157,7 +162,7 @@ export function CafeTemplate({ lead }: { lead: Lead }) {
             className="text-4xl sm:text-7xl font-extralight text-white leading-tight tracking-tight uppercase"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            {lead.tagline || "Artisanal Brews & Slow Living"}
+            <span className="text-shine-gold">{lead.tagline || "Artisanal Brews & Slow Living"}</span>
           </h1>
           <div className="w-16 h-[1px] bg-[#c5a880]/30" />
           <p className="text-[#bbb09c] text-sm sm:text-base leading-relaxed max-w-xl font-light">
@@ -173,7 +178,7 @@ export function CafeTemplate({ lead }: { lead: Lead }) {
           <div className="flex gap-4 pt-4">
             <a 
               href="#menu" 
-              className="bg-[#c5a880] hover:bg-[#b0946f] text-[#0b0a09] font-semibold px-8 py-4 rounded-none text-xs tracking-widest uppercase transition-all duration-300"
+              className="bg-[#c5a880] hover:bg-[#b0946f] text-[#0b0a09] font-semibold px-8 py-4 rounded-none text-xs tracking-widest uppercase transition-all duration-300 btn-shine-effect shadow-[0_4px_20px_rgba(197,168,128,0.2)]"
             >
               Explore Menu
             </a>
@@ -203,17 +208,16 @@ export function CafeTemplate({ lead }: { lead: Lead }) {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {services.map((service, index) => (
-            <div key={index} className="space-y-2">
-              <div className="flex justify-between items-baseline gap-2">
+            <div key={index} className="group relative bg-[#13110f]/60 border border-[#c5a880]/10 hover:border-[#c5a880]/30 p-6 rounded-2xl transition-all duration-500 hover:shadow-[0_0_30px_rgba(197,168,128,0.12)] backdrop-blur-md">
+              <div className="flex justify-between items-baseline gap-2 mb-2">
                 <h4 
-                  className="text-lg font-bold text-white uppercase tracking-wide"
+                  className="text-lg font-bold text-white uppercase tracking-wide group-hover:text-[#c5a880] transition-colors"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   {service}
                 </h4>
-                <div className="grow border-b border-dashed border-[#c5a880]/20 mx-2" />
                 <span className="text-sm font-bold text-[#c5a880] font-mono">{prices[index % prices.length]}</span>
               </div>
               <p className="text-xs text-[#bbb09c] font-light leading-relaxed">
@@ -228,11 +232,11 @@ export function CafeTemplate({ lead }: { lead: Lead }) {
       <section className="py-12 border-t border-[#221f1c] bg-[#080706]">
         <div className="max-w-6xl mx-auto px-6 sm:px-12 grid grid-cols-2 lg:grid-cols-4 gap-6">
           {cafeImages.map((img, idx) => (
-            <div key={idx} className="aspect-[4/5] overflow-hidden border border-[#221f1c]">
+            <div key={idx} className="aspect-[4/5] overflow-hidden border border-[#221f1c] rounded-xl hover:border-[#c5a880]/30 transition-all duration-500 hover:shadow-[0_0_20px_rgba(197,168,128,0.08)]">
               <img 
                 src={img} 
                 alt="Cafe Details" 
-                className="w-full h-full object-cover grayscale-30 hover:grayscale-0 transition-all duration-500 hover:scale-105"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 hover:scale-105"
               />
             </div>
           ))}
@@ -267,7 +271,7 @@ export function CafeTemplate({ lead }: { lead: Lead }) {
               </div>
             </div>
           </div>
-          <div className="lg:col-span-5 bg-[#0b0a09] border border-[#221f1c] p-8 rounded-none">
+          <div className="lg:col-span-5 bg-[#0e0d0b]/80 border border-[#c5a880]/15 p-8 rounded-3xl backdrop-blur-xl hover:shadow-[0_0_40px_rgba(197,168,128,0.1)] transition-all duration-500">
             <ContactForm businessName={lead.name} themeColor="gold" />
           </div>
         </div>
@@ -283,7 +287,7 @@ export function CafeTemplate({ lead }: { lead: Lead }) {
 }
 
 // -------------------------------------------------------------------
-// 2. GYM / FITNESS TEMPLATE (Elite Dark Mode, Kinetic Neon Red Accents)
+// 2. GYM / FITNESS TEMPLATE (Elite Dark Mode, Luxury Gold & Obsidian)
 // -------------------------------------------------------------------
 export function GymTemplate({ lead }: { lead: Lead }) {
   const services = parseServices(lead.services, [
@@ -302,16 +306,17 @@ export function GymTemplate({ lead }: { lead: Lead }) {
 
   return (
     <div 
-      className="min-h-screen bg-[#050505] text-[#eaeaea] selection:bg-[#ff2d55] selection:text-white leading-tight"
+      className="min-h-screen bg-[#080706] text-[#eaeaea] selection:bg-[#bf953f] selection:text-black leading-tight relative overflow-hidden"
       style={{ fontFamily: "'Outfit', sans-serif" }}
     >
-      {/* Background Neon Glow */}
-      <div className="absolute top-0 left-10 w-[500px] h-[500px] bg-[#ff2d55]/[0.015] rounded-full blur-[120px] pointer-events-none" />
+      {/* Background Gold Luxury Glows */}
+      <div className="absolute top-0 left-10 w-[500px] h-[500px] bg-[#bf953f]/[0.03] rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute top-1/2 right-10 w-[400px] h-[400px] bg-[#b38728]/[0.02] rounded-full blur-[120px] pointer-events-none" />
 
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#050505]/90 backdrop-blur-md border-b border-white/5 py-6 px-6 sm:px-12 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-[#080706]/90 backdrop-blur-md border-b border-[#bf953f]/10 py-6 px-6 sm:px-12 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Dumbbell className="w-5 h-5 text-[#ff2d55]" />
+          <Dumbbell className="w-5 h-5 text-[#bf953f]" />
           <span 
             className="text-lg font-black tracking-tighter text-white uppercase italic"
             style={{ fontFamily: "'Syne', sans-serif" }}
@@ -321,7 +326,7 @@ export function GymTemplate({ lead }: { lead: Lead }) {
         </div>
         <a 
           href="#pass"
-          className="bg-[#ff2d55] hover:bg-[#e02047] text-white py-2.5 px-6 rounded-none text-xs font-black tracking-widest uppercase transition-all duration-300 shadow-[0_4px_20px_rgba(255,45,85,0.25)]"
+          className="bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] hover:from-[#b38728] hover:to-[#bf953f] text-black py-2.5 px-6 rounded-none text-xs font-black tracking-widest uppercase transition-all duration-300 shadow-[0_4px_20px_rgba(191,149,63,0.3)] btn-shine-effect"
         >
           Get Free Pass
         </a>
@@ -330,23 +335,23 @@ export function GymTemplate({ lead }: { lead: Lead }) {
       {/* Hero */}
       <section className="relative py-20 px-6 sm:px-12 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         <div className="lg:col-span-7 space-y-8 text-left">
-          <span className="text-[#ff2d55] text-xs font-mono font-bold tracking-[0.3em] uppercase block">
+          <span className="text-shine-gold text-xs font-mono font-bold tracking-[0.3em] uppercase block">
             // ELITE STRENGTH ZONE
           </span>
           <h1 
             className="text-5xl sm:text-8xl font-black text-white leading-none uppercase italic tracking-tighter"
             style={{ fontFamily: "'Syne', sans-serif" }}
           >
-            {lead.tagline || "Break Your Limits."}
+            <span className="text-shine-gold">{lead.tagline || "Break Your Limits."}</span>
           </h1>
-          <div className="w-16 h-[2px] bg-[#ff2d55]" />
+          <div className="w-16 h-[2px] bg-[#bf953f]" />
           <p className="text-neutral-400 text-sm sm:text-base leading-relaxed max-w-xl font-light">
             {lead.description || "Transform your athletic output. We supply high-end strength platforms, hand-selected biomechanically correct weight stacks, and elite coaching designed to build raw power."}
           </p>
           {lead.rating && (
-            <div className="flex items-center gap-2 text-xs font-mono text-[#ff2d55]">
+            <div className="flex items-center gap-2 text-xs font-mono text-[#bf953f]">
               <div className="flex items-center gap-1">
-                <Star className="w-3.5 h-3.5 fill-[#ff2d55] text-[#ff2d55]" />
+                <Star className="w-3.5 h-3.5 fill-[#bf953f] text-[#bf953f]" />
                 <span className="font-bold text-white">{lead.rating}</span>
               </div>
               <span className="text-neutral-600">/</span>
@@ -356,7 +361,7 @@ export function GymTemplate({ lead }: { lead: Lead }) {
           <div className="flex gap-4 pt-4">
             <a 
               href="#pass" 
-              className="bg-white hover:bg-neutral-200 text-black font-extrabold px-8 py-4 rounded-none text-xs tracking-widest uppercase transition-all duration-300"
+              className="bg-white hover:bg-neutral-200 text-black font-extrabold px-8 py-4 rounded-none text-xs tracking-widest uppercase transition-all duration-300 btn-shine-effect shadow-[0_4px_20px_rgba(255,255,255,0.15)]"
             >
               Start Training
             </a>
@@ -364,7 +369,7 @@ export function GymTemplate({ lead }: { lead: Lead }) {
         </div>
 
         {/* Hero Athletic Image */}
-        <div className="lg:col-span-5 relative w-full aspect-[4/5] rounded-none overflow-hidden border border-white/10 shadow-2xl bg-neutral-900">
+        <div className="lg:col-span-5 relative w-full aspect-[4/5] rounded-none overflow-hidden border border-[#bf953f]/10 shadow-2xl bg-neutral-900">
           <img 
             src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800"
             alt="Elite Athlete Training"
@@ -377,7 +382,7 @@ export function GymTemplate({ lead }: { lead: Lead }) {
       {/* Services Section */}
       <section className="py-24 px-6 sm:px-12 max-w-6xl mx-auto border-t border-white/5">
         <div className="text-center mb-20">
-          <span className="text-[#ff2d55] text-xs font-mono font-bold tracking-[0.3em] block mb-2">// CAPABILITIES</span>
+          <span className="text-shine-gold text-xs font-mono font-bold tracking-[0.3em] block mb-2">// CAPABILITIES</span>
           <h2 
             className="text-3xl sm:text-5xl font-black text-white uppercase italic tracking-tighter"
             style={{ fontFamily: "'Syne', sans-serif" }}
@@ -388,13 +393,13 @@ export function GymTemplate({ lead }: { lead: Lead }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
-            <div key={index} className="group relative bg-[#0b0b0b] border border-white/5 p-8 hover:border-[#ff2d55]/30 transition-all duration-500">
+            <div key={index} className="group relative bg-[#0e0d0b]/80 border border-[#bf953f]/15 hover:border-[#bf953f]/40 p-8 rounded-2xl hover:shadow-[0_0_35px_rgba(197,168,128,0.2)] transition-all duration-500 backdrop-blur-md">
               {/* Backlight glow on hover */}
-              <div className="absolute inset-0 bg-[#ff2d55]/[0.01] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+              <div className="absolute inset-0 bg-[#bf953f]/[0.015] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-2xl" />
               
-              <div className="text-[#ff2d55] font-mono text-xs mb-6 font-bold">0{index + 1} /</div>
+              <div className="text-shine-gold font-mono text-xs mb-6 font-bold">0{index + 1} /</div>
               <h4 
-                className="text-lg font-bold text-white uppercase italic tracking-tight mb-4"
+                className="text-lg font-bold text-white uppercase italic tracking-tight mb-4 group-hover:text-[#bf953f] transition-colors"
                 style={{ fontFamily: "'Syne', sans-serif" }}
               >
                 {service}
@@ -411,7 +416,7 @@ export function GymTemplate({ lead }: { lead: Lead }) {
       <section className="py-12 border-t border-white/5 bg-[#030303]">
         <div className="max-w-6xl mx-auto px-6 sm:px-12 grid grid-cols-2 lg:grid-cols-4 gap-6">
           {gymImages.map((img, idx) => (
-            <div key={idx} className="aspect-[4/5] overflow-hidden border border-white/5">
+            <div key={idx} className="aspect-[4/5] overflow-hidden border border-[#bf953f]/10 hover:border-[#bf953f]/40 rounded-xl transition-all duration-500 hover:shadow-[0_0_20px_rgba(197,168,128,0.1)]">
               <img 
                 src={img} 
                 alt="Gym Training Facility" 
@@ -437,27 +442,27 @@ export function GymTemplate({ lead }: { lead: Lead }) {
             </p>
             <div className="space-y-4 pt-4 text-sm font-light">
               <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-[#ff2d55]/50 shrink-0" />
+                <MapPin className="w-5 h-5 text-[#bf953f]/50 shrink-0" />
                 <span>{lead.address}</span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-[#ff2d55]/50 shrink-0" />
+                <Phone className="w-5 h-5 text-[#bf953f]/50 shrink-0" />
                 <span>{lead.phone}</span>
               </div>
               <div className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-[#ff2d55]/50 shrink-0" />
+                <Clock className="w-5 h-5 text-[#bf953f]/50 shrink-0" />
                 <span>Open 24/7 for Members</span>
               </div>
             </div>
           </div>
-          <div className="lg:col-span-5 bg-[#0b0b0b] border border-white/10 p-8 rounded-none">
-            <ContactForm businessName={lead.name} themeColor="red" />
+          <div className="lg:col-span-5 bg-[#0e0d0b]/90 border border-[#bf953f]/25 p-8 rounded-3xl backdrop-blur-xl hover:shadow-[0_0_40px_rgba(197,168,128,0.15)] transition-all duration-500">
+            <ContactForm businessName={lead.name} themeColor="gold" />
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-16 border-t border-white/5 text-center text-xs text-neutral-600">
+      <footer className="py-16 border-t border-[#bf953f]/10 text-center text-xs text-neutral-600">
         <p className="mb-2 uppercase tracking-widest font-black text-neutral-500">&copy; {new Date().getFullYear()} {lead.name}</p>
         <p>Proudly presented by Asenra Venture Studio Demo Network</p>
       </footer>
@@ -478,9 +483,13 @@ export function SalonTemplate({ lead }: { lead: Lead }) {
 
   return (
     <div 
-      className="min-h-screen bg-[#faf8f5] text-[#2c2623] selection:bg-rose-100 selection:text-rose-950 leading-relaxed font-light"
+      className="min-h-screen bg-[#faf8f5] text-[#2c2623] selection:bg-rose-100 selection:text-rose-950 leading-relaxed font-light relative overflow-hidden"
       style={{ fontFamily: "'Outfit', sans-serif" }}
     >
+      {/* Background Decorative Rose Glows */}
+      <div className="absolute top-1/4 right-10 w-[400px] h-[400px] bg-rose-200/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-10 w-[400px] h-[400px] bg-rose-100/10 rounded-full blur-[120px] pointer-events-none" />
+
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[#faf8f5]/90 backdrop-blur-md border-b border-[#ebdcd0] py-5 px-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -494,7 +503,7 @@ export function SalonTemplate({ lead }: { lead: Lead }) {
         </div>
         <a 
           href={`tel:${lead.phone}`}
-          className="border border-[#ebdcd0] hover:bg-black hover:text-white text-black py-2.5 px-6 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300"
+          className="border border-rose-300/40 hover:bg-rose-50 hover:text-white text-black py-2.5 px-6 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 btn-shine-effect shadow-[0_2px_10px_rgba(244,63,94,0.05)]"
         >
           Book Appointment
         </a>
@@ -508,10 +517,14 @@ export function SalonTemplate({ lead }: { lead: Lead }) {
             className="text-5xl sm:text-7xl font-extralight text-black leading-tight tracking-wide uppercase"
             style={{ fontFamily: "'Italiana', serif" }}
           >
-            Refined <span className="font-normal text-rose-400">Beauty & Glamour</span>
+            {lead.tagline ? (
+              <span className="text-shine-rose">{lead.tagline}</span>
+            ) : (
+              <>Refined <span className="text-shine-rose font-normal">Beauty & Glamour</span></>
+            )}
           </h1>
           <p className="text-zinc-600 text-base sm:text-lg leading-relaxed max-w-xl font-light">
-            {lead.tagline || lead.description || "A luxury salon experience built around custom treatments, premium hair care, and relaxing spa sessions designed for you."}
+            {lead.description || "A luxury salon experience built around custom treatments, premium hair care, and relaxing spa sessions designed for you."}
           </p>
           {lead.rating && (
             <div className="flex items-center gap-1.5 text-xs text-rose-500 font-medium">
@@ -523,7 +536,7 @@ export function SalonTemplate({ lead }: { lead: Lead }) {
           <div className="flex gap-4 pt-4">
             <a 
               href="#services" 
-              className="bg-black hover:bg-zinc-800 text-white font-semibold px-8 py-4 rounded-full text-xs tracking-widest uppercase transition-all duration-300"
+              className="bg-black hover:bg-zinc-800 text-white font-semibold px-8 py-4 rounded-full text-xs tracking-widest uppercase transition-all duration-300 btn-shine-effect shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
             >
               Our Services
             </a>
@@ -552,14 +565,14 @@ export function SalonTemplate({ lead }: { lead: Lead }) {
           </h2>
         </div>
 
-        <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {services.map((service, index) => (
-            <div key={index} className="flex justify-between items-center border-b border-[#ebdcd0] pb-4">
-              <div>
-                <h4 className="text-lg font-bold text-black">{service}</h4>
-                <p className="text-xs text-zinc-500">Premium treatment custom-tailored to your style and wellness preferences.</p>
+            <div key={index} className="group bg-white/70 border border-[#ebdcd0]/40 hover:border-rose-300 p-6 rounded-2xl transition-all duration-500 hover:shadow-[0_0_25px_rgba(244,63,94,0.08)] backdrop-blur-md">
+              <div className="flex justify-between items-center mb-2">
+                <h4 className="text-base font-bold text-black group-hover:text-rose-500 transition-colors">{service}</h4>
+                <span className="text-rose-500 font-bold text-sm font-mono">Couture</span>
               </div>
-              <span className="text-rose-500 font-bold text-sm">Couture</span>
+              <p className="text-xs text-zinc-500 leading-relaxed">Premium treatment custom-tailored to your style and wellness preferences.</p>
             </div>
           ))}
         </div>
@@ -589,7 +602,7 @@ export function SalonTemplate({ lead }: { lead: Lead }) {
               </div>
             </div>
           </div>
-          <div className="lg:col-span-5 bg-white border border-[#ebdcd0] p-6 rounded-3xl shadow-xl">
+          <div className="lg:col-span-5 bg-white/80 border border-rose-100 p-8 rounded-3xl shadow-xl hover:shadow-[0_0_40px_rgba(244,63,94,0.08)] transition-all duration-500 backdrop-blur-md">
             <ContactForm businessName={lead.name} themeColor="rose" />
           </div>
         </div>
@@ -617,9 +630,13 @@ export function ServicesTemplate({ lead }: { lead: Lead }) {
 
   return (
     <div 
-      className="min-h-screen bg-slate-50 text-slate-700 selection:bg-emerald-600 selection:text-white leading-relaxed font-light"
+      className="min-h-screen bg-slate-50 text-slate-700 selection:bg-emerald-600 selection:text-white leading-relaxed font-light relative overflow-hidden"
       style={{ fontFamily: "'Outfit', sans-serif" }}
     >
+      {/* Background Decorative Emerald Glows */}
+      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-teal-500/[0.03] rounded-full blur-[120px] pointer-events-none" />
+
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 py-5 px-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -628,7 +645,7 @@ export function ServicesTemplate({ lead }: { lead: Lead }) {
         </div>
         <a 
           href={`tel:${lead.phone}`}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-6 rounded-full text-xs font-bold tracking-wide uppercase transition-all duration-300"
+          className="bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-6 rounded-full text-xs font-bold tracking-wide uppercase transition-all duration-300 btn-shine-effect shadow-[0_4px_15px_rgba(16,185,129,0.2)]"
         >
           Book Service
         </a>
@@ -639,7 +656,7 @@ export function ServicesTemplate({ lead }: { lead: Lead }) {
         <div className="lg:col-span-7 space-y-6 text-left">
           <span className="text-emerald-600 text-xs font-bold tracking-[0.3em] uppercase block">Reliable & Verified</span>
           <h1 className="text-4xl sm:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight uppercase">
-            {lead.tagline || "Professional Service You Can Trust"}
+            <span className="text-shine-emerald">{lead.tagline || "Professional Service You Can Trust"}</span>
           </h1>
           <p className="text-slate-500 text-base sm:text-lg leading-relaxed max-w-xl font-light">
             {lead.description || "High-quality, reliable, and premium local services tailored exactly to your home or office needs. Certified professionals ready to help."}
@@ -654,7 +671,7 @@ export function ServicesTemplate({ lead }: { lead: Lead }) {
           <div className="flex gap-4 pt-4">
             <a 
               href="#contact" 
-              className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-4 rounded-full text-sm transition-all duration-300 uppercase tracking-wide"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-4 rounded-full text-sm transition-all duration-300 uppercase tracking-wide btn-shine-effect shadow-[0_4px_20px_rgba(16,185,129,0.3)]"
             >
               Get Free Estimate
             </a>
@@ -679,10 +696,10 @@ export function ServicesTemplate({ lead }: { lead: Lead }) {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {services.map((service, index) => (
-            <div key={index} className="bg-white border border-slate-200 p-6 rounded-2xl flex gap-4 shadow-sm hover:shadow-md transition-shadow">
-              <CheckCircle className="w-6 h-6 text-emerald-500 shrink-0 mt-1" />
+            <div key={index} className="group bg-white border border-slate-200/80 hover:border-emerald-500/30 p-6 rounded-2xl flex gap-4 shadow-sm hover:shadow-[0_0_30px_rgba(16,185,129,0.12)] transition-all duration-500">
+              <CheckCircle className="w-6 h-6 text-emerald-500 shrink-0 mt-1 group-hover:scale-110 transition-transform" />
               <div>
-                <h4 className="text-base font-bold text-slate-900 mb-1">{service}</h4>
+                <h4 className="text-base font-bold text-slate-900 mb-1 group-hover:text-emerald-700 transition-colors">{service}</h4>
                 <p className="text-xs text-slate-500 leading-relaxed">Professional service executed with utmost precision, certified techniques, and absolute care.</p>
               </div>
             </div>
@@ -709,7 +726,7 @@ export function ServicesTemplate({ lead }: { lead: Lead }) {
               </div>
             </div>
           </div>
-          <div className="lg:col-span-5 bg-white border border-slate-200 p-6 rounded-3xl shadow-xl">
+          <div className="lg:col-span-5 bg-white/95 border border-slate-200/80 p-8 rounded-3xl shadow-xl hover:shadow-[0_0_40px_rgba(16,185,129,0.1)] transition-all duration-500 backdrop-blur-md">
             <ContactForm businessName={lead.name} themeColor="emerald" />
           </div>
         </div>
@@ -736,11 +753,12 @@ export function GeneralTemplate({ lead }: { lead: Lead }) {
 
   return (
     <div 
-      className="min-h-screen bg-black text-neutral-300 selection:bg-blue-600 selection:text-white leading-relaxed font-light"
+      className="min-h-screen bg-black text-neutral-300 selection:bg-blue-600 selection:text-white leading-relaxed font-light relative overflow-hidden"
       style={{ fontFamily: "'Outfit', sans-serif" }}
     >
-      {/* Glow */}
-      <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-blue-600/[0.03] rounded-full blur-[100px] pointer-events-none" />
+      {/* Background Decorative Blue Glows */}
+      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-blue-600/[0.04] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-indigo-600/[0.03] rounded-full blur-[100px] pointer-events-none" />
 
       {/* Header */}
       <header className="sticky top-0 z-50 bg-black/85 backdrop-blur-md border-b border-white/5 py-5 px-6 flex items-center justify-between">
@@ -750,7 +768,7 @@ export function GeneralTemplate({ lead }: { lead: Lead }) {
         </div>
         <a 
           href={`tel:${lead.phone}`}
-          className="bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-6 rounded-full text-xs font-bold tracking-wide uppercase transition-all duration-300"
+          className="bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-6 rounded-full text-xs font-bold tracking-wide uppercase transition-all duration-300 btn-shine-effect shadow-[0_4px_15px_rgba(37,99,235,0.3)]"
         >
           Contact Now
         </a>
@@ -761,7 +779,7 @@ export function GeneralTemplate({ lead }: { lead: Lead }) {
         <div className="lg:col-span-7 space-y-6 text-left">
           <span className="text-blue-400 text-xs font-bold tracking-[0.3em] uppercase block">Tailored for You</span>
           <h1 className="text-4xl sm:text-6xl font-extrabold text-white leading-tight tracking-tight uppercase">
-            {lead.tagline || "Modern Solutions for Your Growth"}
+            <span className="text-shine-blue">{lead.tagline || "Modern Solutions for Your Growth"}</span>
           </h1>
           <p className="text-neutral-400 text-base sm:text-lg leading-relaxed max-w-xl font-light">
             {lead.description || "Premium services, expert consultations, and dedicated support built around your unique business goals."}
@@ -776,7 +794,7 @@ export function GeneralTemplate({ lead }: { lead: Lead }) {
           <div className="flex gap-4 pt-4">
             <a 
               href="#contact" 
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-full text-sm transition-all duration-300 uppercase tracking-wide"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-full text-sm transition-all duration-300 uppercase tracking-wide btn-shine-effect shadow-[0_4px_20px_rgba(37,99,235,0.4)]"
             >
               Get in Touch
             </a>
@@ -801,9 +819,9 @@ export function GeneralTemplate({ lead }: { lead: Lead }) {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {services.map((service, index) => (
-            <div key={index} className="bg-neutral-900 border border-white/5 p-6 rounded-2xl space-y-4 hover:border-blue-500/20 transition-all">
-              <CheckCircle className="w-8 h-8 text-blue-400" />
-              <h4 className="text-lg font-bold text-white uppercase">{service}</h4>
+            <div key={index} className="group bg-neutral-900/80 border border-white/5 p-6 rounded-2xl space-y-4 hover:border-blue-500/30 hover:shadow-[0_0_30px_rgba(37,99,235,0.15)] transition-all duration-500 backdrop-blur-md">
+              <CheckCircle className="w-8 h-8 text-blue-400 group-hover:scale-110 transition-transform" />
+              <h4 className="text-lg font-bold text-white uppercase group-hover:text-blue-400 transition-colors">{service}</h4>
               <p className="text-xs text-neutral-400 leading-relaxed">Bespoke dynamic solutions designed specifically to scale operations and output quality.</p>
             </div>
           ))}
@@ -829,7 +847,7 @@ export function GeneralTemplate({ lead }: { lead: Lead }) {
               </div>
             </div>
           </div>
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 bg-neutral-900/90 border border-white/10 p-8 rounded-3xl backdrop-blur-xl hover:shadow-[0_0_40px_rgba(37,99,235,0.15)] transition-all duration-500">
             <ContactForm businessName={lead.name} themeColor="blue" />
           </div>
         </div>
@@ -864,9 +882,13 @@ export function ArchitectureTemplate({ lead }: { lead: Lead }) {
 
   return (
     <div 
-      className="min-h-screen bg-[#0a0a0a] text-neutral-200 selection:bg-white selection:text-black leading-relaxed font-light"
+      className="min-h-screen bg-[#0a0a0a] text-neutral-200 selection:bg-white selection:text-black leading-relaxed font-light relative overflow-hidden"
       style={{ fontFamily: "'Outfit', sans-serif" }}
     >
+      {/* Background Decorative Silver Glows */}
+      <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-white/[0.015] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/3 w-[400px] h-[400px] bg-neutral-800/[0.02] rounded-full blur-[100px] pointer-events-none" />
+
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5 py-6 px-6 sm:px-12 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -877,7 +899,7 @@ export function ArchitectureTemplate({ lead }: { lead: Lead }) {
         </div>
         <a 
           href={`tel:${lead.phone}`}
-          className="border border-white/20 hover:border-white hover:bg-white hover:text-black text-white py-2.5 px-6 rounded-none text-xs font-bold tracking-widest uppercase transition-all duration-300"
+          className="border border-white/20 hover:border-white hover:bg-white hover:text-black text-white py-2.5 px-6 rounded-none text-xs font-bold tracking-widest uppercase transition-all duration-300 btn-shine-effect shadow-[0_2px_10px_rgba(255,255,255,0.05)]"
         >
           Inquire
         </a>
@@ -888,7 +910,7 @@ export function ArchitectureTemplate({ lead }: { lead: Lead }) {
         <div className="lg:col-span-6 space-y-8 text-left">
           <span className="text-white/40 text-xs font-bold tracking-[0.4em] uppercase block">Architectural Studio</span>
           <h1 className="text-4xl sm:text-7xl font-extralight text-white leading-tight tracking-tight uppercase">
-            {lead.tagline || "Bespoke Structural Narratives"}
+            <span className="text-shine-silver">{lead.tagline || "Bespoke Structural Narratives"}</span>
           </h1>
           <div className="w-16 h-[1px] bg-white/30" />
           <p className="text-neutral-400 text-sm sm:text-base leading-relaxed max-w-md font-light">
@@ -904,7 +926,7 @@ export function ArchitectureTemplate({ lead }: { lead: Lead }) {
           <div className="flex gap-4 pt-4">
             <a 
               href="#projects" 
-              className="bg-white hover:bg-neutral-200 text-black font-semibold px-8 py-4 rounded-none text-xs tracking-widest uppercase transition-all duration-300"
+              className="bg-white hover:bg-neutral-200 text-black font-semibold px-8 py-4 rounded-none text-xs tracking-widest uppercase transition-all duration-300 btn-shine-effect shadow-[0_4px_20px_rgba(255,255,255,0.15)]"
             >
               View Projects
             </a>
@@ -935,19 +957,19 @@ export function ArchitectureTemplate({ lead }: { lead: Lead }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {services.map((service, index) => (
             <div key={index} className="group cursor-pointer space-y-4">
-              <div className="relative aspect-[3/2] overflow-hidden border border-white/5 bg-neutral-900">
+              <div className="relative aspect-[3/2] overflow-hidden border border-white/5 hover:border-white/20 rounded-xl bg-neutral-900 transition-all duration-500 hover:shadow-[0_0_30px_rgba(255,255,255,0.08)]">
                 <img 
                   src={projectImages[index % projectImages.length]}
                   alt={service}
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-103 transition-all duration-700"
                 />
               </div>
               <div className="flex justify-between items-start pt-2">
                 <div>
-                  <h4 className="text-base font-bold text-white uppercase tracking-wide">{service}</h4>
+                  <h4 className="text-base font-bold text-white uppercase tracking-wide group-hover:text-white transition-colors">{service}</h4>
                   <p className="text-xs text-neutral-500 font-light mt-1">High-end architecture and spatial composition tailored for premium scale.</p>
                 </div>
-                <ArrowUpRight className="w-5 h-5 text-neutral-500 group-hover:text-white transition-colors" />
+                <ArrowUpRight className="w-5 h-5 text-neutral-500 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </div>
             </div>
           ))}
@@ -977,7 +999,7 @@ export function ArchitectureTemplate({ lead }: { lead: Lead }) {
               </div>
             </div>
           </div>
-          <div className="lg:col-span-5 bg-neutral-950 border border-white/10 p-8 rounded-none">
+          <div className="lg:col-span-5 bg-neutral-950 border border-white/10 p-8 rounded-2xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] transition-all duration-500">
             <ContactForm businessName={lead.name} themeColor="white" />
           </div>
         </div>
@@ -991,4 +1013,3 @@ export function ArchitectureTemplate({ lead }: { lead: Lead }) {
     </div>
   );
 }
-
