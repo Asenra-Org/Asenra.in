@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import { 
-  Coffee, Utensils, Clock, Phone, MapPin, 
+  Coffee, Clock, Phone, MapPin, 
   Dumbbell, Trophy, Users, Shield, Calendar,
-  Sparkles, Heart, Scissors, Star, CheckCircle,
-  Mail, Send, Globe, ChevronRight, HelpCircle
+  Sparkles, Heart, Scissors, CheckCircle,
+  Send, ChevronRight, Check, Star, ArrowUpRight, Globe
 } from "lucide-react";
 
 interface Lead {
@@ -17,6 +17,15 @@ interface Lead {
   tagline: string;
   description: string;
   color_theme: string;
+  services?: string;
+  rating?: number;
+  review_count?: number;
+}
+
+// Helper to get services list
+function parseServices(servicesString?: string, defaultServices: string[] = []): string[] {
+  if (!servicesString) return defaultServices;
+  return servicesString.split(",").map(s => s.trim()).filter(Boolean);
 }
 
 // Simple dynamic contact form component for all templates
@@ -32,26 +41,18 @@ function ContactForm({ businessName, themeColor }: { businessName: string; theme
     }
   };
 
-  const btnBg = {
+  const btnStyle = {
     gold: "bg-amber-500 hover:bg-amber-600 text-black",
-    red: "bg-red-600 hover:bg-red-700 text-white",
-    rose: "bg-rose-500 hover:bg-rose-600 text-white",
+    red: "bg-red-600 hover:bg-red-700 text-white font-mono border-2 border-black shadow-[4px_4px_0px_#000]",
+    rose: "bg-rose-500 hover:bg-rose-600 text-white tracking-widest font-light",
     emerald: "bg-emerald-600 hover:bg-emerald-700 text-white",
     blue: "bg-blue-600 hover:bg-blue-700 text-white"
-  }[themeColor] || "bg-neutral-100 hover:bg-neutral-200 text-black";
-
-  const focusBorder = {
-    gold: "focus:border-amber-500 focus:ring-amber-500/20",
-    red: "focus:border-red-600 focus:ring-red-600/20",
-    rose: "focus:border-rose-500 focus:ring-rose-500/20",
-    emerald: "focus:border-emerald-600 focus:ring-emerald-600/20",
-    blue: "focus:border-blue-600 focus:ring-blue-600/20"
-  }[themeColor] || "focus:border-neutral-500 focus:ring-neutral-500/20";
+  }[themeColor] || "bg-white hover:bg-neutral-200 text-black";
 
   if (submitted) {
     return (
-      <div className="bg-neutral-900/60 backdrop-blur-md border border-white/10 p-8 rounded-2xl text-center">
-        <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
+      <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-2xl text-center shadow-2xl">
+        <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto mb-4" />
         <h4 className="text-xl font-bold text-white mb-2">Thank You!</h4>
         <p className="text-neutral-400 text-sm">
           Your request has been sent to {businessName}. We will get back to you shortly.
@@ -61,8 +62,8 @@ function ContactForm({ businessName, themeColor }: { businessName: string; theme
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-neutral-900/60 backdrop-blur-md border border-white/10 p-6 rounded-2xl space-y-4">
-      <h4 className="text-lg font-bold text-white mb-2">Get in Touch</h4>
+    <form onSubmit={handleSubmit} className="bg-black/40 backdrop-blur-xl border border-white/10 p-6 rounded-2xl space-y-4 shadow-2xl">
+      <h4 className="text-lg font-bold text-white mb-2">Reserve / Inquire</h4>
       <div>
         <label className="block text-xs font-semibold text-neutral-400 uppercase mb-1">Your Name</label>
         <input 
@@ -70,7 +71,7 @@ function ContactForm({ businessName, themeColor }: { businessName: string; theme
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className={`w-full bg-neutral-950/80 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-hidden transition-all ${focusBorder}`}
+          className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-hidden focus:border-white transition-all"
           placeholder="John Doe"
         />
       </div>
@@ -81,14 +82,13 @@ function ContactForm({ businessName, themeColor }: { businessName: string; theme
           required
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className={`w-full bg-neutral-950/80 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-hidden transition-all ${focusBorder}`}
+          className="w-full bg-black/60 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-hidden focus:border-white transition-all"
           placeholder="+91 XXXXX XXXXX"
         />
       </div>
       <button 
         type="submit" 
-        className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-lg`}
-        style={{ backgroundColor: themeColor === 'gold' ? '#F59E0B' : themeColor === 'red' ? '#DC2626' : themeColor === 'rose' ? '#F43F5E' : themeColor === 'emerald' ? '#059669' : '#2563EB', color: themeColor === 'gold' ? '#000000' : '#FFFFFF' }}
+        className={`w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${btnStyle}`}
       >
         Submit Request
         <Send className="w-4 h-4" />
@@ -98,119 +98,143 @@ function ContactForm({ businessName, themeColor }: { businessName: string; theme
 }
 
 // -------------------------------------------------------------------
-// 1. CAFE TEMPLATE
+// 1. CAFE TEMPLATE (Elegant Editorial, Serif Typography)
 // -------------------------------------------------------------------
 export function CafeTemplate({ lead }: { lead: Lead }) {
-  const accentColor = "#F59E0B"; // Gold / Amber
+  const services = parseServices(lead.services, [
+    "Single-Origin Pour Over",
+    "Flaky French Croissants",
+    "Signature Cold Brews",
+    "Artisanal Desserts"
+  ]);
+
+  const cafeImages = [
+    "https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=300",
+    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=300",
+    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=300",
+    "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=300"
+  ];
 
   return (
-    <div className="min-h-screen bg-black text-neutral-200 font-sans selection:bg-amber-500 selection:text-black">
-      {/* Decorative Ornaments */}
-      <div className="absolute top-0 left-0 w-full h-[600px] bg-radial-gradient from-amber-500/[0.04] to-transparent pointer-events-none" />
-
+    <div 
+      className="min-h-screen bg-[#0d0c0a] text-[#f4f2ee] selection:bg-amber-500 selection:text-black leading-relaxed"
+      style={{ fontFamily: "'Playfair Display', serif" }}
+    >
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/5 py-4 px-6 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-[#0d0c0a]/90 backdrop-blur-md border-b border-[#2d2a23] py-5 px-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-amber-500/10 border border-amber-500/20 rounded-lg text-amber-500">
-            <Coffee className="w-5 h-5" />
-          </div>
-          <span className="font-serif text-lg font-black tracking-wider text-white uppercase">{lead.name}</span>
+          <Coffee className="w-5 h-5 text-amber-500" />
+          <span className="font-serif text-xl font-bold tracking-wider text-white uppercase">{lead.name}</span>
         </div>
         <a 
           href={`tel:${lead.phone}`}
-          className="bg-amber-500 hover:bg-amber-600 text-black py-2.5 px-5 rounded-lg text-xs font-black tracking-wider uppercase flex items-center gap-2 transition-all duration-300"
+          className="border border-amber-500/30 hover:bg-amber-500 hover:text-black text-amber-400 py-2.5 px-6 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300"
         >
-          <Phone className="w-3.5 h-3.5" />
-          Order Now
+          Call Now
         </a>
       </header>
 
       {/* Hero */}
-      <section className="relative py-20 px-6 max-w-4xl mx-auto text-center">
-        <h1 className="font-serif text-4xl sm:text-6xl font-black text-white leading-tight tracking-tight uppercase mb-6">
-          {lead.tagline || "Artisanal Coffee & Cozy Ambient Spaces"}
-        </h1>
-        <p className="text-neutral-400 text-base sm:text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-          {lead.description || "Welcome to our sanctuary. We source the finest single-origin coffee beans and prepare handcrafted foods to elevate your daily routine."}
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a 
-            href="#menu" 
-            className="w-full sm:w-auto bg-white hover:bg-neutral-200 text-black font-bold px-8 py-4 rounded-xl text-sm transition-all duration-300 uppercase tracking-wider"
-          >
-            View Our Menu
-          </a>
-          <a 
-            href="#contact" 
-            className="w-full sm:w-auto border border-white/10 hover:bg-white/5 text-white font-bold px-8 py-4 rounded-xl text-sm transition-all duration-300 uppercase tracking-wider flex items-center justify-center gap-2"
-          >
-            <Clock className="w-4 h-4 text-amber-500" />
-            Book a Table
-          </a>
+      <section className="relative py-20 px-6 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="lg:col-span-7 space-y-6 text-left">
+          <span className="text-amber-500 text-xs font-bold tracking-[0.3em] uppercase block">Bespoke Experience</span>
+          <h1 className="text-4xl sm:text-6xl font-black text-white leading-tight uppercase tracking-tight">
+            {lead.tagline || "Artisanal Coffee & Crafted Ambience"}
+          </h1>
+          <p className="text-[#c7c1b5] text-base sm:text-lg leading-relaxed font-sans font-light max-w-xl">
+            {lead.description || "Every cup at our sanctuary is a sensory journey. We carefully source single-origin coffee beans and prepare freshly baked, flaky croissants daily."}
+          </p>
+          {lead.rating && (
+            <div className="flex items-center gap-1.5 font-sans text-xs text-amber-400">
+              <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+              <span className="font-bold">{lead.rating}</span>
+              <span className="text-neutral-500">({lead.review_count} Google reviews)</span>
+            </div>
+          )}
+          <div className="flex gap-4 pt-4">
+            <a 
+              href="#menu" 
+              className="bg-amber-500 hover:bg-amber-600 text-black font-semibold font-sans px-8 py-4 rounded-full text-xs tracking-widest uppercase transition-all duration-300"
+            >
+              Explore Menu
+            </a>
+            <a 
+              href="#contact" 
+              className="border border-[#3d382e] hover:bg-white/5 text-white font-semibold font-sans px-8 py-4 rounded-full text-xs tracking-widest uppercase transition-all duration-300"
+            >
+              Reserve Table
+            </a>
+          </div>
+        </div>
+        
+        {/* Premium Image Block */}
+        <div className="lg:col-span-5 relative w-full aspect-square rounded-3xl overflow-hidden border border-[#2d2a23] shadow-2xl">
+          <img 
+            src="https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=800"
+            alt="Espresso Pouring"
+            className="w-full h-full object-cover grayscale-20 hover:grayscale-0 transition-all duration-700 hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
         </div>
       </section>
 
-      {/* Special Highlights Section */}
-      <section id="menu" className="py-16 px-6 max-w-4xl mx-auto border-t border-white/5">
-        <div className="text-center mb-12">
-          <h2 className="font-serif text-sm font-bold text-amber-500 uppercase tracking-[0.2em] mb-2">Our Specialty</h2>
-          <h3 className="text-2xl sm:text-4xl font-black text-white uppercase tracking-tight">Handcrafted Menu</h3>
+      {/* Menu / Highlights Section */}
+      <section id="menu" className="py-20 px-6 max-w-5xl mx-auto border-t border-[#2d2a23]">
+        <div className="text-center mb-16">
+          <span className="text-amber-500 text-xs font-bold uppercase tracking-[0.3em] block mb-2">Our Highlights</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white uppercase tracking-wider">Curated Specialties</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-neutral-900/40 border border-white/5 p-6 rounded-2xl flex items-start gap-4 hover:border-amber-500/20 transition-all">
-            <div className="p-3 bg-amber-500/5 rounded-xl text-amber-500 shrink-0">
-              <Coffee className="w-6 h-6" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {services.map((service, index) => (
+            <div key={index} className="flex gap-6 items-center">
+              <div className="w-24 h-24 shrink-0 rounded-2xl overflow-hidden border border-[#2d2a23]">
+                <img 
+                  src={cafeImages[index % cafeImages.length]}
+                  alt={service}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-lg font-bold text-white uppercase">{service}</h4>
+                <p className="text-xs text-[#c7c1b5] font-sans font-light leading-relaxed">Prepared individually by our experienced baristas using verified techniques.</p>
+              </div>
             </div>
-            <div>
-              <h4 className="text-lg font-bold text-white mb-1">Single-Origin Espresso</h4>
-              <p className="text-xs text-neutral-400 leading-relaxed">Perfectly extracted coffee shots made from high-altitude shade-grown Arabica beans.</p>
-            </div>
-          </div>
-
-          <div className="bg-neutral-900/40 border border-white/5 p-6 rounded-2xl flex items-start gap-4 hover:border-amber-500/20 transition-all">
-            <div className="p-3 bg-amber-500/5 rounded-xl text-amber-500 shrink-0">
-              <Utensils className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="text-lg font-bold text-white mb-1">Handcrafted Croissants</h4>
-              <p className="text-xs text-neutral-400 leading-relaxed">Baked fresh daily in-house using pure French butter. Flaky, light, and delicious.</p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* Booking / Contact Section */}
-      <section id="contact" className="py-16 px-6 max-w-4xl mx-auto border-t border-white/5">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-          <div className="md:col-span-7 space-y-6">
-            <h3 className="font-serif text-3xl font-black text-white uppercase tracking-tight leading-none">Visit Us Today</h3>
-            <p className="text-neutral-400 text-sm leading-relaxed">
+      {/* Booking Form */}
+      <section id="contact" className="py-20 px-6 max-w-5xl mx-auto border-t border-[#2d2a23]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-7 space-y-6">
+            <h3 className="text-3xl sm:text-4xl font-bold text-white uppercase tracking-wider">Experience Our Sanctuary</h3>
+            <p className="text-[#c7c1b5] text-sm font-sans font-light leading-relaxed">
               We look forward to serving you. Come in to work, read, or catch up with friends in our premium ambient space.
             </p>
-            <div className="space-y-4 pt-4">
+            <div className="space-y-4 pt-4 font-sans font-light text-sm">
               <div className="flex items-center gap-3">
                 <MapPin className="w-5 h-5 text-amber-500 shrink-0" />
-                <span className="text-sm font-semibold">{lead.address}</span>
+                <span>{lead.address}</span>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-amber-500 shrink-0" />
-                <span className="text-sm font-semibold">{lead.phone}</span>
+                <span>{lead.phone}</span>
               </div>
               <div className="flex items-center gap-3">
                 <Clock className="w-5 h-5 text-amber-500 shrink-0" />
-                <span className="text-sm font-semibold">Open Daily: 8:00 AM - 10:00 PM</span>
+                <span>Open Daily: 8:00 AM - 10:00 PM</span>
               </div>
             </div>
           </div>
-          <div className="md:col-span-5">
+          <div className="lg:col-span-5">
             <ContactForm businessName={lead.name} themeColor="gold" />
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-white/5 text-center text-xs text-neutral-500">
+      <footer className="py-12 border-t border-[#2d2a23] text-center text-xs text-neutral-500 font-sans font-light">
         <p className="mb-2 uppercase tracking-widest font-black text-neutral-400">&copy; {new Date().getFullYear()} {lead.name}</p>
         <p>Proudly presented by Asenra Venture Studio Demo Network</p>
       </footer>
@@ -219,108 +243,112 @@ export function CafeTemplate({ lead }: { lead: Lead }) {
 }
 
 // -------------------------------------------------------------------
-// 2. GYM / FITNESS TEMPLATE
+// 2. GYM / FITNESS TEMPLATE (Industrial Brutalist, Thick Borders)
 // -------------------------------------------------------------------
 export function GymTemplate({ lead }: { lead: Lead }) {
-  const accentColor = "#DC2626"; // Red
+  const services = parseServices(lead.services, [
+    "Powerlifting & Strength Racks",
+    "Olympic Lifting Platforms",
+    "HIIT & Functional Fitness",
+    "Elite Personal Coaching"
+  ]);
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-200 font-sans selection:bg-red-600 selection:text-white">
-      {/* Red ambient glows */}
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-red-600/[0.04] rounded-full blur-[100px] pointer-events-none" />
-
+    <div 
+      className="min-h-screen bg-[#111] text-neutral-100 selection:bg-red-600 selection:text-white leading-tight"
+      style={{ fontFamily: "'Syne', sans-serif" }}
+    >
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-neutral-950/80 backdrop-blur-md border-b border-white/5 py-4 px-6 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-[#111] border-b-4 border-black py-4 px-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-red-600/15 border border-red-600/30 rounded-lg text-red-500">
-            <Dumbbell className="w-5 h-5" />
-          </div>
-          <span className="font-black text-xl tracking-tighter text-white uppercase italic">{lead.name}</span>
+          <Dumbbell className="w-5 h-5 text-red-600" />
+          <span className="font-extrabold text-xl tracking-tighter text-white uppercase italic">{lead.name}</span>
         </div>
         <a 
           href={`tel:${lead.phone}`}
-          className="bg-red-600 hover:bg-red-700 text-white py-2.5 px-5 rounded-lg text-xs font-black tracking-wider uppercase flex items-center gap-2 transition-all duration-300 italic"
+          className="bg-red-600 hover:bg-red-700 text-white py-2 px-5 border-2 border-black shadow-[3px_3px_0px_#000] text-xs font-black uppercase transition-all duration-300"
         >
-          <Phone className="w-3.5 h-3.5" />
-          Join Club
+          Join Now
         </a>
       </header>
 
       {/* Hero */}
-      <section className="relative py-24 px-6 max-w-4xl mx-auto text-center">
-        <h1 className="text-5xl sm:text-7xl font-black text-white leading-none tracking-tighter uppercase italic mb-6">
-          {lead.tagline || "No Excuses. Just Results."}
-        </h1>
-        <p className="text-neutral-400 text-base sm:text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-          {lead.description || "Transform your life with state-of-the-art strength zones, functional training zones, and community support built for ultimate athletic growth."}
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a 
-            href="#contact" 
-            className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-4 rounded-xl text-sm transition-all duration-300 uppercase tracking-wider italic"
-          >
-            Claim Free Day Pass
-          </a>
-          <a 
-            href="#features" 
-            className="w-full sm:w-auto border border-white/10 hover:bg-white/5 text-white font-bold px-8 py-4 rounded-xl text-sm transition-all duration-300 uppercase tracking-wider flex items-center justify-center gap-2"
-          >
-            <Trophy className="w-4 h-4 text-red-500" />
-            Explore Club
-          </a>
+      <section className="relative py-20 px-6 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="lg:col-span-7 space-y-6 text-left">
+          <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 uppercase inline-block border-2 border-black shadow-[3px_3px_0px_#000]">No Limits</span>
+          <h1 className="text-5xl sm:text-7xl font-extrabold text-white leading-none uppercase italic tracking-tighter">
+            {lead.tagline || "No Excuses. Just Pure Power."}
+          </h1>
+          <p className="text-neutral-400 text-base leading-relaxed font-sans max-w-xl">
+            {lead.description || "Transform your physique inside our premium heavy-iron zone. State-of-the-art platforms, power racks, and coaches built for ultimate strength growth."}
+          </p>
+          {lead.rating && (
+            <div className="flex items-center gap-1.5 font-sans text-xs text-red-500">
+              <Star className="w-4 h-4 fill-red-600 text-red-600" />
+              <span className="font-bold text-white">{lead.rating}</span>
+              <span className="text-neutral-500">({lead.review_count} Google reviews)</span>
+            </div>
+          )}
+          <div className="flex gap-4 pt-4">
+            <a 
+              href="#contact" 
+              className="bg-red-600 hover:bg-red-700 text-white font-extrabold px-8 py-4 border-4 border-black shadow-[5px_5px_0px_#000] text-sm uppercase tracking-wide transition-all"
+            >
+              Get Free Pass
+            </a>
+          </div>
+        </div>
+
+        {/* Industrial Image Frame */}
+        <div className="lg:col-span-5 relative w-full aspect-square border-4 border-black shadow-[8px_8px_0px_#000] rounded-none overflow-hidden bg-black">
+          <img 
+            src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800"
+            alt="Gym training"
+            className="w-full h-full object-cover grayscale contrast-125"
+          />
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section id="features" className="py-16 px-6 max-w-4xl mx-auto border-t border-white/5">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-neutral-900/30 border border-white/5 p-6 rounded-2xl space-y-3 hover:border-red-600/30 transition-all">
-            <Trophy className="w-8 h-8 text-red-500" />
-            <h4 className="text-lg font-bold text-white uppercase italic">Elite Coaching</h4>
-            <p className="text-xs text-neutral-400 leading-relaxed">Certified personal trainers focused on setting realistic goals and achieving permanent body transformation.</p>
-          </div>
-
-          <div className="bg-neutral-900/30 border border-white/5 p-6 rounded-2xl space-y-3 hover:border-red-600/30 transition-all">
-            <Dumbbell className="w-8 h-8 text-red-500" />
-            <h4 className="text-lg font-bold text-white uppercase italic">Premium Zones</h4>
-            <p className="text-xs text-neutral-400 leading-relaxed">Fully equipped strength racks, heavy lifting platforms, and cardio zones with high-end machinery.</p>
-          </div>
-
-          <div className="bg-neutral-900/30 border border-white/5 p-6 rounded-2xl space-y-3 hover:border-red-600/30 transition-all">
-            <Users className="w-8 h-8 text-red-500" />
-            <h4 className="text-lg font-bold text-white uppercase italic">Strong Community</h4>
-            <p className="text-xs text-neutral-400 leading-relaxed">Group classes, functional HIIT workouts, and challenges designed to keep you motivated and accountable.</p>
-          </div>
+      {/* Brutalist Bento Grid */}
+      <section className="py-20 px-6 max-w-5xl mx-auto border-t-4 border-black">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {services.map((service, index) => (
+            <div key={index} className="bg-neutral-800 border-4 border-black p-6 shadow-[5px_5px_0px_#000] space-y-4">
+              <Trophy className="w-10 h-10 text-red-600" />
+              <h4 className="text-lg font-bold uppercase italic">{service}</h4>
+              <p className="text-xs text-neutral-400 font-sans leading-relaxed">High performance training programs tailored to your fitness needs.</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Booking Form */}
-      <section id="contact" className="py-16 px-6 max-w-4xl mx-auto border-t border-white/5">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-          <div className="md:col-span-7 space-y-6">
-            <h3 className="text-3xl font-black text-white uppercase italic tracking-tighter leading-none">Ready to Train?</h3>
-            <p className="text-neutral-400 text-sm leading-relaxed">
+      <section id="contact" className="py-20 px-6 max-w-5xl mx-auto border-t-4 border-black">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-7 space-y-6">
+            <h3 className="text-4xl font-extrabold text-white uppercase italic">Ready to Train?</h3>
+            <p className="text-neutral-400 text-sm font-sans leading-relaxed">
               Fill out the form to secure your free day pass. Take the first step towards your fitness goals today. Our team is ready to guide you.
             </p>
-            <div className="space-y-4 pt-4">
+            <div className="space-y-4 pt-4 font-mono text-sm">
               <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-red-500 shrink-0" />
-                <span className="text-sm font-semibold">{lead.address}</span>
+                <MapPin className="w-5 h-5 text-red-600 shrink-0" />
+                <span>{lead.address}</span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-red-500 shrink-0" />
-                <span className="text-sm font-semibold">{lead.phone}</span>
+                <Phone className="w-5 h-5 text-red-600 shrink-0" />
+                <span>{lead.phone}</span>
               </div>
             </div>
           </div>
-          <div className="md:col-span-5">
+          <div className="lg:col-span-5">
             <ContactForm businessName={lead.name} themeColor="red" />
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-white/5 text-center text-xs text-neutral-500">
+      <footer className="py-12 border-t-4 border-black text-center text-xs text-neutral-500 font-sans">
         <p className="mb-2 uppercase tracking-widest font-black text-neutral-400">&copy; {new Date().getFullYear()} {lead.name}</p>
         <p>Proudly presented by Asenra Venture Studio Demo Network</p>
       </footer>
@@ -329,118 +357,137 @@ export function GymTemplate({ lead }: { lead: Lead }) {
 }
 
 // -------------------------------------------------------------------
-// 3. SALON / BEAUTY TEMPLATE
+// 3. SALON / BEAUTY TEMPLATE (Luxury Minimalist, Italiana Typography)
 // -------------------------------------------------------------------
 export function SalonTemplate({ lead }: { lead: Lead }) {
-  const accentColor = "#F43F5E"; // Rose
+  const services = parseServices(lead.services, [
+    "Signature Haircuts & Styling",
+    "Luxury Bridal Makeup",
+    "Organic Skin Cleansing",
+    "Aroma Scalp Therapy"
+  ]);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-300 font-sans selection:bg-rose-500 selection:text-white">
-      {/* Elegance Rose Light Glow */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-rose-500/[0.03] rounded-full blur-[120px] pointer-events-none" />
-
+    <div 
+      className="min-h-screen bg-[#faf8f5] text-[#2c2623] selection:bg-rose-100 selection:text-rose-950 leading-relaxed font-light"
+      style={{ fontFamily: "'Outfit', sans-serif" }}
+    >
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-md border-b border-white/5 py-4 px-6 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-[#faf8f5]/90 backdrop-blur-md border-b border-[#ebdcd0] py-5 px-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-rose-500/10 border border-rose-500/20 rounded-lg text-rose-400">
-            <Scissors className="w-5 h-5" />
-          </div>
-          <span className="font-light text-lg tracking-[0.2em] text-white uppercase">{lead.name}</span>
+          <Scissors className="w-5 h-5 text-rose-400" />
+          <span 
+            className="text-lg tracking-[0.2em] text-black uppercase"
+            style={{ fontFamily: "'Italiana', serif" }}
+          >
+            {lead.name}
+          </span>
         </div>
         <a 
           href={`tel:${lead.phone}`}
-          className="bg-rose-500 hover:bg-rose-600 text-white py-2.5 px-5 rounded-lg text-xs font-bold tracking-widest uppercase flex items-center gap-2 transition-all duration-300"
+          className="border border-[#ebdcd0] hover:bg-black hover:text-white text-black py-2.5 px-6 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300"
         >
-          <Calendar className="w-3.5 h-3.5" />
           Book Appointment
         </a>
       </header>
 
       {/* Hero */}
-      <section className="relative py-24 px-6 max-w-4xl mx-auto text-center">
-        <h1 className="text-4xl sm:text-6xl font-extralight text-white leading-tight tracking-wide uppercase mb-6">
-          Elevate Your <span className="font-bold text-rose-400">Natural Glow</span>
-        </h1>
-        <p className="text-zinc-400 text-base sm:text-lg mb-10 max-w-2xl mx-auto leading-relaxed font-light">
-          {lead.tagline || lead.description || "A luxury salon experience built around custom treatments, premium hair care, and relaxing spa sessions designed for you."}
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a 
-            href="#services" 
-            className="w-full sm:w-auto bg-white hover:bg-zinc-200 text-black font-semibold px-8 py-4 rounded-xl text-sm transition-all duration-300 uppercase tracking-widest"
+      <section className="relative py-24 px-6 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="lg:col-span-7 space-y-6 text-left">
+          <span className="text-rose-400 text-xs font-bold tracking-[0.3em] uppercase block">Exclusive Salon & Spa</span>
+          <h1 
+            className="text-5xl sm:text-7xl font-extralight text-black leading-tight tracking-wide uppercase"
+            style={{ fontFamily: "'Italiana', serif" }}
           >
-            Our Services
-          </a>
-          <a 
-            href="#contact" 
-            className="w-full sm:w-auto border border-white/10 hover:bg-white/5 text-white font-semibold px-8 py-4 rounded-xl text-sm transition-all duration-300 uppercase tracking-widest"
-          >
-            Get Free Consultation
-          </a>
+            Refined <span className="font-normal text-rose-400">Beauty & Glamour</span>
+          </h1>
+          <p className="text-zinc-600 text-base sm:text-lg leading-relaxed max-w-xl font-light">
+            {lead.tagline || lead.description || "A luxury salon experience built around custom treatments, premium hair care, and relaxing spa sessions designed for you."}
+          </p>
+          {lead.rating && (
+            <div className="flex items-center gap-1.5 text-xs text-rose-500 font-medium">
+              <Star className="w-4 h-4 fill-rose-400 text-rose-400" />
+              <span className="font-bold text-black">{lead.rating}</span>
+              <span className="text-neutral-400">({lead.review_count} Google reviews)</span>
+            </div>
+          )}
+          <div className="flex gap-4 pt-4">
+            <a 
+              href="#services" 
+              className="bg-black hover:bg-zinc-800 text-white font-semibold px-8 py-4 rounded-full text-xs tracking-widest uppercase transition-all duration-300"
+            >
+              Our Services
+            </a>
+          </div>
+        </div>
+
+        {/* Soft Luxury Image Frame */}
+        <div className="lg:col-span-5 relative w-full aspect-square rounded-[2rem] overflow-hidden border border-[#ebdcd0] shadow-2xl">
+          <img 
+            src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=800"
+            alt="Salon Treatment"
+            className="w-full h-full object-cover scale-102 hover:scale-105 transition-transform duration-700"
+          />
         </div>
       </section>
 
-      {/* Service list */}
-      <section id="services" className="py-16 px-6 max-w-4xl mx-auto border-t border-white/5">
-        <div className="text-center mb-12">
-          <h2 className="text-xs font-bold text-rose-400 uppercase tracking-[0.3em] mb-2">Treatments</h2>
-          <h3 className="text-2xl sm:text-3xl font-light text-white uppercase tracking-wider">Premium Service Catalog</h3>
+      {/* Services Section */}
+      <section id="services" className="py-20 px-6 max-w-4xl mx-auto border-t border-[#ebdcd0]">
+        <div className="text-center mb-16">
+          <span className="text-rose-400 text-xs font-bold uppercase tracking-[0.3em] block mb-2">Treatments</span>
+          <h2 
+            className="text-3xl sm:text-4xl font-light text-black uppercase tracking-wider"
+            style={{ fontFamily: "'Italiana', serif" }}
+          >
+            Signature Catalog
+          </h2>
         </div>
 
-        <div className="space-y-4">
-          <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
-            <div>
-              <h4 className="text-base font-bold text-white">Signature Haircuts & Styling</h4>
-              <p className="text-xs text-zinc-500">Includes consultation, wash, massage, and professional blowout.</p>
+        <div className="space-y-6">
+          {services.map((service, index) => (
+            <div key={index} className="flex justify-between items-center border-b border-[#ebdcd0] pb-4">
+              <div>
+                <h4 className="text-lg font-bold text-black">{service}</h4>
+                <p className="text-xs text-zinc-500">Premium treatment custom-tailored to your style and wellness preferences.</p>
+              </div>
+              <span className="text-rose-500 font-bold text-sm">Couture</span>
             </div>
-            <span className="text-rose-400 font-bold text-sm">Consultation Required</span>
-          </div>
-
-          <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
-            <div>
-              <h4 className="text-base font-bold text-white">Revitalizing Face Cleansing</h4>
-              <p className="text-xs text-zinc-500">Premium organic products custom selected for your skin type.</p>
-            </div>
-            <span className="text-rose-400 font-bold text-sm">Custom Session</span>
-          </div>
-
-          <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
-            <div>
-              <h4 className="text-base font-bold text-white">Luxury Bridal Makeup & Styling</h4>
-              <p className="text-xs text-zinc-500">Complete styling packages tailored to perfection for your big day.</p>
-            </div>
-            <span className="text-rose-400 font-bold text-sm">Elite Service</span>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* Booking Form */}
-      <section id="contact" className="py-16 px-6 max-w-4xl mx-auto border-t border-white/5">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-          <div className="md:col-span-7 space-y-6">
-            <h3 className="text-3xl font-light text-white uppercase tracking-wider leading-none">Schedule Appointment</h3>
-            <p className="text-zinc-400 text-sm leading-relaxed font-light">
+      <section id="contact" className="py-20 px-6 max-w-5xl mx-auto border-t border-[#ebdcd0]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-7 space-y-6">
+            <h3 
+              className="text-4xl font-light text-black uppercase tracking-wider leading-none"
+              style={{ fontFamily: "'Italiana', serif" }}
+            >
+              Book Appointment
+            </h3>
+            <p className="text-zinc-600 text-sm leading-relaxed font-light">
               Pamper yourself with the treatment you deserve. Select your date, submit details, and our premium stylist team will call you to confirm.
             </p>
-            <div className="space-y-4 pt-4">
+            <div className="space-y-4 pt-4 text-sm font-light">
               <div className="flex items-center gap-3">
                 <MapPin className="w-5 h-5 text-rose-400 shrink-0" />
-                <span className="text-sm font-semibold">{lead.address}</span>
+                <span>{lead.address}</span>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-rose-400 shrink-0" />
-                <span className="text-sm font-semibold">{lead.phone}</span>
+                <span>{lead.phone}</span>
               </div>
             </div>
           </div>
-          <div className="md:col-span-5">
+          <div className="lg:col-span-5 bg-white border border-[#ebdcd0] p-6 rounded-3xl shadow-xl">
             <ContactForm businessName={lead.name} themeColor="rose" />
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-zinc-900 text-center text-xs text-zinc-600">
+      <footer className="py-12 border-t border-[#ebdcd0] text-center text-xs text-zinc-500">
         <p className="mb-2 uppercase tracking-widest font-black text-zinc-500">&copy; {new Date().getFullYear()} {lead.name}</p>
         <p>Proudly presented by Asenra Venture Studio Demo Network</p>
       </footer>
@@ -449,104 +496,119 @@ export function SalonTemplate({ lead }: { lead: Lead }) {
 }
 
 // -------------------------------------------------------------------
-// 4. CLEANING / GENERAL SERVICE TEMPLATE
+// 4. CLEANING & HOME SERVICES TEMPLATE (Clean, Bright, Trustworthy)
 // -------------------------------------------------------------------
 export function ServicesTemplate({ lead }: { lead: Lead }) {
-  const accentColor = "#059669"; // Emerald
+  const services = parseServices(lead.services, [
+    "Invisible Dental Aligners",
+    "Cosmetic Dentistry Sessions",
+    "Painless Root Canal Treatments",
+    "Specialized Pediatric Dentistry"
+  ]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-300 font-sans selection:bg-emerald-600 selection:text-white">
+    <div 
+      className="min-h-screen bg-slate-50 text-slate-700 selection:bg-emerald-600 selection:text-white leading-relaxed font-light"
+      style={{ fontFamily: "'Outfit', sans-serif" }}
+    >
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800 py-4 px-6 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 py-5 px-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-emerald-600/10 border border-emerald-600/20 rounded-lg text-emerald-400">
-            <Sparkles className="w-5 h-5" />
-          </div>
-          <span className="font-extrabold text-lg tracking-tight text-white uppercase">{lead.name}</span>
+          <Sparkles className="w-5 h-5 text-emerald-600" />
+          <span className="font-black text-lg tracking-tight text-slate-900 uppercase">{lead.name}</span>
         </div>
         <a 
           href={`tel:${lead.phone}`}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-5 rounded-lg text-xs font-bold tracking-wide uppercase flex items-center gap-2 transition-all duration-300"
+          className="bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-6 rounded-full text-xs font-bold tracking-wide uppercase transition-all duration-300"
         >
-          <Phone className="w-3.5 h-3.5" />
-          Call Service
+          Book Service
         </a>
       </header>
 
       {/* Hero */}
-      <section className="relative py-24 px-6 max-w-4xl mx-auto text-center">
-        <h1 className="text-4xl sm:text-6xl font-black text-white leading-tight tracking-tight uppercase mb-6">
-          {lead.tagline || "Professional Service You Can Trust"}
-        </h1>
-        <p className="text-slate-400 text-base sm:text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-          {lead.description || "High-quality, reliable, and premium local services tailored exactly to your home or office needs. Certified professionals ready to help."}
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a 
-            href="#contact" 
-            className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-4 rounded-xl text-sm transition-all duration-300 uppercase tracking-wide"
-          >
-            Get a Free Quote
-          </a>
-          <a 
-            href="#benefits" 
-            className="w-full sm:w-auto border border-slate-800 hover:bg-white/5 text-white font-bold px-8 py-4 rounded-xl text-sm transition-all duration-300 uppercase tracking-wide flex items-center justify-center gap-2"
-          >
-            <CheckCircle className="w-4 h-4 text-emerald-400" />
-            Our Quality Guarantee
-          </a>
+      <section className="relative py-24 px-6 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="lg:col-span-7 space-y-6 text-left">
+          <span className="text-emerald-600 text-xs font-bold tracking-[0.3em] uppercase block">Reliable & Verified</span>
+          <h1 className="text-4xl sm:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight uppercase">
+            {lead.tagline || "Professional Service You Can Trust"}
+          </h1>
+          <p className="text-slate-500 text-base sm:text-lg leading-relaxed max-w-xl font-light">
+            {lead.description || "High-quality, reliable, and premium local services tailored exactly to your home or office needs. Certified professionals ready to help."}
+          </p>
+          {lead.rating && (
+            <div className="flex items-center gap-1.5 text-xs text-emerald-600 font-semibold">
+              <Star className="w-4 h-4 fill-emerald-500 text-emerald-500" />
+              <span className="font-bold text-slate-900">{lead.rating}</span>
+              <span className="text-slate-400">({lead.review_count} Google reviews)</span>
+            </div>
+          )}
+          <div className="flex gap-4 pt-4">
+            <a 
+              href="#contact" 
+              className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-4 rounded-full text-sm transition-all duration-300 uppercase tracking-wide"
+            >
+              Get Free Estimate
+            </a>
+          </div>
+        </div>
+
+        {/* Clean Service Image Frame */}
+        <div className="lg:col-span-5 relative w-full aspect-square rounded-3xl overflow-hidden border border-slate-200 shadow-2xl">
+          <img 
+            src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=800"
+            alt="Service Cleaning"
+            className="w-full h-full object-cover"
+          />
         </div>
       </section>
 
-      {/* Trust Grid */}
-      <section id="benefits" className="py-16 px-6 max-w-4xl mx-auto border-t border-slate-800">
+      {/* Services Grid */}
+      <section className="py-20 px-6 max-w-5xl mx-auto border-t border-slate-200">
+        <div className="text-center mb-12">
+          <span className="text-emerald-600 text-xs font-bold uppercase tracking-[0.3em] block mb-2">Our Offerings</span>
+          <h2 className="text-3xl font-extrabold text-slate-900 uppercase">Available Services</h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-slate-900/40 border border-slate-800 p-6 rounded-2xl flex gap-4">
-            <CheckCircle className="w-6 h-6 text-emerald-400 shrink-0 mt-1" />
-            <div>
-              <h4 className="text-base font-bold text-white mb-1">Fully Certified Professionals</h4>
-              <p className="text-xs text-slate-400 leading-relaxed">Every team member undergoes complete background checks and is fully trained to deliver high standards.</p>
+          {services.map((service, index) => (
+            <div key={index} className="bg-white border border-slate-200 p-6 rounded-2xl flex gap-4 shadow-sm hover:shadow-md transition-shadow">
+              <CheckCircle className="w-6 h-6 text-emerald-500 shrink-0 mt-1" />
+              <div>
+                <h4 className="text-base font-bold text-slate-900 mb-1">{service}</h4>
+                <p className="text-xs text-slate-500 leading-relaxed">Professional service executed with utmost precision, certified techniques, and absolute care.</p>
+              </div>
             </div>
-          </div>
-
-          <div className="bg-slate-900/40 border border-slate-800 p-6 rounded-2xl flex gap-4">
-            <Shield className="w-6 h-6 text-emerald-400 shrink-0 mt-1" />
-            <div>
-              <h4 className="text-base font-bold text-white mb-1">100% Satisfaction Guaranteed</h4>
-              <p className="text-xs text-slate-400 leading-relaxed">If you aren't completely happy with our work, we will come back and fix it free of charge.</p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* Contact Form */}
-      <section id="contact" className="py-16 px-6 max-w-4xl mx-auto border-t border-slate-800">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-          <div className="md:col-span-7 space-y-6">
-            <h3 className="text-3xl font-black text-white uppercase tracking-tight leading-none">Request Free Quote</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">
+      <section id="contact" className="py-20 px-6 max-w-5xl mx-auto border-t border-slate-200">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-7 space-y-6">
+            <h3 className="text-3xl font-extrabold text-slate-900 uppercase tracking-tight leading-none">Request Free Quote</h3>
+            <p className="text-slate-500 text-sm leading-relaxed">
               No hidden fees. Submit your phone number and we will get back to you within 30 minutes with a free pricing estimate for your requirements.
             </p>
-            <div className="space-y-4 pt-4">
+            <div className="space-y-4 pt-4 text-sm">
               <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-emerald-400 shrink-0" />
-                <span className="text-sm font-semibold">{lead.address}</span>
+                <MapPin className="w-5 h-5 text-emerald-600 shrink-0" />
+                <span>{lead.address}</span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-emerald-400 shrink-0" />
-                <span className="text-sm font-semibold">{lead.phone}</span>
+                <Phone className="w-5 h-5 text-emerald-600 shrink-0" />
+                <span>{lead.phone}</span>
               </div>
             </div>
           </div>
-          <div className="md:col-span-5">
+          <div className="lg:col-span-5 bg-white border border-slate-200 p-6 rounded-3xl shadow-xl">
             <ContactForm businessName={lead.name} themeColor="emerald" />
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-slate-800 text-center text-xs text-slate-600">
-        <p className="mb-2 uppercase tracking-widest font-black text-slate-500">&copy; {new Date().getFullYear()} {lead.name}</p>
+      <footer className="py-12 border-t border-slate-200 text-center text-xs text-slate-500">
+        <p className="mb-2 uppercase tracking-widest font-black text-slate-400">&copy; {new Date().getFullYear()} {lead.name}</p>
         <p>Proudly presented by Asenra Venture Studio Demo Network</p>
       </footer>
     </div>
@@ -554,76 +616,119 @@ export function ServicesTemplate({ lead }: { lead: Lead }) {
 }
 
 // -------------------------------------------------------------------
-// 5. GENERAL CORPORATE TEMPLATE
+// 5. GENERAL / CORPORATE TEMPLATE (Sleek Dark Mode, Modern Agency)
 // -------------------------------------------------------------------
 export function GeneralTemplate({ lead }: { lead: Lead }) {
-  const accentColor = "#2563EB"; // Blue
+  const services = parseServices(lead.services, [
+    "Luxury Residential Interior Architecture",
+    "Modern Office Workplace Planning",
+    "Bespoke Furniture Concept Design"
+  ]);
 
   return (
-    <div className="min-h-screen bg-black text-neutral-300 font-sans selection:bg-blue-600 selection:text-white">
+    <div 
+      className="min-h-screen bg-black text-neutral-300 selection:bg-blue-600 selection:text-white leading-relaxed font-light"
+      style={{ fontFamily: "'Outfit', sans-serif" }}
+    >
+      {/* Glow */}
+      <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-blue-600/[0.03] rounded-full blur-[100px] pointer-events-none" />
+
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/5 py-4 px-6 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-black/85 backdrop-blur-md border-b border-white/5 py-5 px-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-blue-600/10 border border-blue-600/20 rounded-lg text-blue-400">
-            <Globe className="w-5 h-5" />
-          </div>
+          <Globe className="w-5 h-5 text-blue-400" />
           <span className="font-bold text-lg tracking-tight text-white uppercase">{lead.name}</span>
         </div>
         <a 
           href={`tel:${lead.phone}`}
-          className="bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-5 rounded-lg text-xs font-bold tracking-wide uppercase flex items-center gap-2 transition-all duration-300"
+          className="bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-6 rounded-full text-xs font-bold tracking-wide uppercase transition-all duration-300"
         >
-          <Phone className="w-3.5 h-3.5" />
-          Contact Us
+          Contact Now
         </a>
       </header>
 
       {/* Hero */}
-      <section className="relative py-24 px-6 max-w-4xl mx-auto text-center">
-        <h1 className="text-4xl sm:text-6xl font-extrabold text-white leading-tight tracking-tight uppercase mb-6">
-          {lead.tagline || "Modern Solutions for Your Growth"}
-        </h1>
-        <p className="text-neutral-400 text-base sm:text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-          {lead.description || "Discover premium services, expert consultations, and dedicated support built around your business goals."}
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a 
-            href="#contact" 
-            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-xl text-sm transition-all duration-300 uppercase tracking-wide"
-          >
-            Learn More
-          </a>
+      <section className="relative py-24 px-6 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="lg:col-span-7 space-y-6 text-left">
+          <span className="text-blue-400 text-xs font-bold tracking-[0.3em] uppercase block">Tailored for You</span>
+          <h1 className="text-4xl sm:text-6xl font-extrabold text-white leading-tight tracking-tight uppercase">
+            {lead.tagline || "Modern Solutions for Your Growth"}
+          </h1>
+          <p className="text-neutral-400 text-base sm:text-lg leading-relaxed max-w-xl font-light">
+            {lead.description || "Premium services, expert consultations, and dedicated support built around your unique business goals."}
+          </p>
+          {lead.rating && (
+            <div className="flex items-center gap-1.5 text-xs text-blue-400">
+              <Star className="w-4 h-4 fill-blue-500 text-blue-400" />
+              <span className="font-bold text-white">{lead.rating}</span>
+              <span className="text-neutral-500">({lead.review_count} Google reviews)</span>
+            </div>
+          )}
+          <div className="flex gap-4 pt-4">
+            <a 
+              href="#contact" 
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-full text-sm transition-all duration-300 uppercase tracking-wide"
+            >
+              Get in Touch
+            </a>
+          </div>
+        </div>
+
+        {/* Corporate Image Frame */}
+        <div className="lg:col-span-5 relative w-full aspect-square rounded-3xl overflow-hidden border border-white/5 shadow-2xl">
+          <img 
+            src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800"
+            alt="Business Consulting"
+            className="w-full h-full object-cover grayscale-50 hover:grayscale-0 transition-all duration-700"
+          />
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section className="py-20 px-6 max-w-4xl mx-auto border-t border-white/5">
+        <div className="text-center mb-12">
+          <span className="text-blue-400 text-xs font-bold uppercase tracking-[0.3em] block mb-2">Our Expertise</span>
+          <h2 className="text-3xl font-extrabold text-white uppercase">Services Offered</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {services.map((service, index) => (
+            <div key={index} className="bg-neutral-900 border border-white/5 p-6 rounded-2xl space-y-4 hover:border-blue-500/20 transition-all">
+              <CheckCircle className="w-8 h-8 text-blue-400" />
+              <h4 className="text-lg font-bold text-white uppercase">{service}</h4>
+              <p className="text-xs text-neutral-400 leading-relaxed">Bespoke dynamic solutions designed specifically to scale operations and output quality.</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Booking Form */}
-      <section id="contact" className="py-16 px-6 max-w-4xl mx-auto border-t border-white/5">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-          <div className="md:col-span-7 space-y-6">
-            <h3 className="text-3xl font-black text-white uppercase tracking-tight leading-none">Connect With Us</h3>
+      <section id="contact" className="py-16 px-6 max-w-5xl mx-auto border-t border-white/5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-7 space-y-6">
+            <h3 className="text-3xl font-black text-white uppercase tracking-tight leading-none">Inquire Today</h3>
             <p className="text-neutral-400 text-sm leading-relaxed">
-              Have questions? Submit your details and our team will get in touch to discuss how we can help.
+              We look forward to serving you. Submit your name and phone number and we will get back to you shortly.
             </p>
-            <div className="space-y-4 pt-4">
+            <div className="space-y-4 pt-4 text-sm font-light">
               <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-blue-500 shrink-0" />
-                <span className="text-sm font-semibold">{lead.address}</span>
+                <MapPin className="w-5 h-5 text-blue-400 shrink-0" />
+                <span>{lead.address}</span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-blue-500 shrink-0" />
-                <span className="text-sm font-semibold">{lead.phone}</span>
+                <Phone className="w-5 h-5 text-blue-400 shrink-0" />
+                <span>{lead.phone}</span>
               </div>
             </div>
           </div>
-          <div className="md:col-span-5">
+          <div className="lg:col-span-5">
             <ContactForm businessName={lead.name} themeColor="blue" />
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-white/5 text-center text-xs text-neutral-600">
-        <p className="mb-2 uppercase tracking-widest font-black text-neutral-500">&copy; {new Date().getFullYear()} {lead.name}</p>
+      <footer className="py-12 border-t border-white/5 text-center text-xs text-neutral-500">
+        <p className="mb-2 uppercase tracking-widest font-black text-neutral-400">&copy; {new Date().getFullYear()} {lead.name}</p>
         <p>Proudly presented by Asenra Venture Studio Demo Network</p>
       </footer>
     </div>

@@ -4,17 +4,26 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { 
   Phone, MapPin, ExternalLink, RefreshCw, 
-  CheckCircle, ShieldAlert, Lock, Copy, Check 
+  CheckCircle, ShieldAlert, Lock, Copy, Check,
+  Star, Mail, Compass
 } from "lucide-react";
 
 interface Lead {
   id: string;
   name: string;
   phone: string;
+  email: string;
   address: string;
+  city: string;
+  state: string;
+  maps_link: string;
+  rating: number;
+  review_count: number;
   category: string;
+  industry: string;
   tagline: string;
   description: string;
+  services: string;
   color_theme: string;
   status: string;
   slug: string;
@@ -40,7 +49,6 @@ export default function AdminLeads() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Default secure password for Asenra leads dashboard
     if (password === "asenra2026") {
       sessionStorage.setItem("asenra_admin_auth", "true");
       setIsAuthorized(true);
@@ -78,7 +86,6 @@ export default function AdminLeads() {
 
       if (error) throw error;
       
-      // Update local state
       setLeads(leads.map(lead => lead.id === id ? { ...lead, status: newStatus } : lead));
     } catch (err: any) {
       alert("Failed to update status: " + err.message);
@@ -94,7 +101,6 @@ export default function AdminLeads() {
     setTimeout(() => setCopiedSlug(null), 2000);
   };
 
-  // 1. PASSWORD GATE SCREEN
   if (!isAuthorized) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center p-6 selection:bg-white selection:text-black">
@@ -140,10 +146,9 @@ export default function AdminLeads() {
     );
   }
 
-  // 2. MAIN ADMIN LEADS BOARD
   return (
     <div className="min-h-screen bg-black text-neutral-200 p-6 md:p-12 font-sans selection:bg-white selection:text-black">
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div className="max-w-7xl mx-auto space-y-8">
         
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-6">
@@ -176,18 +181,19 @@ export default function AdminLeads() {
             </div>
           ) : leads.length === 0 ? (
             <div className="py-20 text-center text-neutral-500 text-sm uppercase tracking-widest">
-              No leads found. Run the generator script to add new leads!
+              No leads found. Run the automation script to add new leads!
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+              <table className="w-full text-left border-collapse min-w-[1000px]">
                 <thead>
                   <tr className="border-b border-white/5 text-neutral-500 text-xs font-black uppercase tracking-wider">
-                    <th className="py-5 px-6">Business</th>
-                    <th className="py-5 px-6">Category</th>
+                    <th className="py-5 px-6">Business & Location</th>
+                    <th className="py-5 px-6">Industry & Services</th>
+                    <th className="py-5 px-6">Reputation</th>
                     <th className="py-5 px-6">Contact info</th>
-                    <th className="py-5 px-6">Call Status</th>
-                    <th className="py-5 px-6 text-right">Demo URL</th>
+                    <th className="py-5 px-6">Status</th>
+                    <th className="py-5 px-6 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5 text-sm">
@@ -202,30 +208,61 @@ export default function AdminLeads() {
                     return (
                       <tr key={lead.id} className="hover:bg-white/[0.01] transition-colors">
                         {/* Name & Address */}
-                        <td className="py-5 px-6">
-                          <div className="font-bold text-white text-base">{lead.name}</div>
-                          <div className="flex items-center gap-1.5 text-xs text-neutral-500 mt-1">
-                            <MapPin className="w-3.5 h-3.5" />
-                            {lead.address}
+                        <td className="py-5 px-6 max-w-[280px]">
+                          <div className="font-bold text-white text-base leading-snug">{lead.name}</div>
+                          <div className="flex items-start gap-1.5 text-xs text-neutral-500 mt-2 leading-relaxed">
+                            <MapPin className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                            <span>{lead.address}, {lead.city}, {lead.state}</span>
                           </div>
                         </td>
 
-                        {/* Category */}
+                        {/* Industry & Services */}
+                        <td className="py-5 px-6 max-w-[250px]">
+                          <div className="inline-block bg-white/5 border border-white/10 text-neutral-400 py-0.5 px-2.5 rounded-full text-[10px] font-bold uppercase tracking-wider mb-2">
+                            {lead.industry || lead.category}
+                          </div>
+                          {lead.services && (
+                            <div className="text-xs text-neutral-500 truncate" title={lead.services}>
+                              {lead.services}
+                            </div>
+                          )}
+                        </td>
+
+                        {/* Reputation (Google Maps Rating) */}
                         <td className="py-5 px-6">
-                          <span className="bg-white/5 border border-white/10 text-neutral-400 py-1 px-3 rounded-full text-xs font-semibold uppercase tracking-wider">
-                            {lead.category}
-                          </span>
+                          {lead.rating ? (
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-1 font-bold text-white">
+                                <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+                                {lead.rating}
+                              </div>
+                              <div className="text-xs text-neutral-500">{lead.review_count} reviews</div>
+                            </div>
+                          ) : (
+                            <span className="text-neutral-600 text-xs">N/A</span>
+                          )}
                         </td>
 
                         {/* Contact Info */}
                         <td className="py-5 px-6">
-                          <a 
-                            href={`tel:${lead.phone}`}
-                            className="flex items-center gap-2 hover:text-white font-semibold transition-colors text-neutral-300"
-                          >
-                            <Phone className="w-4 h-4 text-neutral-500" />
-                            {lead.phone}
-                          </a>
+                          <div className="space-y-1.5">
+                            <a 
+                              href={`tel:${lead.phone}`}
+                              className="flex items-center gap-2 hover:text-white font-semibold transition-colors text-neutral-300 text-xs"
+                            >
+                              <Phone className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
+                              {lead.phone}
+                            </a>
+                            {lead.email && (
+                              <a 
+                                href={`mailto:${lead.email}`}
+                                className="flex items-center gap-2 hover:text-white transition-colors text-neutral-400 text-xs"
+                              >
+                                <Mail className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
+                                <span className="truncate max-w-[150px]">{lead.email}</span>
+                              </a>
+                            )}
+                          </div>
                         </td>
 
                         {/* Status Selector */}
@@ -235,7 +272,7 @@ export default function AdminLeads() {
                               value={lead.status || "new"}
                               disabled={updatingId === lead.id}
                               onChange={(e) => handleStatusChange(lead.id, e.target.value)}
-                              className={`appearance-none bg-neutral-900 border border-white/10 rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-wider outline-hidden cursor-pointer transition-all ${statusColors[lead.status] || "bg-neutral-800 text-neutral-300"}`}
+                              className={`appearance-none bg-neutral-900 border border-white/10 rounded-xl px-3.5 py-2 text-xs font-bold uppercase tracking-wider outline-hidden cursor-pointer transition-all ${statusColors[lead.status] || "bg-neutral-800 text-neutral-300"}`}
                             >
                               <option value="new">New Lead</option>
                               <option value="called">Called</option>
@@ -245,11 +282,23 @@ export default function AdminLeads() {
                           </div>
                         </td>
 
-                        {/* Actions (Demo Links) */}
-                        <td className="py-5 px-6 text-right space-x-2">
+                        {/* Actions */}
+                        <td className="py-5 px-6 text-right space-x-1.5">
+                          {lead.maps_link && (
+                            <a 
+                              href={lead.maps_link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center justify-center p-2 border border-white/10 hover:border-white/20 hover:bg-white/5 rounded-xl text-neutral-500 hover:text-white transition-all"
+                              title="Open Google Maps Profile"
+                            >
+                              <Compass className="w-4 h-4" />
+                            </a>
+                          )}
+                          
                           <button 
                             onClick={() => copyToClipboard(lead.slug)}
-                            className="inline-flex items-center justify-center p-2 border border-white/10 hover:border-white/20 hover:bg-white/5 rounded-xl text-neutral-400 hover:text-white transition-all cursor-pointer"
+                            className="inline-flex items-center justify-center p-2 border border-white/10 hover:border-white/20 hover:bg-white/5 rounded-xl text-neutral-500 hover:text-white transition-all cursor-pointer"
                             title="Copy Demo Link"
                           >
                             {copiedSlug === lead.slug ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
