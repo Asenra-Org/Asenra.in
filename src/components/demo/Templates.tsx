@@ -109,133 +109,173 @@ export function CafeTemplate({ lead }: { lead: Lead }) {
   ]);
 
   const cafeImages = [
-    "https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=300",
-    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=300",
-    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=300",
-    "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=300"
+    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400", // Coffee pouring
+    "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400", // Bakery/croissants
+    "https://images.unsplash.com/photo-1544787219-7f47ccb76574?q=80&w=400", // Table setup
+    "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?q=80&w=400"  // Cozy corner
+  ];
+
+  const prices = ["₹290", "₹340", "₹380", "₹420"];
+  const descriptions = [
+    "Hand-selected single origin beans, brewed slowly for a complex, aromatic cup.",
+    "Butter-layered pastry, baked fresh daily by our master pastry chefs.",
+    "24-hour slow steeped house blend, served over ice for a rich, smooth finish.",
+    "Bespoke seasonal sweet creations crafted with premium global ingredients."
   ];
 
   return (
     <div 
-      className="min-h-screen bg-[#0d0c0a] text-[#f4f2ee] selection:bg-amber-500 selection:text-black leading-relaxed"
-      style={{ fontFamily: "'Playfair Display', serif" }}
+      className="min-h-screen bg-[#0b0a09] text-[#eae5db] selection:bg-[#c5a880] selection:text-[#0b0a09] leading-relaxed"
+      style={{ fontFamily: "'Inter', sans-serif" }}
     >
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#0d0c0a]/90 backdrop-blur-md border-b border-[#2d2a23] py-5 px-6 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Coffee className="w-5 h-5 text-amber-500" />
-          <span className="font-serif text-xl font-bold tracking-wider text-white uppercase">{lead.name}</span>
+      <header className="sticky top-0 z-50 bg-[#0b0a09]/95 backdrop-blur-md border-b border-[#221f1c] py-6 px-6 sm:px-12 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-5 rounded-full border border-[#c5a880] flex items-center justify-center">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#c5a880]" />
+          </div>
+          <span 
+            className="text-sm font-black tracking-[0.25em] text-[#eae5db] uppercase"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            {lead.name}
+          </span>
         </div>
         <a 
-          href={`tel:${lead.phone}`}
-          className="border border-amber-500/30 hover:bg-amber-500 hover:text-black text-amber-400 py-2.5 px-6 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300"
+          href="#reserve"
+          className="border border-[#c5a880]/30 hover:bg-[#c5a880] hover:text-[#0b0a09] text-[#c5a880] py-2.5 px-6 rounded-none text-xs font-bold tracking-widest uppercase transition-all duration-300"
         >
-          Call Now
+          Reserve Table
         </a>
       </header>
 
       {/* Hero */}
-      <section className="relative py-20 px-6 max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <div className="lg:col-span-7 space-y-6 text-left">
-          <span className="text-amber-500 text-xs font-bold tracking-[0.3em] uppercase block">Bespoke Experience</span>
-          <h1 className="text-4xl sm:text-6xl font-black text-white leading-tight uppercase tracking-tight">
-            {lead.tagline || "Artisanal Coffee & Crafted Ambience"}
+      <section className="relative py-20 px-6 sm:px-12 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="lg:col-span-7 space-y-8 text-left">
+          <span className="text-[#c5a880] text-xs font-bold tracking-[0.3em] uppercase block">Bespoke Gastronomy</span>
+          <h1 
+            className="text-4xl sm:text-7xl font-extralight text-white leading-tight tracking-tight uppercase"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            {lead.tagline || "Artisanal Brews & Slow Living"}
           </h1>
-          <p className="text-[#c7c1b5] text-base sm:text-lg leading-relaxed font-sans font-light max-w-xl">
-            {lead.description || "Every cup at our sanctuary is a sensory journey. We carefully source single-origin coffee beans and prepare freshly baked, flaky croissants daily."}
+          <div className="w-16 h-[1px] bg-[#c5a880]/30" />
+          <p className="text-[#bbb09c] text-sm sm:text-base leading-relaxed max-w-xl font-light">
+            {lead.description || "Every cup is a ritual. We source organic, high-altitude coffee beans directly from fair-trade estates and bake signature French pastries daily in our micro-bakery."}
           </p>
           {lead.rating && (
-            <div className="flex items-center gap-1.5 font-sans text-xs text-amber-400">
-              <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+            <div className="flex items-center gap-1.5 text-xs text-[#c5a880]">
+              <Star className="w-3.5 h-3.5 fill-[#c5a880] text-[#c5a880]" />
               <span className="font-bold">{lead.rating}</span>
-              <span className="text-neutral-500">({lead.review_count} Google reviews)</span>
+              <span className="text-neutral-600">({lead.review_count} Google reviews)</span>
             </div>
           )}
           <div className="flex gap-4 pt-4">
             <a 
               href="#menu" 
-              className="bg-amber-500 hover:bg-amber-600 text-black font-semibold font-sans px-8 py-4 rounded-full text-xs tracking-widest uppercase transition-all duration-300"
+              className="bg-[#c5a880] hover:bg-[#b0946f] text-[#0b0a09] font-semibold px-8 py-4 rounded-none text-xs tracking-widest uppercase transition-all duration-300"
             >
               Explore Menu
-            </a>
-            <a 
-              href="#contact" 
-              className="border border-[#3d382e] hover:bg-white/5 text-white font-semibold font-sans px-8 py-4 rounded-full text-xs tracking-widest uppercase transition-all duration-300"
-            >
-              Reserve Table
             </a>
           </div>
         </div>
         
-        {/* Premium Image Block */}
-        <div className="lg:col-span-5 relative w-full aspect-square rounded-3xl overflow-hidden border border-[#2d2a23] shadow-2xl">
+        {/* Editorial Image Frame */}
+        <div className="lg:col-span-5 relative w-full aspect-[4/5] rounded-none overflow-hidden border border-[#221f1c] shadow-2xl bg-neutral-900">
           <img 
-            src="https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=800"
-            alt="Espresso Pouring"
-            className="w-full h-full object-cover grayscale-20 hover:grayscale-0 transition-all duration-700 hover:scale-105"
+            src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=800"
+            alt="Signature Cafe Interior"
+            className="w-full h-full object-cover scale-102 hover:scale-105 transition-transform duration-700"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
         </div>
       </section>
 
       {/* Menu / Highlights Section */}
-      <section id="menu" className="py-20 px-6 max-w-5xl mx-auto border-t border-[#2d2a23]">
-        <div className="text-center mb-16">
-          <span className="text-amber-500 text-xs font-bold uppercase tracking-[0.3em] block mb-2">Our Highlights</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white uppercase tracking-wider">Curated Specialties</h2>
+      <section id="menu" className="py-24 px-6 sm:px-12 max-w-5xl mx-auto border-t border-[#221f1c]">
+        <div className="text-center mb-20">
+          <span className="text-[#c5a880] text-xs font-bold uppercase tracking-[0.3em] block mb-2">Carte du Jour</span>
+          <h2 
+            className="text-3xl sm:text-5xl font-extralight text-white uppercase tracking-wider"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            The Signature Menu
+          </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
           {services.map((service, index) => (
-            <div key={index} className="flex gap-6 items-center">
-              <div className="w-24 h-24 shrink-0 rounded-2xl overflow-hidden border border-[#2d2a23]">
-                <img 
-                  src={cafeImages[index % cafeImages.length]}
-                  alt={service}
-                  className="w-full h-full object-cover"
-                />
+            <div key={index} className="space-y-2">
+              <div className="flex justify-between items-baseline gap-2">
+                <h4 
+                  className="text-lg font-bold text-white uppercase tracking-wide"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  {service}
+                </h4>
+                <div className="grow border-b border-dashed border-[#c5a880]/20 mx-2" />
+                <span className="text-sm font-bold text-[#c5a880] font-mono">{prices[index % prices.length]}</span>
               </div>
-              <div className="space-y-1">
-                <h4 className="text-lg font-bold text-white uppercase">{service}</h4>
-                <p className="text-xs text-[#c7c1b5] font-sans font-light leading-relaxed">Prepared individually by our experienced baristas using verified techniques.</p>
-              </div>
+              <p className="text-xs text-[#bbb09c] font-light leading-relaxed">
+                {descriptions[index % descriptions.length]}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Culinary Collage Grid */}
+      <section className="py-12 border-t border-[#221f1c] bg-[#080706]">
+        <div className="max-w-6xl mx-auto px-6 sm:px-12 grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {cafeImages.map((img, idx) => (
+            <div key={idx} className="aspect-[4/5] overflow-hidden border border-[#221f1c]">
+              <img 
+                src={img} 
+                alt="Cafe Details" 
+                className="w-full h-full object-cover grayscale-30 hover:grayscale-0 transition-all duration-500 hover:scale-105"
+              />
             </div>
           ))}
         </div>
       </section>
 
       {/* Booking Form */}
-      <section id="contact" className="py-20 px-6 max-w-5xl mx-auto border-t border-[#2d2a23]">
+      <section id="reserve" className="py-24 px-6 sm:px-12 max-w-6xl mx-auto border-t border-[#221f1c]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 space-y-6">
-            <h3 className="text-3xl sm:text-4xl font-bold text-white uppercase tracking-wider">Experience Our Sanctuary</h3>
-            <p className="text-[#c7c1b5] text-sm font-sans font-light leading-relaxed">
-              We look forward to serving you. Come in to work, read, or catch up with friends in our premium ambient space.
+            <h3 
+              className="text-3xl sm:text-5xl font-extralight text-white uppercase tracking-tight leading-none"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Reserve A Table
+            </h3>
+            <p className="text-[#bbb09c] text-sm leading-relaxed font-light max-w-md">
+              Join us for a slow afternoon. Submit your contact details below, and our host team will call you to confirm your table reservations.
             </p>
-            <div className="space-y-4 pt-4 font-sans font-light text-sm">
+            <div className="space-y-4 pt-4 text-sm font-light">
               <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-amber-500 shrink-0" />
+                <MapPin className="w-5 h-5 text-[#c5a880]/50 shrink-0" />
                 <span>{lead.address}</span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-amber-500 shrink-0" />
+                <Phone className="w-5 h-5 text-[#c5a880]/50 shrink-0" />
                 <span>{lead.phone}</span>
               </div>
               <div className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-amber-500 shrink-0" />
+                <Clock className="w-5 h-5 text-[#c5a880]/50 shrink-0" />
                 <span>Open Daily: 8:00 AM - 10:00 PM</span>
               </div>
             </div>
           </div>
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 bg-[#0b0a09] border border-[#221f1c] p-8 rounded-none">
             <ContactForm businessName={lead.name} themeColor="gold" />
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-[#2d2a23] text-center text-xs text-neutral-500 font-sans font-light">
-        <p className="mb-2 uppercase tracking-widest font-black text-neutral-400">&copy; {new Date().getFullYear()} {lead.name}</p>
+      <footer className="py-16 border-t border-[#221f1c] text-center text-xs text-[#554e42]">
+        <p className="mb-2 uppercase tracking-widest font-black text-[#554e42]/80">&copy; {new Date().getFullYear()} {lead.name}</p>
         <p>Proudly presented by Asenra Venture Studio Demo Network</p>
       </footer>
     </div>
