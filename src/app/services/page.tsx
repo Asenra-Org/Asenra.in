@@ -79,10 +79,21 @@ export default function ServicesPage() {
             Engineered <br />
             <span className="bg-gradient-to-r from-zinc-200 via-white to-zinc-500 bg-clip-text text-transparent">for Growth.</span>
           </h1>
-          <p className="header-element text-zinc-400 text-xl md:text-2xl font-medium max-w-2xl leading-relaxed">
+          <p className="header-element text-zinc-400 text-xl md:text-2xl font-medium max-w-2xl leading-relaxed mb-8">
             We don&apos;t just build software. <br className="hidden md:block" />
             We build the architecture for your business to dominate its market.
           </p>
+          <div className="header-element">
+            <Link 
+              href="/acquisition" 
+              className="inline-flex items-center gap-3 px-6 py-3.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/30 transition-all font-bold text-sm text-white cursor-pointer"
+            >
+              <span>Try Demo Engine & Tech Audit</span>
+              <svg className="w-4 h-4 text-neutral-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Link>
+          </div>
         </div>
 
         {/* Services Grid */}

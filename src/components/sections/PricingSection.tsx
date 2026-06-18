@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { 
@@ -345,6 +346,28 @@ export function PricingSection() {
               </div>
             );
           })}
+        </div>
+
+        {/* Demo Engine CTA Callout Banner */}
+        <div className="premium-depth-card p-8 sm:p-12 rounded-[2.5rem] border-white/5 bg-linear-to-r from-neutral-950 to-neutral-900/60 relative overflow-hidden group mb-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div className="card-sheen" />
+          <div className="absolute top-0 right-0 w-[400px] h-[200px] bg-indigo-500/5 blur-[80px] -mr-32 -mt-32 pointer-events-none" />
+          <div className="relative z-10 max-w-2xl">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400 block mb-2">Interactive Gap Analysis</span>
+            <h4 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-none mb-3">Not sure which package fits?</h4>
+            <p className="text-neutral-400 text-xs sm:text-sm font-medium leading-relaxed">
+              Run a live technical audit on your current website and generate a customized mock layout instantly with our Asenra Demo Engine.
+            </p>
+          </div>
+          <div className="relative z-10 shrink-0">
+            <Link 
+              href="/acquisition" 
+              className="inline-flex items-center gap-3 px-8 py-4.5 rounded-xl bg-white text-black font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-98 transition-all cursor-pointer shadow-lg shadow-black/40 no-underline"
+            >
+              <span>Launch Demo Engine</span>
+              <ArrowRight className="w-4 h-4 text-black" />
+            </Link>
+          </div>
         </div>
 
         {/* Policy & Coverage Sections */}

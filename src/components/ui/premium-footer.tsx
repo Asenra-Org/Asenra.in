@@ -32,6 +32,7 @@ export default function PremiumFooter() {
     {
       title: "Products",
       links: [
+        { label: "Asenra Demo Engine", href: "/acquisition" },
         { label: "Astroneo (Stellar Exploration) ↗", href: "https://astroneo.space" },
       ]
     },
