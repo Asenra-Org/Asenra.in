@@ -139,6 +139,23 @@ function slugify(name) {
     .replace(/[\s_]+/g, "-");
 }
 
+// Helper to remove Hindi/regional languages often appended in Google Maps names
+function cleanBusinessName(name) {
+  if (!name) return "Local Business";
+  // Often names are like "English Name | Hindi Name" or "English Name - Hindi Name"
+  const parts = name.split(/[|:-]/);
+  for (let part of parts) {
+    part = part.trim();
+    // \u0900-\u097F is the unicode block for Devanagari (Hindi, Marathi, Sanskrit)
+    // \u0A80-\u0AFF is Gujarati
+    if (!/[\u0900-\u097F\u0A80-\u0AFF]/.test(part) && part.length > 2) {
+      return part;
+    }
+  }
+  // Fallback: strip Devanagari/Gujarati and trailing separators
+  return name.replace(/[\u0900-\u097F\u0A80-\u0AFF]/g, "").replace(/^[|:-]+|[|:-]+$/g, "").trim().replace(/\s+/g, ' ') || "Local Business";
+}
+
 // Helper to filter out entries that have a real custom website
 function hasNoRealWebsite(item) {
   if (!item.website) return true;
@@ -321,7 +338,7 @@ async function scrapeRealLeads() {
       }
 
       return {
-        name: item.title,
+        name: cleanBusinessName(item.title),
         industry: industry,
         phone: item.phone || "+91 XXXXX XXXXX",
         email: item.email || "",
@@ -334,7 +351,7 @@ async function scrapeRealLeads() {
         social_links: item.instagram || item.facebook || "",
         category: mappedCategory,
         tagline: item.subTitle || "Premium Quality Local Service",
-        description: item.description || `Providing outstanding ${industry.toLowerCase()} services at ${item.title}.`,
+        description: item.description || `Providing outstanding ${industry.toLowerCase()} services at ${cleanBusinessName(item.title)}.`,
         services: item.additionalInfo?.services || "High Quality Services, Expert Care",
         theme: mappedCategory === "cafe" ? "gold" : mappedCategory === "gym" ? "red" : mappedCategory === "salon" ? "rose" : mappedCategory === "services" ? "emerald" : "blue"
       };
