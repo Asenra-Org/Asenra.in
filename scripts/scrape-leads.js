@@ -141,19 +141,31 @@ function slugify(name) {
 
 // Helper to remove Hindi/regional languages often appended in Google Maps names
 function cleanBusinessName(name) {
-  if (!name) return "Local Business";
-  // Often names are like "English Name | Hindi Name" or "English Name - Hindi Name"
+  if (!name) return "";
+  
+  // First, split by typical separators
   const parts = name.split(/[|:-]/);
   for (let part of parts) {
     part = part.trim();
-    // \u0900-\u097F is the unicode block for Devanagari (Hindi, Marathi, Sanskrit)
+    // \u0900-\u097F is Devanagari (Hindi, Marathi, Sanskrit)
     // \u0A80-\u0AFF is Gujarati
+    // If the part DOES NOT contain these, and is reasonably long, use it!
     if (!/[\u0900-\u097F\u0A80-\u0AFF]/.test(part) && part.length > 2) {
       return part;
     }
   }
+  
   // Fallback: strip Devanagari/Gujarati and trailing separators
-  return name.replace(/[\u0900-\u097F\u0A80-\u0AFF]/g, "").replace(/^[|:-]+|[|:-]+$/g, "").trim().replace(/\s+/g, ' ') || "Local Business";
+  let cleaned = name.replace(/[\u0900-\u097F\u0A80-\u0AFF]/g, "");
+  cleaned = cleaned.replace(/^[|:.,\-\&]+|[|:.,\-\&]+$/g, "").trim();
+  cleaned = cleaned.replace(/\s+/g, ' ');
+  
+  // If it's just punctuation left, return empty string
+  if (/^[^a-zA-Z0-9]*$/.test(cleaned)) {
+      return "";
+  }
+  
+  return cleaned;
 }
 
 // Helper to filter out entries that have a real custom website
@@ -337,8 +349,15 @@ async function scrapeRealLeads() {
         industry = item.categoryName || "Architecture & Interior Design";
       }
 
+      let cleanName = cleanBusinessName(item.title);
+      let cleanTagline = cleanBusinessName(item.subTitle);
+      let cleanDesc = cleanBusinessName(item.description);
+      
+      if (!cleanName) cleanName = "Local Business";
+      // We allow tagline and desc to be empty so frontend falls back to default properly
+
       return {
-        name: cleanBusinessName(item.title),
+        name: cleanName,
         industry: industry,
         phone: item.phone || "+91 XXXXX XXXXX",
         email: item.email || "",
@@ -350,8 +369,8 @@ async function scrapeRealLeads() {
         review_count: item.reviewsCount || 0,
         social_links: item.instagram || item.facebook || "",
         category: mappedCategory,
-        tagline: item.subTitle || "Premium Quality Local Service",
-        description: item.description || `Providing outstanding ${industry.toLowerCase()} services at ${cleanBusinessName(item.title)}.`,
+        tagline: cleanTagline || null,
+        description: cleanDesc || null,
         services: item.additionalInfo?.services || "High Quality Services, Expert Care",
         theme: mappedCategory === "cafe" ? "gold" : mappedCategory === "gym" ? "red" : mappedCategory === "salon" ? "rose" : mappedCategory === "services" ? "emerald" : "blue"
       };
