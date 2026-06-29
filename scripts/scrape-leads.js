@@ -162,7 +162,17 @@ async function scrapeRealLeads() {
 
   try {
     // Get location and industry from environment variables, or select randomly for daily cron
-    const locations = ["Mumbai", "Bangalore", "Pune", "Delhi NCR", "Hyderabad", "Jaipur", "Gurgaon", "Ahmedabad"];
+    const cityNeighborhoods = {
+      "Mumbai": ["Andheri", "Bandra", "Powai", "Malad", "Colaba", "Dadar", "Juhu", "Goregaon"],
+      "Bangalore": ["Indiranagar", "Koramangala", "Whitefield", "Jayanagar", "HSR Layout", "Malleshwaram"],
+      "Pune": ["Koregaon Park", "Viman Nagar", "Kothrud", "Baner", "Hinjewadi", "Wakad"],
+      "Delhi NCR": ["Connaught Place", "Saket", "Hauz Khas", "Vasant Kunj", "Dwarka", "Rohini"],
+      "Hyderabad": ["Banjara Hills", "Jubilee Hills", "HITEC City", "Gachibowli", "Madhapur", "Kondapur"],
+      "Jaipur": ["Malviya Nagar", "Vaishali Nagar", "C Scheme", "Mansarovar", "Raja Park"],
+      "Gurgaon": ["Cyber Hub", "Sector 29", "Golf Course Road", "DLF Phase 4", "Sohna Road"],
+      "Ahmedabad": ["Vastrapur", "SG Highway", "Navrangpura", "Satellite", "Bopal", "Prahlad Nagar"]
+    };
+    
     const industries = [
       "dentists",
       "gyms",
@@ -177,7 +187,15 @@ async function scrapeRealLeads() {
       "boutiques"
     ];
 
-    const selectedLocation = process.env.TARGET_LOCATION || locations[Math.floor(Math.random() * locations.length)];
+    let selectedLocation = process.env.TARGET_LOCATION;
+    if (!selectedLocation) {
+      const cities = Object.keys(cityNeighborhoods);
+      const randomCity = cities[Math.floor(Math.random() * cities.length)];
+      const neighborhoods = cityNeighborhoods[randomCity];
+      const randomNeighborhood = neighborhoods[Math.floor(Math.random() * neighborhoods.length)];
+      selectedLocation = `${randomNeighborhood}, ${randomCity}`;
+    }
+
     const selectedIndustry = process.env.TARGET_INDUSTRY || industries[Math.floor(Math.random() * industries.length)];
     
     const query = `${selectedIndustry} in ${selectedLocation}`;
